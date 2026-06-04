@@ -7,7 +7,7 @@
 
 ## 線上版
 
-> 開發中，部署 GitHub Pages 後填入連結。
+🔗 **<https://people7771025.github.io/FIN/>**（GitHub Pages；首次部署需幾分鐘生效）
 
 ## 怎麼用
 
