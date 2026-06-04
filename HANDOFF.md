@@ -42,6 +42,9 @@
 | `ch26` | Ⅶ 決策 | 看財報 SOP + 快速體檢 checklist | — |
 | `ch27` | Ⅶ | 不同投資風格的視角（價值/成長/存股） | — |
 | `ch28` | Ⅶ | 財報 + 估值結合 + Quiz | quiz |
+| `ch29` | Ⅷ 從框架到實戰 | 實戰演練：端到端走完一家公司（示意公司宏曜電子，六步 SOP 全跑）+ Quiz | worksheet + quiz |
+| `ch30` | Ⅷ | 估值落地：DCF / PEG / 本益比區間 / 殖利率法算出一個數 + Quiz | quiz |
+| `ch31` | Ⅷ | 實戰導覽：MOPS / SEC EDGAR 怎麼抓、中英科目對照、同業與多期資料 + Quiz | quiz |
 | `glossary` | 附錄 | 名詞表（中英對照） | glossary-search |
 | `progress` | 附錄 | 學習進度 dashboard | — |
 
@@ -68,7 +71,8 @@
   <div class="widget-body"></div>
 </div>
 ```
-key 對照：`path` `waterfall` `dupont` `ratio` `trend` `pebands` `dividend` `quality` `redflag` `industry` `compare` `quiz`。
+key 對照：`path` `waterfall` `dupont` `ratio` `trend` `pebands` `dividend` `quality` `redflag` `industry` `compare` `worksheet` `quiz`。
+（`worksheet` = 六步看財報工作底稿，可填／標紅旗／自動存 localStorage／匯出文字；只放在 ch29，ch30/ch31 改用連到 ch29 的導引。）
 
 Quiz 用資料驅動：
 ```html
@@ -82,7 +86,7 @@ Quiz 用資料驅動：
 
 ## 5. localStorage keys（沿用 OPT 命名，前綴改 `fin/`）
 
-`fin/state` `fin/visited` `fin/bookmark` `fin/completed` `fin/completed-ts` `fin/learning-plan` `fin/gemini-key` `fin/chat-history` `fin/sync-code`
+`fin/state` `fin/visited` `fin/bookmark` `fin/completed` `fin/completed-ts` `fin/learning-plan` `fin/worksheet` `fin/gemini-key` `fin/chat-history` `fin/sync-code`
 
 ## 6. 內容寫作準則
 
@@ -93,6 +97,16 @@ Quiz 用資料驅動：
 - 台股慣例：月營收每月 10 日前公告、財報 Q1/Q2/Q3/年報申報期限、MOPS 公開資訊觀測站。
 - 美股慣例：10-K（年報）/10-Q（季報）/8-K（重大事件）、GAAP vs Non-GAAP、guidance、earnings call。
 
-## 7. 待辦 / 下一步
+## 7. 能力審查與補強（2026-06-05）
+
+對「研讀後能否獨立分析台美股財報」做了 5 視角多代理審查（能力清單對照 / 新手實戰模擬 / 端到端流程 / 練習充分性 / 正確性抽查）。結論：**判讀力約 80 分、實戰閉環約 55 分**——對著攤開的財報能做扎實判讀與排雷，但「從零取得資料→整理多期/同業→收斂成具體合理價」有斷鏈。據此補強（能力導向、不灌水）：
+
+- **新增 Part Ⅷ（ch29-31）**：ch29 端到端走完一家公司（示意公司宏曜電子，六步 SOP 全跑、杜邦、同業比、下結論）；ch30 估值落地（DCF / PEG / 本益比區間 / 殖利率法算出一個數）；ch31 實戰導覽（MOPS / SEC EDGAR 操作、中英科目對照、同業與多期資料工序、「換你做」作業）。
+- **worksheet 工作底稿元件**：六步看財報可填可存可匯出，兌現「做一份固定模板」。
+- **11 處正確性補正**：SBC 非現金費用會灌高 CFO/淨利（ch14）、P/B<1 語境要看景氣（ch10→ch23）、利息保障不含本金到期（ch8）、FCF 判股息要分維持/擴張 capex（ch27）、ROIC 定義（ch6）、杜邦口徑一致、PEG 取百分比數字、ch1 半年報期限對齊 ch17、商譽 IFRS/GAAP、銀行 IFRS 9 ECL、ch5 折舊假設。
+
+審查報告原始輸出在 session transcript（workflow w8w19ppkn）；本檔僅留結論。
+
+## 8. 待辦 / 下一步
 
 見 `WIP.md`。

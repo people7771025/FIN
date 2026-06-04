@@ -406,7 +406,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <div class="layout">
   <aside class="sidebar">
     <div class="path-pill">
-      <b>台股美股財報自學系統</b>：28 章 + 案例庫 + 10 互動 + Quiz + 名詞表。
+      <b>台股美股財報自學系統</b>：31 章 + 案例庫 + 11 互動 + Quiz + 名詞表。
       右下 🤖 開 LLM 助教（自帶 Gemini key）· 按 <kbd>?</kbd> 看快速鍵。
     </div>
 
@@ -468,6 +468,13 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
     </div>
 
     <div class="nav-group">
+      <div class="nav-group-title">Part Ⅷ · 從框架到實戰 🎯</div>
+      <a class="nav-item" href="#ch29"><span class="ch-num">Ch29</span>實戰演練：走完一家公司 <span class="badge-mini">✓ 底稿</span></a>
+      <a class="nav-item" href="#ch30"><span class="ch-num">Ch30</span>估值落地：算出一個數字</a>
+      <a class="nav-item" href="#ch31"><span class="ch-num">Ch31</span>去哪抓、怎麼讀真實財報</a>
+    </div>
+
+    <div class="nav-group">
       <div class="nav-group-title">附錄</div>
       <a class="nav-item" href="#glossary"><span class="ch-num">📖</span>名詞表（中英對照）</a>
       <a class="nav-item" href="#progress"><span class="ch-num">📊</span>學習進度</a>
@@ -479,7 +486,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
     <div class="print-cover">
       <h1>台股美股財報自學系統</h1>
       <div class="subtitle">FIN · Financial Statements Self-Study Handbook</div>
-      <div class="meta">28 章 + 案例庫 + 10 互動 · LLM 助教 · PWA<br/>2026-06-04<br/>people7771025/FIN</div>
+      <div class="meta">31 章 + 案例庫 + 11 互動 · LLM 助教 · PWA<br/>2026-06-05<br/>people7771025/FIN</div>
     </div>
 
     <section data-chapter="intro">
@@ -570,7 +577,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <p>台灣上市櫃公司的法定揭露平台是<strong>公開資訊觀測站（MOPS, mops.twse.com.tw）</strong>。你可以查到完整的季報、年報、月營收、重大訊息。台股採用 <strong>IFRS</strong>（國際財務報導準則）。兩個最該記住的台股慣例：</p>
 <ul>
 <li><strong>月營收</strong>：每月 <strong>10 日</strong>前，公司要公告上個月的合併營收。這是台股獨有、頻率最高的領先資訊，可以最快感受到營運的冷熱。</li>
-<li><strong>季報／年報</strong>：Q1、Q2、Q3 季報與年度財報各有法定申報期限，內容比月營收完整非常多（有完整三表與附註）。一般而言一般產業 Q1／Q3 季報於季後 45 日內、Q2 半年報於 8 月底前、年報於隔年 3 月底前申報（金融等特殊產業期限不同），實際以主管機關規定為準。</li>
+<li><strong>季報／年報</strong>：Q1、Q2、Q3 季報與年度財報各有法定申報期限，內容比月營收完整非常多（有完整三表與附註）。一般而言一般產業 Q1／Q3 季報於季後 45 日內、Q2 半年報於 8 月 14 日前、年報於隔年 3 月底前申報（金融等特殊產業期限不同），實際以主管機關規定為準。</li>
 </ul>
 
 <h3>美股：SEC EDGAR</h3>
@@ -695,7 +702,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <h3>非流動資產（Non-current Assets）</h3>
 <ul>
 <li><strong>不動產廠房設備（PP&amp;E）</strong>：工廠、機台。製造業的根本，跟資本支出直接相關。</li>
-<li><strong>商譽（Goodwill）</strong>：併購別人時，付出的價格超過對方可辨認淨資產公允價值的那部分。<strong>商譽不會自己賺錢，且當被併公司表現不如預期，會「商譽減損」一次認列大虧損</strong>。商譽占資產比重很高的公司要特別留意。</li>
+<li><strong>商譽（Goodwill）</strong>：併購別人時，付出的價格超過對方可辨認淨資產公允價值的那部分。<strong>商譽不會自己賺錢，且當被併公司表現不如預期，會「商譽減損」一次認列大虧損</strong>。商譽占資產比重很高的公司要特別留意。（IFRS 與 US GAAP 都<strong>不攤銷商譽、只做定期減損測試</strong>，但減損測試的方法與時點兩準則略有差異，跨市場比商譽佔比時要留意。）</li>
 </ul>
 
 <h2>負債：有沒有「有息負債」是關鍵 <span class="badge op">實務</span></h2>
@@ -860,7 +867,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 
 <div class="case">
 <div class="case-header"><span class="case-tag">示意整合案例</span><span class="case-title">小明公司的一年（全為示意數字）</span></div>
-<p>小明公司今年：營收讓它賺到<strong>稅後淨利 100</strong>；其中有<strong>折舊 20</strong>；今年<strong>應收帳款增加 30</strong>（有客戶還沒付款）；花<strong>60 買新設備</strong>（資本支出）；發放<strong>股利 40</strong>。我們把三表接起來看：</p>
+<p>小明公司今年：營收讓它賺到<strong>稅後淨利 100</strong>；其中有<strong>折舊 20</strong>；今年<strong>應收帳款增加 30</strong>（有客戶還沒付款）；花<strong>60 買新設備</strong>（資本支出）；發放<strong>股利 40</strong>。（假設：折舊 20 來自<strong>既有</strong>資產；當年新購的 60 設備年底才投入、當年尚未提折舊，所以廠房設備淨增 = 60 − 20。）我們把三表接起來看：</p>
 <table>
 <thead><tr><th>報表</th><th>計算</th><th>結果</th></tr></thead>
 <tbody>
@@ -961,7 +968,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <ul>
 <li><strong>淨利率</strong>（賺錢能力）：每塊營收留下多少利潤。</li>
 <li><strong>總資產週轉率</strong>（經營效率）：每塊資產創造多少營收（第 9 章會細談）。</li>
-<li><strong>權益乘數＝總資產 ÷ 股東權益</strong>（財務槓桿）：數字愈大代表借愈多。</li>
+<li><strong>權益乘數＝總資產 ÷ 股東權益</strong>（財務槓桿）：數字愈大代表借愈多。<br><span style="color:var(--fg-muted);font-size:13px;">⚠️ 三因子相乘時，總資產／權益要用<strong>同一口徑</strong>（同為期末、或同為平均），否則分子分母無法首尾相消，乘積會偏離真實 ROE。</span></li>
 </ul>
 <p>同樣是 ROE 20%，A 公司靠「高淨利率」（像品牌精品），B 公司靠「高週轉」（像量販超市薄利多銷），C 公司靠「高槓桿」（像房地產、銀行）。三種來源風險完全不同——下面的互動元件讓你動手拉拉看，感受哪一塊在驅動 ROE。</p>
 
@@ -985,6 +992,10 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 <p>同樣的 ROE，C 公司一旦景氣反轉或利率上升，最先出問題。這就是為什麼「只看 ROE 數字」會被騙，必須拆開看來源。</p>
 </div>
+
+<h3>ROE 的進階版：ROIC（投入資本報酬率）<span class="badge adv">進階</span></h3>
+<p>ROE 有個盲點：分母只算「股東權益」，所以公司只要<strong>多借錢（拉高槓桿）</strong>就能墊高 ROE，看起來很會賺、其實是靠風險換來的（上面的 C 公司就是）。<strong>ROIC（Return on Invested Capital，投入資本報酬率）</strong>把「借來的錢」也算進分母，衡量公司用<strong>全部投入資本（股東權益＋有息負債）</strong>賺錢的真本事。</p>
+<p>算式：<code>ROIC = 稅後營業利益(NOPAT) ÷ 投入資本(有息負債＋股東權益)</code>。它排除了財務槓桿與資本結構的干擾，比 ROE 更能反映「<strong>這門生意本身好不好賺</strong>」，是判斷<strong>護城河與再投資價值</strong>的核心指標。實務上常把 ROIC 跟公司的資金成本比——ROIC 長期高於資金成本，公司每多投一塊錢都在創造價值。</p>
 
 <details>
 <summary>想深入：為什麼分母有時要用「平均」股東權益／資產？</summary>
@@ -1113,6 +1124,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <h2>利息保障倍數：賺的錢夠不夠付利息 <span class="badge core">核心</span></h2>
 <p><strong>利息保障倍數（Interest Coverage Ratio）</strong>看公司賺的錢是利息費用的幾倍——也就是「賺的能不能輕鬆 cover 利息」。</p>
 <p>算式：<code>利息保障倍數 = 息前稅前淨利(EBIT) ÷ 利息費用</code></p>
+<div class="callout warn"><div class="callout-title">這個倍數的盲點：只算利息、不算本金</div><p>它只衡量「<strong>付得出利息</strong>」，不含「<strong>還得出到期本金</strong>」。一家 EBIT／利息 = 5 倍看似安全的公司，若同一年有大筆短期債務到期、又借不到新錢（再融資風險），照樣可能週轉不過來。看安全性要<strong>搭配債務到期結構與營業現金流（CFO）</strong>一起看。</p></div>
 <p>分子用 <strong>EBIT（息前稅前淨利）</strong>，也就是「還沒扣利息與稅」之前的獲利，因為要衡量的就是「拿來付利息的那塊錢」夠不夠。實務上常以營業利益近似 EBIT，但嚴格來說 EBIT 還會把業外的經常性損益算進來，兩者略有差異。</p>
 <ul>
 <li><strong>看高</strong>：倍數愈高愈安全。一般認為 <strong>低於 2~3 倍</strong>就偏緊張，代表利潤被利息吃掉一大塊；接近或低於 1，等於「賺的錢連利息都不夠付」，是嚴重警訊。</li>
@@ -1240,7 +1252,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <h2>股價淨值比 P/B：相對「家底」貴不貴 <span class="badge core">核心</span></h2>
 <p><strong>股價淨值比（P/B, Price-to-Book Ratio）</strong>＝股價 ÷ 每股淨值，把股價跟公司「帳上淨資產（股東權益）」相比。</p>
 <p>算式：<code>股價淨值比 = 股價 ÷ 每股淨值</code>（每股淨值＝股東權益 ÷ 股數）</p>
-<p>P/B 特別適合<strong>資產為主</strong>的行業（銀行、壽險、資產股、景氣循環股），因為它們的價值貼近帳上資產。P/B &lt; 1 代表股價低於帳面淨值（市場認為資產被高估或公司會虧損侵蝕淨值）。對軟體、品牌這類「值錢的是無形資產、人才」的公司，P/B 參考性低（帳上淨值反映不出真實價值）。</p>
+<p>P/B 特別適合<strong>資產為主</strong>的行業（銀行、壽險、資產股、景氣循環股），因為它們的價值貼近帳上資產。P/B &lt; 1 代表股價低於帳面淨值（市場認為資產被高估或公司會虧損侵蝕淨值）——但 P/B&lt;1 的意義<strong>要看產業與景氣位置</strong>：景氣循環股在谷底常跌破淨值，反而可能是相對低位（見 Ch23），結構性衰退產業破淨值才是陷阱，要結合 ROE 與景氣階段判斷，別一律當壞訊號。對軟體、品牌這類「值錢的是無形資產、人才」的公司，P/B 參考性低（帳上淨值反映不出真實價值）。</p>
 <div class="callout success">
 <div class="callout-title">要訣：P/B 要配 ROE 一起看</div>
 <p>P/B 和 ROE 是一對。<strong>高 ROE 配高 P/B 是合理的</strong>——公司用淨值生出高報酬，市場當然願意給溢價。真正的便宜訊號是「高 ROE 卻低 P/B」（賺錢能力強、卻被低估）；而「低 ROE 又高 P/B」才是真的貴。單看 P/B 低就買，可能買到「便宜但不會賺錢」的公司。</p>
@@ -1248,7 +1260,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 
 <h2>PEG：把成長納進來校正本益比 <span class="badge adv">進階</span></h2>
 <p>P/E 最大的盲點是「沒考慮成長速度」。<strong>PEG（Price/Earnings to Growth）</strong>用成長率去除 P/E，讓不同成長性的公司能公平比較。</p>
-<p>算式：<code>PEG = 本益比 ÷ 盈餘年成長率(%)</code></p>
+<p>算式：<code>PEG = 本益比 ÷ 盈餘年成長率(%)</code>（成長率取<strong>百分比的數字部分</strong>，例如成長 30% 取 <code>30</code>、不是 0.3，否則會算差兩個數量級）</p>
 <ul>
 <li><strong>經驗法則</strong>：PEG ≈ 1 大致合理；&lt; 1 可能被低估（成長還沒反映到股價）；&gt; 1 偏貴。例：P/E 30 看似高，但若年成長 30%，PEG＝1，其實合理。</li>
 <li><strong>陷阱</strong>：成長率是<strong>預估值</strong>，最易灌水。若用過度樂觀的成長假設，PEG 會被算得很漂亮卻失真。成長一旦不如預期，殺傷力最大。</li>
@@ -1505,6 +1517,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </tbody>
 </table>
 <p>（以上為示意數字）</p>
+<div class="callout warn"><div class="callout-title">一個例外：股票薪酬（SBC）會「灌高」這個比值</div><p><strong>股票薪酬（SBC, Stock-Based Compensation）</strong>在損益表是費用、會壓低淨利，但它是「<strong>非現金</strong>」費用，在現金流量表會被<strong>加回 CFO</strong>。所以<strong>大量發股票當薪水</strong>的公司（很多美股科技股、SaaS），CFO／淨利與自由現金流會「天生偏高」，光看這個比值容易把它<strong>誤判成高盈餘品質</strong>。評估這類公司，要把 SBC 當成真實成本（它稀釋了你的股權）再扣回來一起看。</p></div>
 
 <h2>背後的原理：應計項目（Accruals）</h2>
 <p>淨利 = 現金部分 + <strong>應計項目（Accruals）</strong>。應計項目就是「已認列損益、但還沒對應現金收付」的那一塊，例如賒銷的應收、提列的存貨、各種估計與準備。</p>
@@ -1869,7 +1882,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 
 <div class="callout warn">
 <div class="callout-title">逾放比與覆蓋率要一起看</div>
-<p>逾放比低不一定安全——要看覆蓋率夠不夠。逾放比微升但覆蓋率仍高，問題不大；逾放比升、覆蓋率同時掉，代表壞帳變多又沒準備好，這才是危險組合。</p>
+<p>逾放比低不一定安全——要看覆蓋率夠不夠。逾放比微升但覆蓋率仍高，問題不大；逾放比升、覆蓋率同時掉，代表壞帳變多又沒準備好，這才是危險組合。<br><span style="font-size:13px;color:var(--fg-muted);">實務提醒：銀行壞帳提列現行依 IFRS 9「<strong>預期信用損失（ECL）</strong>」三階段模型（不再只看「已經逾期」），且台灣逾放有狹義／廣義口徑之分；真去 MOPS 拉銀行財報算覆蓋率時，要確認分子、分母用的是同一套定義。</span></p>
 </div>
 
 <h2>銀行的 ROE 與淨值</h2>
@@ -2382,7 +2395,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <p>存股族要的是「每年穩穩領、最好還會緩步成長」的現金流。財報上最該確認三件事：</p>
 <ul>
 <li><strong>殖利率穩定度</strong>：不是只看今年殖利率高，而是看<em>連續多年</em>都配得出來、且配息有沒有逐年成長。一次性高殖利率（例如賣資產的特別股利）不算數。</li>
-<li><strong>自由現金流（Free Cash Flow）能不能覆蓋股息</strong>：<code>FCF = 營業現金流（CFO）− 資本支出（capex）</code>。如果配息金額長期 ＞ FCF，公司是在「掏老本或借錢發股息」，遲早砍息。重點看配息率（股利 ÷ 淨利）與「股利 ÷ FCF」是否都在安全區間。</li>
+<li><strong>自由現金流（Free Cash Flow）能不能覆蓋股息</strong>：<code>FCF = 營業現金流（CFO）− 資本支出（capex）</code>。如果配息金額長期 ＞ FCF，公司是在「掏老本或借錢發股息」，遲早砍息。重點看配息率（股利 ÷ 淨利）與「股利 ÷ FCF」是否都在安全區間。<br><span style="color:var(--fg-muted);font-size:13.5px;">⚠️ 這裡 <code>FCF = CFO − 全部資本支出</code>，把「擴張型投資」也扣掉了；判斷<strong>高成長</strong>公司的配息可持續性時，理想是只扣「維持型 capex」，否則會低估它真正可分配的現金、把成長股誤判成「配不出來」。</span></li>
 <li><strong>負債與穿越循環的能力</strong>：景氣差時還撐得住、不被迫減資或停息，才是真正能存的標的。</li>
 </ul>
 
@@ -2492,7 +2505,512 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 </section>
 
-    <section data-chapter="glossary">
+    <section data-chapter="ch29">
+<h1>實戰演練：帶你走完一家公司</h1>
+
+<p>前面我們把零件都拆過了：怎麼讀營收、怎麼看三率、怎麼分辨現金流的品質、怎麼算負債安全、怎麼跑杜邦（DuPont）、怎麼判斷估值貴不貴。但散戶最常卡的不是「不懂某個零件」，而是<strong>「沒人帶我把零件組成一台機器，從頭到尾跑一次」</strong>。這一章就是把第 26 章的六步 SOP，套在一家公司上完整走完——每一步都<strong>算出具體數字 → 做判讀 → 標出紅旗或過關</strong>，最後下出一句明確結論。</p>
+
+<div class="callout warn">
+<div class="callout-title">先講清楚：以下全是示意數字</div>
+<p>本章主角是一家<strong>純虛構示意公司「宏曜電子」</strong>，所有財務數字、股價、同業數字都是為了教學自行設計的<strong>示意值</strong>，不對應任何真實公司、不構成投資建議。你的任務是學「走查的動作」，不是記這些數字。</p>
+</div>
+
+<h2>先看牌：宏曜電子三年財務摘要（示意）</h2>
+
+<p>假設你在公開資訊觀測站、年報、券商網站把資料抓齊，整理成一張自己的表。<span class="badge core">核心</span>金額單位為「億元（新台幣）」，EPS 與每股數字為「元」，比率欄會在後面各步算。</p>
+
+<table>
+<thead>
+<tr><th>項目（示意）</th><th>2023</th><th>2024</th><th>2025</th></tr>
+</thead>
+<tbody>
+<tr><td>營業收入</td><td>180</td><td>210</td><td>252</td></tr>
+<tr><td>營業毛利</td><td>54.0</td><td>65.1</td><td>80.6</td></tr>
+<tr><td>營業利益</td><td>21.6</td><td>27.3</td><td>35.3</td></tr>
+<tr><td>稅後淨利</td><td>17.0</td><td>21.6</td><td>28.0</td></tr>
+<tr><td>EPS（元）</td><td>3.40</td><td>4.32</td><td>5.60</td></tr>
+<tr><td>營業活動現金流（CFO）</td><td>20.0</td><td>23.5</td><td>33.5</td></tr>
+<tr><td>自由現金流（FCF）</td><td>9.0</td><td>11.0</td><td>18.0</td></tr>
+<tr><td>總資產</td><td>200</td><td>230</td><td>265</td></tr>
+<tr><td>總負債</td><td>90</td><td>100</td><td>110</td></tr>
+<tr><td>股東權益</td><td>110</td><td>130</td><td>155</td></tr>
+<tr><td>存貨</td><td>28</td><td>33</td><td>36</td></tr>
+<tr><td>應收帳款</td><td>30</td><td>35</td><td>40</td></tr>
+<tr><td>每股現金股利（元）</td><td>1.70</td><td>2.20</td><td>2.80</td></tr>
+<tr><td>年底股價（元）</td><td>60</td><td>78</td><td>112</td></tr>
+</tbody>
+</table>
+
+<p>另外補上<strong>最近 6 個月月營收 YoY（示意）</strong>，因為月營收是台股最即時的領先訊號（每月 10 日前須在 MOPS 公告上月營收）：</p>
+
+<table>
+<thead>
+<tr><th>月份（示意）</th><th>1月</th><th>2月</th><th>3月</th><th>4月</th><th>5月</th><th>6月</th></tr>
+</thead>
+<tbody>
+<tr><td>月營收 YoY</td><td>+18%</td><td>+9%</td><td>+22%</td><td>+25%</td><td>+24%</td><td>+27%</td></tr>
+</tbody>
+</table>
+
+<details><summary>想深入：為什麼先花時間把表做出來？</summary><p>把數字「抄成自己的一張表」這個動作本身就有價值。一來你會被迫對齊年度、確認單位（很多人栽在億／千元混用）；二來下面六步要反覆引用同一份數字，有一張乾淨的底稿，你才不會每算一個比率就回去翻一次原始報表、然後抄錯。這張表就是你這次研究的「單一事實來源」。</p></details>
+
+<h2>第 1 步：營收趨勢——成長還在不在？</h2>
+
+<p><strong>算：</strong>年營收 YoY＝<code>(今年營收 − 去年營收) ÷ 去年營收</code>。</p>
+<ul>
+<li>2024 營收 YoY＝<code>(210 − 180) ÷ 180 ≈ +16.7%</code></li>
+<li>2025 營收 YoY＝<code>(252 − 210) ÷ 210 = +20.0%</code></li>
+<li>月營收近 6 個月平均約 <code>+20%</code>，且 3～6 月明顯加速（+22%→+27%）。</li>
+</ul>
+<p><strong>判讀：</strong>年成長從 +16.7% 走到 +20%，<strong>沒有失速、反而加速</strong>；月營收同步往上墊，代表這個成長到「最近」都還在延續，不是去年的舊故事。月營收 2 月掉到 +9% 屬於台股農曆年工作天數變少的常見現象，3 月就補回來，不算警訊。</p>
+<div class="callout success"><div class="callout-title">第 1 步：過關 ✅</div><p>營收連兩年雙位數成長且加速，月營收佐證成長延續到當下。</p></div>
+
+<h2>第 2 步：獲利結構——三率有沒有同向？</h2>
+
+<p><strong>算三率：</strong>毛利率＝<code>毛利 ÷ 營收</code>、營業利益率＝<code>營業利益 ÷ 營收</code>、淨利率＝<code>稅後淨利 ÷ 營收</code>。</p>
+
+<table>
+<thead>
+<tr><th>比率（示意）</th><th>2023</th><th>2024</th><th>2025</th></tr>
+</thead>
+<tbody>
+<tr><td>毛利率</td><td>30.0%</td><td>31.0%</td><td>32.0%</td></tr>
+<tr><td>營業利益率</td><td>12.0%</td><td>13.0%</td><td>14.0%</td></tr>
+<tr><td>淨利率</td><td>9.4%</td><td>10.3%</td><td>11.1%</td></tr>
+</tbody>
+</table>
+
+<p><strong>判讀：</strong>三率<strong>同向往上</strong>（毛利率、營業利益率、淨利率三條線一起爬），這是最健康的型態——代表不只「賣得多」，而且「賣得越來越賺」，且費用控制沒有把毛利的進步吃光。最怕的反例是「營收衝、毛利率掉」（殺價搶單）或「毛利率升、營業利益率反而掉」（費用失控），這裡都沒發生。</p>
+<div class="callout success"><div class="callout-title">第 2 步：過關 ✅</div><p>三率連兩年同向上升，獲利結構紮實，營收成長是「有品質的成長」。</p></div>
+
+<h2>第 3 步：現金流品質——賺到的是真錢嗎？</h2>
+
+<p><strong>算兩個比：</strong>CFO ÷ 淨利（盈餘含金量）、以及 FCF 趨勢。提醒一下定義：<code>FCF ＝ CFO − 資本支出（capex）</code>，本表 FCF 已替你算好。</p>
+<ul>
+<li>2023：<code>CFO ÷ 淨利 = 20.0 ÷ 17.0 ≈ 1.18</code></li>
+<li>2024：<code>23.5 ÷ 21.6 ≈ 1.09</code></li>
+<li>2025：<code>33.5 ÷ 28.0 ≈ 1.20</code></li>
+<li>FCF：9 → 11 → 18 億，<strong>三年都是正的且擴大</strong>（反推 capex 約 11 → 12.5 → 15.5 億，隨擴張而增，合理）。</li>
+</ul>
+<p><strong>判讀：</strong>CFO/淨利連續三年大於 1，代表帳上的「稅後淨利」確實有對應的現金流進來，不是靠應收帳款或存貨膨脹堆出來的紙上獲利。再對照第 2 步：營收成長 20%、但應收（30→40）與存貨（28→36）增幅低於營收增幅，<strong>沒有「貨越賣越多、錢越收越慢」</strong>的惡化。FCF 為正且擴大，代表它賺的錢扣掉維持與擴張的資本支出後還有餘裕——這也是後面能配得出現金股利的底氣。</p>
+<div class="callout success"><div class="callout-title">第 3 步：過關 ✅</div><p>盈餘含金量高（CFO/淨利＞1）、FCF 正且擴大，獲利是「真錢」。</p></div>
+
+<h2>第 4 步：資產負債安全——撐得住嗎？</h2>
+
+<p><strong>算：</strong>負債比＝<code>總負債 ÷ 總資產</code>；同時用「概念」檢查流動性與利息保障。</p>
+<ul>
+<li>負債比：2023 <code>90 ÷ 200 = 45%</code>、2024 <code>100 ÷ 230 ≈ 43.5%</code>、2025 <code>110 ÷ 265 ≈ 41.5%</code>——<strong>逐年下降</strong>。</li>
+<li>利息保障倍數（示意，假設 2025 利息費用約 1.5 億）＝<code>營業利益 ÷ 利息費用 = 35.3 ÷ 1.5 ≈ 23 倍</code>，遠大於常用的安全門檻（一般看至少 3～5 倍以上較安心）。</li>
+</ul>
+<p><strong>判讀：</strong>負債比 41.5% 屬於穩健區間（製造業常見約 40～60%，越低越保守），而且<strong>在快速成長的同時負債比還往下走</strong>，代表成長主要靠自己賺的錢支撐，不是靠借錢硬撐。利息保障 23 倍，付利息對它根本不痛。</p>
+<div class="callout warn"><div class="callout-title">提醒：流動比要看細項，這裡只給概念</div><p>本章摘要沒拆「流動資產／流動負債」，所以流動比只能定性判斷：存貨與應收都沒異常膨脹、又有正 FCF，短期周轉壓力低。實戰中你應該到資產負債表把流動資產、流動負債抓出來算 <code>流動資產 ÷ 流動負債</code>（概念上＞1 較安全），這一步別只看負債比就放心。</p></div>
+<div class="callout success"><div class="callout-title">第 4 步：過關 ✅</div><p>負債比逐年下降至 41.5%、利息保障約 23 倍，財務結構安全。</p></div>
+
+<h2>第 5 步：比率與同業比——它到底好不好？（ROE 杜邦拆解）</h2>
+
+<p>單看一家公司的數字，你只知道「它在進步」，不知道「它在同業裡算強還是弱」。所以這一步做兩件事：先用<strong>杜邦拆解</strong>看 ROE 的來源，再跟<strong>兩家示意同業並排比</strong>。</p>
+
+<p><strong>杜邦三因子：</strong><code>ROE ＝ 淨利率 × 總資產周轉率 × 權益乘數</code>。<br>
+以宏曜 2025 為例：</p>
+<ul>
+<li>淨利率＝<code>28.0 ÷ 252 ≈ 11.1%</code></li>
+<li>總資產周轉率＝<code>252 ÷ 265 ≈ 0.95 次</code></li>
+<li>權益乘數＝<code>265 ÷ 155 ≈ 1.71 倍</code></li>
+<li>ROE ≈ <code>11.1% × 0.95 × 1.71 ≈ 18.0%</code>（也可直接 <code>28.0 ÷ 155 ≈ 18.1%</code> 驗算，吻合）</li>
+</ul>
+
+<p>並排比較（同業數字皆為示意）：</p>
+<table>
+<thead>
+<tr><th>2025 指標（示意）</th><th>宏曜電子</th><th>同業 A（穩健龍頭）</th><th>同業 B（高槓桿衝刺）</th></tr>
+</thead>
+<tbody>
+<tr><td>ROE</td><td>18.0%</td><td>16.0%</td><td>19.0%</td></tr>
+<tr><td>淨利率</td><td>11.1%</td><td>12.5%</td><td>7.0%</td></tr>
+<tr><td>總資產周轉率</td><td>0.95</td><td>0.80</td><td>1.10</td></tr>
+<tr><td>權益乘數</td><td>1.71</td><td>1.45</td><td>2.50</td></tr>
+<tr><td>負債比</td><td>41.5%</td><td>31%</td><td>60%</td></tr>
+</tbody>
+</table>
+
+<p><strong>判讀：</strong>三家 ROE 看起來差不多（16～19%），但<strong>來源完全不同</strong>，這正是杜邦的價值：</p>
+<ul>
+<li><strong>宏曜</strong>的 18% ROE 來自「不錯的淨利率 × 不錯的周轉 × 溫和的槓桿」，三項都健康，<strong>品質最均衡</strong>。</li>
+<li><strong>同業 B</strong> 的 19% ROE 看似最高，但拆開來幾乎是<strong>靠權益乘數 2.5 倍（負債比 60%）撐出來</strong>的，淨利率只有 7%——這種 ROE 是「借錢借出來的」，景氣或利率一翻臉就脆。</li>
+<li><strong>同業 A</strong> 淨利率最高、最保守，但周轉率偏低，整體 ROE 略輸宏曜。</li>
+</ul>
+<div class="case">
+<div class="case-header"><span class="case-tag">同樣的 ROE，不一樣的命</span><span class="case-title">用杜邦戳破「高 ROE 假象」</span></div>
+<div class="scenarios">
+<div class="scenario"><span class="when">景氣好、利率低</span><span>三家都賺，B 因高槓桿賺最兇</span><span class="pnl pos">皆受惠</span></div>
+<div class="scenario"><span class="when">需求轉弱、降價</span><span>B 淨利率本就薄，被利息吃掉先見骨</span><span class="pnl neg">B 最先受傷</span></div>
+<div class="scenario"><span class="when">看「品質」選股</span><span>宏曜三因子均衡、槓桿溫和</span><span class="pnl pos">宏曜勝出</span></div>
+</div>
+</div>
+<div class="callout success"><div class="callout-title">第 5 步：過關 ✅（且相對同業有品質優勢）</div><p>ROE 18% 在同業前段，且是「靠本業賺、不是靠槓桿」，品質優於高槓桿的 B。</p></div>
+
+<h2>第 6 步：估值——好公司，但這個價貴不貴？</h2>
+
+<p>前五步告訴你「這是好公司」，但<strong>好公司不等於好股票，價格才是最後一道關</strong>。用 2025 年底股價 112 元、EPS 5.60、每股淨值與每股股利來算。</p>
+<ul>
+<li><strong>本益比（PE）</strong>＝<code>股價 ÷ EPS = 112 ÷ 5.60 = 20 倍</code></li>
+<li><strong>股價淨值比（PB）</strong>：每股淨值＝<code>股東權益 ÷ 股數</code>。EPS 5.60、淨利 28 億，反推股數約 5 億股；每股淨值＝<code>155 ÷ 5 = 31 元</code>，PB＝<code>112 ÷ 31 ≈ 3.6 倍</code></li>
+<li><strong>現金殖利率</strong>＝<code>每股股利 ÷ 股價 = 2.80 ÷ 112 = 2.5%</code></li>
+<li><strong>PEG</strong>＝<code>PE ÷ 盈餘成長率（取百分比的數字）</code>。EPS 成長率 2024→2025＝<code>(5.60 − 4.32) ÷ 4.32 ≈ 29.6%</code>，取近年成長約 30，PEG＝<code>20 ÷ 30 ≈ 0.67</code></li>
+</ul>
+<p><strong>判讀：</strong>PE 20 倍對一家連續雙位數成長、三率向上、ROE 18% 的公司，<strong>不算便宜但也不離譜</strong>。關鍵在 PEG＝0.67：<strong>成長速度比本益比還快</strong>（PEG 小於 1 常被視為「成長還沒被股價完全反映」；注意分母是用百分比的數字 30，不是小數 0.30）。殖利率只有 2.5% 偏低，但這是成長股的常態——它把賺到的錢更多拿去再投資而不是全配出來（配息率＝<code>2.80 ÷ 5.60 = 50%</code>，留一半擴張，合理）。PB 3.6 倍偏高，要靠它持續維持高 ROE 才撐得住，這是<strong>主要的價格風險點</strong>。</p>
+<div class="callout warn"><div class="callout-title">第 6 步：過關但有條件 ⚠️</div><p>以成長性看 PEG 0.67 估值合理；但 PB 3.6、殖利率 2.5% 偏向「成長股定價」，一旦成長放緩，回檔空間會比想像大。</p></div>
+
+<h2>把零件組成機器：一句結論</h2>
+
+<p>六步跑完，把每步的結論串起來：</p>
+<table>
+<thead><tr><th>步驟</th><th>結果</th><th>一句話</th></tr></thead>
+<tbody>
+<tr><td>1 營收趨勢</td><td>✅ 過關</td><td>連兩年雙位數成長且加速，月營收佐證</td></tr>
+<tr><td>2 獲利結構</td><td>✅ 過關</td><td>三率同向上升，有品質的成長</td></tr>
+<tr><td>3 現金流品質</td><td>✅ 過關</td><td>CFO/淨利＞1、FCF 正且擴大，賺真錢</td></tr>
+<tr><td>4 資產負債安全</td><td>✅ 過關</td><td>負債比降到 41.5%、利息保障 23 倍</td></tr>
+<tr><td>5 同業比（杜邦）</td><td>✅ 過關</td><td>ROE 18% 靠本業不靠槓桿，品質優於同業 B</td></tr>
+<tr><td>6 估值</td><td>⚠️ 過關但有條件</td><td>PEG 0.67 合理，但 PB 3.6 偏貴、殖利率低</td></tr>
+</tbody>
+</table>
+
+<div class="callout success">
+<div class="callout-title">結論：值得「觀察並分批佈局」——好公司、價格不便宜但成長還沒被吃滿</div>
+<p>宏曜電子是一家<strong>基本面五步全過、估值唯一有條件</strong>的成長型公司：成長真實、獲利有現金、財務安全、ROE 品質贏過高槓桿同業。唯一的風險集中在<strong>「估值靠成長撐」</strong>——PB 3.6 倍、殖利率僅 2.5%，意味著一旦未來月營收 YoY 由 +20% 級距明顯滑落，市場會同時下修 EPS 與本益比，股價回檔會被放大。<br><strong>一句話：基本面屬於值得進一步研究的等級，但因價格不便宜，學理上會採「觀察＋分批」的紀律而非一次重押，並把『月營收 YoY 是否守住雙位數』設為持有的關鍵追蹤訊號。</strong>（示意教學，非投資建議。）</p>
+</div>
+
+<div class="callout danger">
+<div class="callout-title">如果有任何一步亮紅燈，結論會怎麼變？</div>
+<p>這套 SOP 的價值在於「一票否決」的紀律。同一家公司，若第 3 步變成 CFO 遠小於淨利（紙上獲利）、或第 4 步負債比飆到 70% 又利息保障跌破 3 倍，就算前面成長再漂亮，結論也應該直接降到<strong>「觀察→淘汰」</strong>。好公司的條件要<strong>同時</strong>成立；任何一根支柱抽掉，整台機器就不該繼續跑下去。</p>
+</div>
+
+<div class="widget" data-component="worksheet"><div class="widget-header"><div class="widget-title"><span class="icon">📋</span>我的看財報工作底稿 · 六步體檢可填可存</div><div class="widget-meta">填完可匯出</div></div><div class="widget-body"></div></div>
+
+<p>輪到你了：挑一家你正在研究的公司，把它的數字填進上面的工作底稿，照宏曜的流程<strong>一步一步算、一步一步判、最後逼自己寫下一句結論</strong>。你會發現，當六步被攤開來，「為什麼買、什麼情況要賣」自然就有了答案——這就是從「看得懂財報」跨到「能獨立做決定」的那一步。</p>
+
+<div class="widget" data-component="quiz" data-questions='[{"q":"宏曜 2025 年 CFO÷淨利 ≈ 1.20，這代表什麼？","opts":["公司現金不足、快周轉不靈","稅後淨利大致有對應現金進帳，盈餘含金量高","公司在虛增營收","負債比過高"],"correct":1,"explain":"CFO÷淨利大於 1，代表帳上獲利確實收到了現金，不是靠應收或存貨膨脹堆出來的紙上獲利，屬於高品質獲利。"},{"q":"宏曜、同業 A、同業 B 的 ROE 都在 16～19%，杜邦拆解最主要想告訴你什麼？","opts":["ROE 越高的公司一定越好","同樣的 ROE 來源可能完全不同，B 是靠高槓桿撐出來的","三家公司可以視為完全一樣","ROE 跟負債無關"],"correct":1,"explain":"杜邦把 ROE 拆成淨利率×周轉率×權益乘數。B 的高 ROE 主要來自權益乘數 2.5（負債比 60%）而非本業，品質明顯較脆弱。"},{"q":"宏曜 PE 20 倍、近年 EPS 成長約 30%，PEG ≈ 0.67，較合理的解讀是？","opts":["PEG 小於 1，成長速度比本益比快，估值相對合理","PEG 0.67 代表公司虧損","PEG 越小代表越貴","PEG 不能跟成長一起看"],"correct":0,"explain":"PEG＝PE÷盈餘成長率（取百分比數字 30）。0.67 表示成長性還沒被本益比完全反映，相對而言估值不算過貴，但仍要留意 PB 偏高的價格風險。"},{"q":"六步體檢中，宏曜唯一「有條件」的是第 6 步估值。這對最終結論的正確影響是？","opts":["只要有一步不完美就該直接淘汰","因價格不便宜，從『一次重押』降為『觀察＋分批』，並追蹤月營收","估值不重要，基本面好就全押","應該忽略估值風險"],"correct":1,"explain":"基本面五步全過支持較高的研究等級，但估值靠成長撐（PB 3.6、殖利率 2.5%），故採分批佈局並把月營收 YoY 是否守住雙位數設為關鍵追蹤訊號，而非無腦重押。"}]'><div class="widget-header"><div class="widget-title"><span class="icon">📝</span>本章測驗</div></div><div class="widget-body"></div></div>
+
+</section>
+
+<section data-chapter="ch30">
+<h1>估值落地：算出一個數字</h1>
+
+<p>前面我們學會看一檔股票「相對貴或便宜」，但相對貴賤永遠少了一塊：到底多少錢叫便宜？沒有一個具體數字，你就無從談「打折」「安全邊際」，只能憑感覺追高殺低。這一章把「相對」變成「絕對」——學會自己動手算出<strong>一個合理價數字</strong>，當成往後決策的錨點。</p>
+
+<div class="callout">
+<div class="callout-title">先講清楚：估值不是算命</div>
+<p>沒有任何方法能算出「正確股價」。估值的真正用途，是逼你把對一家公司的假設（成長多快、賺多少、值多少倍）攤開、寫成數字，這樣才知道<strong>現在的市價隱含了什麼期待</strong>，以及你願不願意接受那個期待。算出來的數字是「我的看法」，不是「市場該有的價格」。</p>
+</div>
+
+<h2>為什麼一定要算出一個數字 <span class="badge core">核心</span></h2>
+<p>投資的核心紀律是「安全邊際（margin of safety）」——只在價格明顯低於價值時買進，留一段緩衝吸收看錯的風險。但「明顯低於」要有比較基準：低於什麼？低於你估出的<strong>合理價（fair value）</strong>。沒有合理價，安全邊際就是空話。</p>
+<p>所以流程永遠是兩步：<strong>先估出一個合理價當錨點，再決定打幾折才出手</strong>。下面介紹四種散戶真的算得出來的方法，由易到難。建議至少學會方法一，行有餘力再碰方法三。</p>
+
+<div class="callout warn">
+<div class="callout-title">全章數字皆為示意</div>
+<p>以下所有公司名稱、EPS、現金流、倍數都是教學示意，不是真實財測，也不構成投資建議。重點在「怎麼算」與「假設怎麼影響結果」，不是背數字。</p>
+</div>
+
+<h2>方法一　歷史本益比區間法（最實用） <span class="badge core">核心</span></h2>
+<p>這是散戶 CP 值最高的方法：邏輯簡單、資料好找、對成熟穩定的公司特別準。核心算式只有一條：</p>
+<p><code>合理價 = 本益比（PE）× 每股盈餘（EPS）</code></p>
+<p>差別在於，我們不用「一個 PE」，而是用這檔股票<strong>自己過去的 PE 區間</strong>，搭配<strong>明年的預估 EPS</strong>，抓出一條合理價帶。步驟如下：</p>
+<ol>
+<li><strong>取得近 5 年 PE 區間。</strong>多數看盤網站、券商 App 都有「本益比河流圖」或歷年 PE 高低；或自己用「當年股價 ÷ 當年 EPS」逐年算。從中抓出<strong>低標、中位、高標</strong>三個 PE。</li>
+<li><strong>抓明年預估 EPS。</strong>可參考分析師共識，或自己用近幾年成長率往前推一年（保守一點）。</li>
+<li><strong>三個 PE 各乘一次明年 EPS</strong>，得到「便宜價／合理價／昂貴價」三個錨點。</li>
+</ol>
+
+<table>
+<thead><tr><th>近 5 年 PE</th><th>取值（示意）</th><th>× 明年預估 EPS 10 元</th><th>意義</th></tr></thead>
+<tbody>
+<tr><td>低標 PE</td><td>12 倍</td><td>120 元</td><td>偏便宜，市場悲觀時的下緣</td></tr>
+<tr><td>中位 PE</td><td>16 倍</td><td>160 元</td><td>合理價中樞</td></tr>
+<tr><td>高標 PE</td><td>20 倍</td><td>200 元</td><td>偏貴，市場樂觀時的上緣</td></tr>
+</tbody>
+</table>
+
+<p>結論：這檔的合理價帶約落在 <strong>120～200 元，中樞 160 元</strong>。若現價 130 元，靠近區間下緣，相對划算；若現價 195 元，已逼近昂貴端，往上空間有限。</p>
+
+<div class="callout danger">
+<div class="callout-title">這方法的死穴：成長性與賠錢公司</div>
+<p>歷史 PE 法假設「未來的市場評價會和過去差不多」。對景氣大轉折、商業模式劇變、或高速成長／剛轉虧為盈的公司，過去的 PE 完全不能代表未來，硬套會大錯。另外，<strong>賠錢（EPS 為負）的公司算不出 PE</strong>，這方法直接失效，要改用方法三或營收／現金流類指標。</p>
+</div>
+
+<details><summary>想深入：為什麼要用「明年」EPS 而不是去年？</summary><p>股價反映的是未來，買股票買的是公司之後的賺錢能力。用已經發生的去年 EPS（落後值）會慢半拍；用明年預估 EPS（前瞻值），算出來的合理價才對得上市場真正在定價的東西。代價是「預估」本身可能錯，所以才要搭配區間、不押單一數字。</p></details>
+
+<details><summary>想深入：去哪裡找官方財報數字來自己算 PE？</summary><p>台股可到公開資訊觀測站（MOPS，mops.twse.com.tw）查個別公司的財務報表與每股盈餘：用上方關鍵字查股號、進入公司後從「財務報表」相關項目找損益表抓 EPS。美股則用 SEC 的 EDGAR（sec.gov/edgar）以公司名或 ticker 查詢，從 10-K（年報）／10-Q（季報）的損益表（Statement of Operations）讀 Diluted EPS。實務上用看盤軟體現成的本益比河流圖最快，自己拉原始數字只是為了核對來源、避免被加工過的數字誤導。</p></details>
+
+<h2>方法二　PEG 法（替成長股的 PE 加上成長校正） <span class="badge op">實務</span></h2>
+<p>同樣 PE 20 倍，一家每年成長 5%、一家成長 25%，後者顯然更值得這個倍數。PEG（Price/Earnings to Growth）就是用成長率去除 PE，讓不同成長速度的公司可以比：</p>
+<p><code>PEG = PE ÷ 盈餘成長率（用百分比的數字）</code></p>
+
+<div class="callout warn">
+<div class="callout-title">最常見的踩雷：成長率要用 20，不是 0.2</div>
+<p>分母是「百分比的數字本身」。成長 20% 就代入 <strong>20</strong>，不是 0.2。PE 20 倍 ÷ 成長 20 = PEG 1.0。若誤用 0.2，會算出 PEG 100，整個結論翻車。</p>
+</div>
+
+<p><strong>成長率怎麼取？</strong>兩個來源，建議都偏保守：</p>
+<ul>
+<li><strong>自己推：</strong>用近 3～5 年 EPS 的年複合成長率（CAGR）。算式 <code>CAGR = (期末 EPS ÷ 期初 EPS) 開 n 次方 − 1</code>。例如 EPS 從 5 元成長到 10 元、歷時 4 年：<code>(10 ÷ 5) 開 4 次方 − 1 ≈ 18.9%</code>。</li>
+<li><strong>參考共識：</strong>看分析師對未來幾年的盈餘成長共識，但記得他們常偏樂觀，自己手動往下打個折再用。</li>
+</ul>
+
+<p><strong>PEG 的用法（業界經驗法則）：</strong></p>
+<ul>
+<li>PEG ≈ 1：成長與評價大致相稱，算合理。</li>
+<li>PEG &lt; 1（如 0.7）：成長被低估，相對便宜。</li>
+<li>PEG &gt; 1（如 1.5 以上）：為成長付的價偏高。</li>
+</ul>
+<p>示意：某成長股 PE 30 倍、你保守估未來成長 25%，<code>PEG = 30 ÷ 25 = 1.2</code>，略貴但不離譜。若成長只剩 15%，<code>PEG = 30 ÷ 15 = 2.0</code>，就明顯太貴了。</p>
+
+<div class="callout">
+<div class="callout-title">PEG 的侷限</div>
+<p>PEG 對成長率極度敏感，而成長率正是最難估的東西——成長一旦從 25% 掉到 12%，PEG 會瞬間翻倍。它也只適合「有穩定正成長」的公司；對成長很慢、零成長、忽高忽低或景氣循環股，PEG 會給出誤導性的數字，不要硬用。</p>
+</div>
+
+<h2>方法三　DCF 入門：把未來現金流折回今天 <span class="badge adv">進階</span></h2>
+<p>現金流折現（Discounted Cash Flow, DCF）是最「正統」的內在價值算法：一家公司的價值 = 它未來能產生的所有自由現金流（Free Cash Flow, FCF），用一個折現率折回今天的總和。FCF 的概念是「公司營運收進來的現金，扣掉維持與擴張要花的資本支出後，真正能自由運用的錢」，亦即 <code>FCF = 營業現金流（CFO）− 資本支出（capex）</code>。觀念是「未來的 1 元，因為有時間與風險成本，不值今天的 1 元」。</p>
+<p>我們用最小可算的<strong>兩段式簡化模型</strong>走一次：先估未來 5 年 FCF，再估第 5 年之後的「永續價值（terminal value）」，全部折現加總，最後除以股數。</p>
+
+<p><strong>三個必填假設（示意）：</strong></p>
+<ul>
+<li><strong>折現率（WACC 概念）：</strong>反映風險與資金成本，這裡用示意值 <strong>10%</strong>。</li>
+<li><strong>未來 5 年 FCF：</strong>假設明年 FCF 為 100（單位：億元），每年成長 8%。</li>
+<li><strong>永續成長率（terminal growth）：</strong>第 5 年之後永遠以 <strong>3%</strong> 緩慢成長（不能超過長期經濟成長率，否則等於假設這家公司有天會大過整個經濟）。</li>
+</ul>
+
+<p><strong>第一段：折現未來 5 年 FCF。</strong>折現算式 <code>現值 = 當年 FCF ÷ (1 + 折現率) ^ 年數</code>。</p>
+<table>
+<thead><tr><th>年</th><th>FCF（成長 8%）</th><th>折現因子（10%）</th><th>現值</th></tr></thead>
+<tbody>
+<tr><td>第 1 年</td><td>100</td><td>0.909</td><td>90.9</td></tr>
+<tr><td>第 2 年</td><td>108</td><td>0.826</td><td>89.2</td></tr>
+<tr><td>第 3 年</td><td>116.6</td><td>0.751</td><td>87.6</td></tr>
+<tr><td>第 4 年</td><td>126.0</td><td>0.683</td><td>86.1</td></tr>
+<tr><td>第 5 年</td><td>136.0</td><td>0.621</td><td>84.5</td></tr>
+<tr><td colspan="3">前 5 年現值合計</td><td><strong>438.3</strong></td></tr>
+</tbody>
+</table>
+
+<p><strong>第二段：永續價值（terminal value, TV）。</strong>用第 6 年的 FCF 除以「折現率減永續成長率」，再把這筆「第 5 年底的未來總值」折回今天：</p>
+<ul>
+<li>第 6 年 FCF ≈ <code>136 × (1 + 3%) = 140.1</code></li>
+<li><code>TV = 140.1 ÷ (10% − 3%) = 140.1 ÷ 0.07 ≈ 2,001</code>（這是站在第 5 年底的值）</li>
+<li>折回今天：<code>2,001 × 0.621 ≈ 1,243</code></li>
+</ul>
+
+<p><strong>加總並換算每股：</strong></p>
+<ul>
+<li>企業內在價值 ≈ <code>438.3 + 1,243 = 1,681</code>（億元）</li>
+<li>假設在外流通 10 億股：<code>1,681 億 ÷ 10 億股 ≈ 168 元／股</code></li>
+</ul>
+<p>於是 DCF 給出的內在價值約 <strong>168 元</strong>，和方法一的中樞 160 元互相印證，可信度提高。</p>
+
+<div class="callout danger">
+<div class="callout-title">垃圾進，垃圾出（Garbage In, Garbage Out）</div>
+<p>注意上面 1,681 億裡，有 1,243 億（約 74%）來自「永續價值」這個最遠、最不確定的部分。DCF 看似精密，其實對假設極度敏感：</p>
+<ul>
+<li>折現率從 10% 改成 9%，永續價值的分母從 0.07 變 0.06，TV 暴增約 17%。</li>
+<li>永續成長率從 3% 改成 4%，分母同樣從 0.07 變 0.06，TV 一樣大漲約 17%。</li>
+</ul>
+<p>所以 DCF 的正確用法不是「算出一個神準的數字」，而是<strong>跑幾組假設、看出一個合理價區間</strong>，並理解你的價值大多押在「很久以後」這件事上。對假設稍動就大變的標的，更要留厚一點的安全邊際。</p>
+</div>
+
+<details><summary>想深入：什麼公司不適合用 DCF？</summary><p>自由現金流忽正忽負、難以預測的公司（早期成長股、重資本投入期的企業、景氣循環股）用 DCF 會很不穩。FCF 連方向都抓不準時，再精密的折現也只是放大誤差。這類標的反而更依賴方法一的市場評價區間，或乾脆承認「估不準、要求更大折扣」。</p></details>
+
+<h2>方法四　殖利率河流／合理價（存股角度） <span class="badge op">實務</span></h2>
+<p>如果你買的是穩定配息的成熟公司、看重的是現金流而非成長，最直覺的估值是反推：<strong>我要求多少殖利率，就回推該用多少價格買</strong>。算式：</p>
+<p><code>合理價 = 預估每股股利 ÷ 目標殖利率</code></p>
+<p>示意：某公司預估明年配 5 元股利，你設定目標殖利率：</p>
+<table>
+<thead><tr><th>目標殖利率</th><th>合理價 = 5 ÷ 殖利率</th><th>解讀</th></tr></thead>
+<tbody>
+<tr><td>5%</td><td>100 元</td><td>願意接受較低報酬，買進門檻較高</td></tr>
+<tr><td>6%</td><td>83 元</td><td>要求更高報酬，要更便宜才買</td></tr>
+<tr><td>7%</td><td>71 元</td><td>更嚴格，更深的折扣</td></tr>
+</tbody>
+</table>
+<p>市面上的「殖利率河流圖」就是把這條線畫成帶狀：股價碰到高殖利率區（便宜）或低殖利率區（昂貴）一目了然。要注意：股利會變動，配息能否持續、配息率（payout ratio）會不會太高吃掉成長，都要一併看，別只盯殖利率追高股利陷阱。</p>
+
+<h2>最後一步：安全邊際——估完要打折買 <span class="badge core">核心</span></h2>
+<p>四種方法都給了你「合理價」。但合理價是建立在一堆會出錯的假設上，所以買進價不該等於合理價，要再往下打折，留出緩衝。這段折扣就是<strong>安全邊際</strong>。</p>
+<p><code>目標買進價 = 合理價 × (1 − 安全邊際)</code></p>
+<ul>
+<li>業務穩定、看得很清楚的公司：打 8 折左右（安全邊際 20%）。</li>
+<li>假設較不確定、產業變動快的公司：打 7 折甚至 6 折（安全邊際 30～40%）。</li>
+</ul>
+<p>示意：合理價估 160 元，要求 25% 安全邊際 → 目標買進價 <code>160 × 0.75 = 120 元</code>。沒到價就等，到價才出手。安全邊際的意義有二：一是<strong>你一定會看錯一些</strong>，折扣吸收誤差；二是同樣一檔，買得越便宜，未來報酬率越高、下檔越有限。</p>
+
+<h3>動手做：把這一章套到你自己的標的</h3>
+<p>觀念看懂不等於會用。挑一檔你正在看的公司，照下面的工作表把四種方法各跑一次、交叉出合理價帶，再依把握度打折成目標買進價。</p>
+
+<p style="font-size:13.5px;color:var(--fg-muted);">👉 想動手算，用 <a href="#ch29">Ch29 的「我的看財報工作底稿」</a>（第 6 步就是估值），把這幾種方法的合理價結果填進去交叉看。</p>
+
+<div class="callout success">
+<div class="callout-title">本章一句話帶走</div>
+<p>用 2～3 種方法交叉估出一個合理價帶（彼此印證最安心），再依把握度打折成「目標買進價」。估值給你錨點，安全邊際保護你看錯——兩者缺一不可。</p>
+</div>
+
+<div class="widget" data-component="quiz" data-questions='[{"q":"用歷史本益比區間法估合理價，最該搭配哪一種 EPS？","opts":["去年已公布的 EPS","明年的預估 EPS","近五年 EPS 平均","上市第一年的 EPS"],"correct":1,"explain":"股價反映未來，買的是公司之後的賺錢能力，所以要用前瞻的明年預估 EPS；用落後的去年 EPS 會慢半拍。"},{"q":"某股 PE 30 倍，你保守估未來盈餘成長 25%，PEG 約為多少？","opts":["0.83","1.2","7.5","120"],"correct":1,"explain":"PEG = PE ÷ 成長率的數字 = 30 ÷ 25 = 1.2。成長率要代入 25（百分比的數字），不是 0.25，否則會算成 120。"},{"q":"關於 DCF 兩段式模型，下列何者正確？","opts":["算出來的數字最精準，可直接當買進價","結果對折現率與永續成長率極度敏感，假設稍動價差很大","永續成長率可以設得比折現率高","只要公式對，垃圾假設也能得出好答案"],"correct":1,"explain":"DCF 是「垃圾進垃圾出」：價值大多押在最不確定的永續價值上，折現率或永續成長率變一點，結果就大幅波動，所以要跑多組假設看區間、並留厚安全邊際。"},{"q":"以存股角度，預估股利 5 元、目標殖利率 6%，合理價約為？","opts":["30 元","83 元","120 元","300 元"],"correct":1,"explain":"合理價 = 預估股利 ÷ 目標殖利率 = 5 ÷ 0.06 ≈ 83 元。要求的殖利率越高，回推的合理買進價就越低（要更便宜才買）。"}]'><div class="widget-header"><div class="widget-title"><span class="icon">📝</span>本章測驗</div></div><div class="widget-body"></div></div>
+</section>
+
+<section data-chapter="ch31">
+<h1>實戰導覽：去哪抓、怎麼讀真實財報</h1>
+
+<p>前面幾章你已經學會「會怎麼判讀」：六步體檢、估值的邏輯、地雷的氣味。但很多人卡在最後一哩——<strong>根本拿不到、或打開後讀不懂真實文件</strong>。本章就是把你帶到第一手資料的門口，手把手告訴你：台股去哪抓、美股去哪抓、英文行項對照本書的中文科目、以及怎麼有效率地湊出多期與同業資料。讀完這章，你就能把教材合上，自己去面對一份真的財報。</p>
+
+<div class="callout">
+<div class="callout-title">本章心法</div>
+<p>二手整理站很方便，但它們是「別人嚼過的」。新手可以用來起步，可是任何要下決策的數字，<strong>一定回到原始檔（MOPS／EDGAR）對一次</strong>。原始檔不會騙你，整理站偶爾會抓錯欄位或延遲更新。</p>
+</div>
+
+<h2>一、台股實戰：公開資訊觀測站（MOPS）</h2>
+<p>台股所有上市櫃公司的法定揭露，集中在<strong>公開資訊觀測站（mops.twse.com.tw）</strong>。介面老派但資料最權威、免費、無須登入。<span class="badge core">核心</span></p>
+
+<h3>抓季報／年報（財務三表）</h3>
+<ol>
+<li>進入公開資訊觀測站首頁，找到「財務報表」分類。</li>
+<li>選擇「採IFRSs後」的財務報表（台股自2013年起採用 IFRS，舊資料才在「採IFRSs前」）。</li>
+<li>選「合併報表」（看整個集團；「個別／個體報表」只看母公司本身，散戶通常看合併）。</li>
+<li>輸入<strong>公司代號</strong>（例：台積電 2330）、選擇<strong>年度</strong>與<strong>季別</strong>（Q1／Q2／Q3／Q4 或全年）。</li>
+<li>查詢後可線上瀏覽或下載；完整版會附「會計師查核／核閱報告」與「財報附註」，附註才是魔鬼藏身處，別只看四張表的數字。</li>
+</ol>
+<div class="callout">
+<div class="callout-title">台股申報期限速記</div>
+<p>一般產業：Q1 約5月中前、Q2（半年報）約8月中前、Q3 約11月中前、<strong>年報（含Q4）約隔年3月底前</strong>申報。金融業期限略有不同。也就是說「最新一季」常常要等一兩個月才到齊，急著看就先用月營收頂著。</p>
+</div>
+
+<h3>看月營收（最即時的營運訊號）</h3>
+<ol>
+<li>台股每家公司須在<strong>次月10日前</strong>公告上月營收（例：6月營收，7月10日前出）。</li>
+<li>在觀測站的「營運概況／月營收」相關專區，輸入代號與年月即可查到單月與累計營收、年增率（YoY）。</li>
+<li>月營收是「未經會計師簽證」的快訊，只有營收沒有獲利，但勝在<strong>快</strong>，常是法人最先反應的數字。</li>
+</ol>
+
+<h3>法說會、重大訊息、年報股東會資料</h3>
+<ul>
+<li><strong>法說會（投資人說明會）簡報</strong>：觀測站有「投資人關係／法人說明會」專區，可下載公司自製的簡報 PDF——這是公司主動講「故事與展望（guidance）」的地方，但記得它是公司觀點，要對照財報。</li>
+<li><strong>重大訊息</strong>：每日重訊公告（接單、減資、董事會決議、訴訟等），突發事件第一手都在這。</li>
+<li><strong>年報與股東會資料</strong>：「股東會及股利」「年報」專區可下載年報 PDF，裡面有營運報告、產業地位、風險、董監持股，比財報多了很多文字脈絡。</li>
+<li><strong>法說會逐字稿／影音</strong>：MOPS 不一定有錄影；多數公司會把法說<strong>影音或回放連結放在自家「投資人關係」官網</strong>，逐字稿則常見於券商研究或財經媒體整理，取得時注意是否完整、有無漏譯。</li>
+</ul>
+
+<h2>二、美股實戰：SEC EDGAR</h2>
+<p>美股的法定揭露集中在<strong>SEC EDGAR（sec.gov 的 EDGAR 系統）</strong>，同樣免費、權威。<span class="badge core">核心</span></p>
+
+<h3>用 EDGAR 抓 10-K／10-Q／8-K</h3>
+<ol>
+<li>到 sec.gov 的 EDGAR「Company Filings／Full-Text Search」，用<strong>公司名或股票代號（ticker）</strong>搜尋（例：AAPL）。</li>
+<li>進入該公司的 Filings 列表，用申報類型（Filing type）篩選：
+<ul>
+<li><strong>10-K</strong>＝年報（一年一次，最完整，含經審計財報）。</li>
+<li><strong>10-Q</strong>＝季報（每季一次，未經完整審計、僅核閱）。</li>
+<li><strong>8-K</strong>＝重大事件即時公告（財報發布、併購、換 CEO 等），對應台股的「重大訊息」。</li>
+</ul>
+</li>
+<li>打開 10-K，財務三表在文件的「Financial Statements and Supplementary Data」，也就是傳統的 <strong>Item 8</strong>；附註（Notes）緊接其後。</li>
+<li>想看公司觀點與新聞稿，去公司官網的 <strong>Investor Relations → Earnings</strong> 頁，能拿到財報新聞稿（press release）、簡報，以及財報電話會議（earnings call）的回放與逐字稿。</li>
+</ol>
+<div class="callout warn">
+<div class="callout-title">GAAP vs Non-GAAP 一定要分清</div>
+<p>美股新聞稿常主打 <strong>Non-GAAP（公司自訂口徑）</strong>的「adjusted」獲利、調整後 EPS，數字通常比 GAAP 漂亮（常把股票薪酬、併購攤銷加回）。新聞稿好看的數字多半是 Non-GAAP；<strong>10-K／10-Q 裡的才是 GAAP 正規數字</strong>。比較時兩邊口徑要一致，別拿 Non-GAAP 跟別人的 GAAP 比。</p>
+</div>
+
+<h2>三、中文科目 ↔ 真實報表行項對照表</h2>
+<p>這是本章最實用的一張表。左欄是本書用的中文說法，中欄是台股 IFRS 財報常見的中文行項，右欄是美股 10-K 的英文行項。打開真實財報時，靠這張表把名詞接起來。<span class="badge op">實務</span></p>
+
+<table>
+<thead><tr><th>本書中文用語</th><th>台股 IFRS 常見行項</th><th>美股 10-K 英文行項</th></tr></thead>
+<tbody>
+<tr><td>營收</td><td>營業收入</td><td>Revenue／Net sales</td></tr>
+<tr><td>營業成本</td><td>營業成本</td><td>Cost of sales／Cost of revenue／COGS</td></tr>
+<tr><td>毛利</td><td>營業毛利</td><td>Gross profit</td></tr>
+<tr><td>營業費用</td><td>營業費用（推銷、管理、研發費用）</td><td>Operating expenses（SG&amp;A、R&amp;D）</td></tr>
+<tr><td>營業利益</td><td>營業利益</td><td>Operating income／Income from operations</td></tr>
+<tr><td>稅後淨利</td><td>本期淨利（歸屬母公司）</td><td>Net income</td></tr>
+<tr><td>每股盈餘</td><td>每股盈餘（基本／稀釋）</td><td>Earnings per share（Basic／Diluted EPS）</td></tr>
+<tr><td>資產／負債／權益</td><td>資產／負債／權益（總計）</td><td>Total assets／liabilities／Stockholders' equity</td></tr>
+<tr><td>營業活動現金流</td><td>營業活動之淨現金流入（流出）</td><td>Cash flows from operating activities</td></tr>
+<tr><td>投資活動現金流</td><td>投資活動之淨現金流入（流出）</td><td>Cash flows from investing activities</td></tr>
+<tr><td>籌資活動現金流</td><td>籌資活動之淨現金流入（流出）</td><td>Cash flows from financing activities</td></tr>
+<tr><td>資本支出</td><td>取得不動產、廠房及設備（投資活動內）</td><td>Capital expenditures（Purchases of property, plant and equipment）</td></tr>
+<tr><td>自由現金流</td><td>（多需自行計算）</td><td>Free cash flow（多在新聞稿，需自算）</td></tr>
+</tbody>
+</table>
+<div class="callout">
+<div class="callout-title">自由現金流要自己算</div>
+<p>FCF 在兩邊財報通常都不直接列一行，得自己湊：<code>自由現金流（FCF）= 營業活動現金流（CFO）− 資本支出（capex）</code>。台股的 capex 取現金流量表投資活動裡「取得不動產、廠房及設備」那一行；美股取 <code>Purchases of property, plant and equipment</code>。算出來的 FCF 是「賺到現金、扣掉維持與擴張投資後，真正能自由運用的錢」。</p>
+</div>
+<details>
+<summary>想深入：為什麼同一個「營收」會有兩種英文？</summary>
+<p>賣實體商品的公司（如蘋果、零售業）習慣用 <code>Net sales</code>（淨銷貨，已扣退貨折讓）；軟體、服務、平台公司多用 <code>Revenue</code>。兩者意義相同，都是本書說的「營收」，看到哪個都別慌。台股則統一叫「營業收入」。</p>
+</details>
+
+<h2>四、多期與同業資料的工序</h2>
+<p>單看一季會被雜訊騙，財報判讀至少要拉<strong>多期趨勢＋同業比較</strong>。手動湊資料是有方法的。<span class="badge op">實務</span></p>
+
+<h3>有效率湊多季數據</h3>
+<ul>
+<li>建一張自己的 Excel／試算表，欄位放「期別」，列放你關心的科目（營收、毛利率、營業利益率、營業現金流、EPS）。一次抓近 8～12 季，趨勢一目了然。</li>
+<li>注意台股財報多為「累計數」：半年報的損益是「上半年累計」、Q3 是「前三季累計」。要算<strong>單季</strong>，得用相減：<code>單季Q3 = 前三季累計 − 上半年累計</code>。資產負債表則是「時點數」，不必相減。</li>
+</ul>
+
+<h3>TTM（近四季滾動）自己加總</h3>
+<p>TTM（Trailing Twelve Months，近四季滾動）能在年報還沒出時，用最近四個「單季」拼出一個完整年的概念，避免淡旺季失真。<code>TTM = 最近4個單季之和</code>。例如算到最新 Q2，就把 <strong>今年Q1＋今年Q2＋去年Q3＋去年Q4</strong> 四個單季的損益相加（流量科目才適用；資產負債表用最新一期即可）。</p>
+
+<h3>怎麼界定同業集合</h3>
+<ol>
+<li>先抓「同產業」：台股看產業分類，美股看 GICS 行業或 10-K 裡公司自述的競爭對手。</li>
+<li>再篩「真正可比」：商業模式、產品、規模量級相近的才比得有意義（晶圓代工跟 IC 設計都算半導體，但毛利結構天差地遠，不能硬比毛利率）。</li>
+<li>3～5 家就夠，太多反而失焦。</li>
+</ol>
+
+<h3>二手整理站當過渡，但要回查</h3>
+<p>財報狗、Goodinfo、玩股網等站把多期、比率都整理好了，<strong>新手起步非常省力</strong>。但請記住兩件事：一是它們可能延遲或抓錯欄位；二是它們的口徑（單季 vs 累計、是否含業外）不一定跟你想的一樣。<strong>凡是要做決策的關鍵數字，回 MOPS／EDGAR 原始檔核對一次再用。</strong></p>
+<div class="callout warn">
+<div class="callout-title">過渡站使用守則</div>
+<p>把整理站當「導覽地圖」找方向，不要當「導航結論」直接下單。看到異常好或異常壞的數字，第一反應永遠是：去原始檔確認這個數字怎麼來的。</p>
+</div>
+
+<h2>五、跨市場對齊的三個陷阱</h2>
+<p>同時看台股和美股、或把不同公司並排比較時，下面三點不對齊就會誤判。<span class="badge adv">進階</span></p>
+
+<div class="case">
+<div class="case-header"><span class="case-tag">對齊陷阱</span><span class="case-title">三種「看起來能比、其實不能直接比」</span></div>
+<div class="scenarios">
+<div class="scenario"><span class="when">幣別不同</span><span>NTD 營收直接跟 USD 營收比大小</span><span class="pnl neg">數量級全錯</span></div>
+<div class="scenario"><span class="when">會計年度截止不同</span><span>蘋果9月底結帳，硬跟12月底結帳的公司比「同一年」</span><span class="pnl neg">期間錯位</span></div>
+<div class="scenario"><span class="when">準則／口徑不同</span><span>IFRS vs US GAAP、GAAP vs Non-GAAP 並排</span><span class="pnl neg">口徑不一致</span></div>
+</div>
+</div>
+
+<ul>
+<li><strong>幣別（NTD／USD）</strong>：比較金額前先換成同一幣別，或乾脆比「比率」（毛利率、ROE）這類無單位數字，比率天生免換匯。</li>
+<li><strong>會計年度截止月</strong>：蘋果（Apple）財年9月底結束，許多美股財年不是1～12月。看「FY2024」時先確認它涵蓋哪段月份，否則跟台股的曆年資料對不齊。</li>
+<li><strong>準則與口徑</strong>：IFRS 與 US GAAP 在收入認列、租賃、研發等處理上有差異；同公司的 GAAP 與 Non-GAAP 又是另一層。<strong>並排比較前，先確認三方口徑一致</strong>，否則「贏」可能只是口徑紅利。</li>
+</ul>
+
+<h2>換你做</h2>
+<div class="callout success">
+<div class="callout-title">本章作業：跑一次完整實戰</div>
+<p>挑<strong>一家你熟悉、有在用其產品的公司</strong>（台股或美股都行）：</p>
+<ol>
+<li>照本章路徑，到 MOPS 或 EDGAR 抓它<strong>最新年報＋最近 8 季</strong>的財務三表。</li>
+<li>用<strong>ch29 的六步體檢</strong>把它走一遍，把每步結論寫進你的工作底稿。</li>
+<li>用<strong>ch30 的估值方法</strong>，給它估一個你能說服自己的合理價位區間。</li>
+</ol>
+<p>做完你會發現：看財報不再是「讀懂教材」，而是「能對一家真實公司有自己的判斷」。這就是這本書要送你的能力。（以上純為教學流程，數字皆為示意，不構成任何投資建議。）</p>
+</div>
+
+<p style="font-size:13.5px;color:var(--fg-muted);">👉 開始你的「換你做」：打開 <a href="#ch29">Ch29 的「我的看財報工作底稿」</a>，照本章抓到的資料把六步走一遍、填好自動存起來。</p>
+
+<div class="widget" data-component="quiz" data-questions='[{"q":"想看台積電(2330)最新一季完整的合併財務三表與附註，最該去哪裡抓第一手資料？","opts":["財報狗整理頁","公開資訊觀測站 MOPS 的財務報表(採IFRSs後→合併報表)","公司臉書粉專","Google 圖片搜尋"],"correct":1,"explain":"法定、權威、免費的第一手台股財報在公開資訊觀測站(MOPS)，選採IFRSs後的合併報表並輸入代號與年度季別下載；整理站只適合當過渡，關鍵數字仍要回原始檔。"},{"q":"關於美股文件，下列敘述何者正確？","opts":["10-Q 是年報、10-K 是季報","8-K 是用來公告重大即時事件的","新聞稿裡的 Non-GAAP 數字就是 10-K 的正規 GAAP 數字","earnings call 逐字稿一定在 EDGAR"],"correct":1,"explain":"10-K=年報、10-Q=季報、8-K=重大事件即時公告。新聞稿常主打 Non-GAAP，10-K/10-Q 裡才是 GAAP；earnings call 多在公司 IR 頁，不一定在 EDGAR。"},{"q":"台股某公司前三季累計營業利益 90 億、上半年累計 55 億。它「第三季單季」營業利益約為多少？","opts":["90 億","145 億","35 億","55 億"],"correct":2,"explain":"台股損益多為累計數，單季要相減：單季Q3 = 前三季累計 − 上半年累計 = 90 − 55 = 35 億。"},{"q":"自由現金流(FCF)最常見的算法是下列何者？","opts":["營業活動現金流 ÷ 營收","營業活動現金流(CFO) − 資本支出(capex)","稅後淨利 + 折舊","投資活動現金流 − 籌資活動現金流"],"correct":1,"explain":"FCF 兩邊財報通常都不直接列，要自算：FCF = 營業活動現金流(CFO) − 資本支出(capex)；capex 取現金流量表投資活動裡的取得不動產、廠房及設備。"},{"q":"把蘋果(Apple)和一家台股公司並排比較時，下列哪一點最可能造成誤判？","opts":["兩家都用阿拉伯數字","蘋果財年9月底結束、幣別是USD、且新聞稿常用Non-GAAP口徑","兩家都有營收這個科目","兩家股票都能買到"],"correct":1,"explain":"幣別(USD vs NTD)、會計年度截止月(蘋果9月底)、準則與口徑(US GAAP/Non-GAAP vs IFRS)若不先對齊就並排，就會把口徑差異誤當成基本面差異。"}]'><div class="widget-header"><div class="widget-title"><span class="icon">📝</span>本章測驗</div></div><div class="widget-body"></div></div>
+</section>
+
+<section data-chapter="glossary">
       <h1>📖 名詞表（中英對照）</h1>
       <p style="color: var(--fg-muted); margin-top: -2px;">財報常見術語速查。輸入關鍵字即時篩選（中英都可）。按 <kbd>/</kbd> 快速聚焦。</p>
       <input type="text" id="glossary-search" placeholder="🔍 搜尋術語（例：毛利率 / ROE / FCF / NIM）"
@@ -3291,6 +3809,70 @@ const CompanyCompare = {
   },
   hydrate(w) { this.render(w.querySelector('.widget-body'), { A: { ...this.defaults.A }, B: { ...this.defaults.B } }); }
 };
+
+/* ============================================================
+   WorksheetTool（ch26/ch29：六步看財報工作底稿，可填可存可匯出）
+   ============================================================ */
+const WorksheetTool = {
+  KEY: 'fin/worksheet',
+  STEPS: [
+    { k: 'co', label: '公司名稱 / 代號', ph: '例：台積電 2330' },
+    { k: 's1', label: '1. 營收趨勢', ph: '近幾季 / 月營收 YoY、QoQ 方向？還在成長還是衰退？' },
+    { k: 's2', label: '2. 獲利結構', ph: '毛利率 / 營益率 / 淨利率的趨勢？三率有沒有同向？' },
+    { k: 's3', label: '3. 現金流品質', ph: 'CFO vs 淨利（CFO ÷ 淨利比值）？自由現金流正負？' },
+    { k: 's4', label: '4. 資產負債安全', ph: '負債比、流動比、利息保障倍數？債務到期結構？' },
+    { k: 's5', label: '5. 比率與同業比', ph: 'ROE 杜邦來源（利潤 / 週轉 / 槓桿）？跟同業比贏還輸？' },
+    { k: 's6', label: '6. 評價（貴不貴）', ph: 'PE / PB / 殖利率 / PEG？跟自己歷史與同業比？合理價估多少？' }
+  ],
+  load() { try { return JSON.parse(localStorage.getItem(this.KEY) || '{}'); } catch { return {}; } },
+  save(d) { try { localStorage.setItem(this.KEY, JSON.stringify(d)); } catch {} },
+  hydrate(w) {
+    const body = w.querySelector('.widget-body');
+    const d = this.load();
+    const rows = this.STEPS.map(s => {
+      if (s.k === 'co') return `<div style="margin-bottom:12px;"><label style="font-size:13px;font-weight:700;display:block;margin-bottom:4px;">${s.label}</label><input data-k="${s.k}" type="text" placeholder="${s.ph}" value="${esc(d[s.k] || '')}" style="width:100%;padding:8px 10px;background:var(--bg-elev);color:var(--fg);border:1px solid var(--border);border-radius:var(--radius-sm);font:inherit;font-size:13px;box-sizing:border-box;"></div>`;
+      return `<div style="margin-bottom:12px;padding:10px 12px;background:var(--bg-sunken);border-radius:var(--radius-sm);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:8px;"><label style="font-size:13px;font-weight:700;">${s.label}</label><label style="font-size:11.5px;color:var(--warn);cursor:pointer;white-space:nowrap;"><input type="checkbox" data-flag="${s.k}" ${d[s.k + '_f'] ? 'checked' : ''} style="vertical-align:middle;"> 標紅旗</label></div>
+        <textarea data-k="${s.k}" rows="2" placeholder="${s.ph}" style="width:100%;background:var(--bg-elev);color:var(--fg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 8px;font:inherit;font-size:13px;resize:vertical;box-sizing:border-box;">${esc(d[s.k] || '')}</textarea>
+      </div>`;
+    }).join('');
+    const ratings = ['（未定）', '買進候選', '觀察', '淘汰'];
+    body.innerHTML = `${rows}
+      <div style="margin:12px 0;padding:10px 12px;background:var(--accent-soft);border-radius:var(--radius-sm);">
+        <label style="font-size:13px;font-weight:700;display:block;margin-bottom:4px;">結論</label>
+        <textarea data-k="conc" rows="2" placeholder="一句話結論 + 理由" style="width:100%;background:var(--bg-elev);color:var(--fg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 8px;font:inherit;font-size:13px;resize:vertical;box-sizing:border-box;">${esc(d.conc || '')}</textarea>
+        <div style="margin-top:8px;font-size:13px;">評級：<select data-k="rating" style="font:inherit;font-size:13px;padding:4px 8px;background:var(--bg-elev);color:var(--fg);border:1px solid var(--border);border-radius:var(--radius-sm);">${ratings.map(r => `<option ${d.rating === r ? 'selected' : ''}>${r}</option>`).join('')}</select></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <button class="btn" data-act="export" style="background:var(--accent);color:white;border-color:var(--accent);">📤 匯出文字</button>
+        <button class="btn" data-act="clear">🗑 清空</button>
+        <span style="font-size:11.5px;color:var(--fg-muted);">💾 自動存在這台瀏覽器</span>
+      </div>
+      <div data-out style="margin-top:10px;"></div>`;
+    const persist = () => {
+      const nd = {};
+      body.querySelectorAll('[data-k]').forEach(el => nd[el.dataset.k] = el.value);
+      body.querySelectorAll('[data-flag]').forEach(el => nd[el.dataset.flag + '_f'] = el.checked);
+      this.save(nd);
+    };
+    body.querySelectorAll('[data-k]').forEach(el => el.addEventListener('input', persist));
+    body.querySelectorAll('[data-flag]').forEach(el => el.addEventListener('change', persist));
+    body.querySelector('[data-act="export"]').addEventListener('click', () => {
+      const d2 = this.load();
+      let txt = `【看財報工作底稿】${d2.co || '(未命名)'}\n`;
+      this.STEPS.forEach(s => { if (s.k === 'co') return; txt += `\n${s.label}${d2[s.k + '_f'] ? ' 🚩' : ''}\n${d2[s.k] || '（未填）'}\n`; });
+      txt += `\n結論：${d2.conc || '（未填）'}\n評級：${d2.rating || '（未定）'}\n`;
+      const out = body.querySelector('[data-out]');
+      out.innerHTML = `<textarea readonly rows="10" style="width:100%;background:var(--bg-sunken);color:var(--fg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px;font:inherit;font-size:12px;box-sizing:border-box;">${esc(txt)}</textarea>`;
+      const ta = out.querySelector('textarea'); ta.focus(); ta.select();
+      try { if (navigator.clipboard) { navigator.clipboard.writeText(txt); showSnackbar('已複製到剪貼簿'); } } catch {}
+    });
+    body.querySelector('[data-act="clear"]').addEventListener('click', () => {
+      if (!confirm('清空這份工作底稿？')) return;
+      this.save({}); this.hydrate(w);
+    });
+  }
+};
 /* ============================================================
    hydrate 全部互動元件
    ============================================================ */
@@ -3298,7 +3880,8 @@ function hydrateAll() {
   const map = {
     path: LearningPathBuilder, quiz: Quiz, dupont: DuPontDecomposer, ratio: RatioCalculator,
     waterfall: MarginWaterfall, trend: TrendVisualizer, pebands: PEBands, dividend: DividendSimulator,
-    quality: EarningsQuality, redflag: RedFlagScanner, industry: IndustryMetricPicker, compare: CompanyCompare
+    quality: EarningsQuality, redflag: RedFlagScanner, industry: IndustryMetricPicker, compare: CompanyCompare,
+    worksheet: WorksheetTool
   };
   Object.entries(map).forEach(([key, mod]) => {
     document.querySelectorAll(`[data-component="${key}"]`).forEach(w => {
@@ -3478,7 +4061,8 @@ function renderProgressDashboard() {
     { name: 'Part Ⅲ · 看變化訊號', chs: ['ch11', 'ch12', 'ch13', 'ch14', 'ch15', 'ch16'] },
     { name: 'Part Ⅳ · 台股 vs 美股', chs: ['ch17', 'ch18', 'ch19'] },
     { name: 'Part Ⅴ · 不同產業', chs: ['ch20', 'ch21', 'ch22', 'ch23', 'ch24', 'ch25'] },
-    { name: 'Part Ⅶ · 決策框架', chs: ['ch26', 'ch27', 'ch28'] }
+    { name: 'Part Ⅶ · 決策框架', chs: ['ch26', 'ch27', 'ch28'] },
+    { name: 'Part Ⅷ · 從框架到實戰', chs: ['ch29', 'ch30', 'ch31'] }
   ];
   const html = parts.map(p => {
     const total = p.chs.length, done = p.chs.filter(c => completed.has(c)).length, pct = done / total * 100;
@@ -3551,7 +4135,7 @@ const LLMAssistant = {
   systemPrompt() {
     return `你是 FIN 台股美股財報自學系統的學習助教。用繁體中文回答。
 
-FIN 是「台股 + 美股財報判讀」單檔 HTML 自學手冊，共 28 章 + 案例庫，分 7 個 Part：
+FIN 是「台股 + 美股財報判讀」單檔 HTML 自學手冊，共 31 章 + 案例庫，分 8 個 Part：
 - Part Ⅰ Ch1-5：財報基礎（三表全景 / 損益表 / 資產負債表 / 現金流量表 / 三表串聯）
 - Part Ⅱ Ch6-10：關鍵比率（獲利能力 / 成長性 / 安全性 / 經營效率 / 評價）
 - Part Ⅲ Ch11-16：看「變化」的訊號（趨勢 / 毛利率變化 / 存貨應收警訊 / 盈餘品質 / 一次性損益 / 地雷）
@@ -3559,6 +4143,7 @@ FIN 是「台股 + 美股財報判讀」單檔 HTML 自學手冊，共 28 章 + 
 - Part Ⅴ Ch20-25：不同產業（半導體 / 金融 / 零售 / 製造循環 / SaaS / 生技）
 - Part Ⅵ 案例庫：個股實戰（台積電 / 鴻海 / AAPL / NVDA / SaaS / 地雷）
 - Part Ⅶ Ch26-28：決策框架（看財報 SOP / 投資風格 / 財報+估值）
+- Part Ⅷ Ch29-31：從框架到實戰（端到端演練 / 估值落地：DCF·PEG·PE區間 / 實戰導覽：MOPS·EDGAR 怎麼抓、中英科目對照）
 
 回答準則：
 - 對齊手冊用語：毛利率 / 營益率 / ROE / 杜邦 / CFO / FCF / NIM / 本益比 / 月營收 / 10-K
