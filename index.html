@@ -406,7 +406,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <div class="layout">
   <aside class="sidebar">
     <div class="path-pill">
-      <b>台股美股財報自學系統</b>：31 章 + 案例庫 + 11 互動 + Quiz + 名詞表。
+      <b>台股美股財報自學系統</b>：32 章 + 案例庫 + 11 互動（產業選擇器 16 產業）+ Quiz + 名詞表。
       右下 🤖 開 LLM 助教（自帶 Gemini key）· 按 <kbd>?</kbd> 看快速鍵。
     </div>
 
@@ -453,6 +453,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
       <a class="nav-item" href="#ch23"><span class="ch-num">Ch23</span>製造 / 景氣循環</a>
       <a class="nav-item" href="#ch24"><span class="ch-num">Ch24</span>軟體 / SaaS</a>
       <a class="nav-item" href="#ch25"><span class="ch-num">Ch25</span>生技 / 製藥</a>
+      <a class="nav-item" href="#ch32"><span class="ch-num">Ch32</span>當紅主流產業速查 <span class="badge-mini">✓ 16 產業</span></a>
     </div>
 
     <div class="nav-group">
@@ -486,7 +487,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
     <div class="print-cover">
       <h1>台股美股財報自學系統</h1>
       <div class="subtitle">FIN · Financial Statements Self-Study Handbook</div>
-      <div class="meta">31 章 + 案例庫 + 11 互動 · LLM 助教 · PWA<br/>2026-06-05<br/>people7771025/FIN</div>
+      <div class="meta">32 章 + 案例庫 + 11 互動 · LLM 助教 · PWA<br/>2026-06-05<br/>people7771025/FIN</div>
     </div>
 
     <section data-chapter="intro">
@@ -2134,6 +2135,132 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 </section>
 
+<section data-chapter="ch32">
+<h1>當紅主流產業速查</h1>
+
+<p>Part Ⅴ 講了六大類產業的看法，但市場的焦點會移動。這一章補上目前（由 <strong>AI 算力、地緣政治、能源轉型</strong>三大趨勢驅動）最熱門的產業，每個都用同一套格式速查：<strong>商業模式一句話 → 該盯的關鍵指標 → 關鍵「變化」訊號 → 常見陷阱</strong>。你會發現原則完全沒變——<strong>先認模式再選指標、看變化勝過看絕對值、三表互相對照</strong>。</p>
+
+<div class="callout warn">
+<div class="callout-title">先記住兩個通則</div>
+<p>① 這些熱門股<strong>很多帶有景氣循環性</strong>（封測、載板、MLCC、航運、面板…），請套用 <strong>Ch23</strong> 的循環股看法：<strong>高點低 PE 是陷阱、改看 PB 與在手訂單</strong>。② 不少是「<strong>賣鏟子</strong>」的供應鏈，獲利高度連動下游的<strong>資本支出（capex）</strong>與<strong>訂單能見度</strong>，所以「在手訂單 backlog、book-to-bill、稼動率」這類<strong>領先指標</strong>常比當期 EPS 更早說話。數字皆為示意說明，不構成投資建議。</p>
+</div>
+
+<h2>地緣政治線</h2>
+
+<div class="case">
+<div class="case-header"><span class="case-tag">台股 / 美股 · 國防</span><span class="case-title">軍工 / 國防 — 看的是「在手訂單」，不是當期營收</span></div>
+<p><span class="badge core">核心</span>商業模式：賣武器、航電、軍用零組件給政府，特色是<strong>合約金額大、交期長（好幾年）、需求由政府預算決定</strong>。所以它的財報重點不在「這一季賣多少」，而在「<strong>手上還有多少張可以慢慢出的訂單</strong>」。</p>
+<p>該盯的關鍵指標：</p>
+<ul>
+<li><strong>在手訂單（Backlog）</strong>：未來幾年的營收水庫，越滿能見度越高。看它<strong>跟營收的比值</strong>（backlog ÷ 年營收 = 幾年的活可做）。</li>
+<li><strong>book-to-bill（接單出貨比）</strong>＝<code>新接訂單 ÷ 當期出貨</code>。<strong>大於 1</strong>＝接的比出的多，訂單在累積（動能強）；<strong>小於 1</strong>＝在吃老本。</li>
+<li><strong>合約類型</strong>：<strong>成本加成（cost-plus）</strong>合約把成本風險轉嫁給政府、毛利穩；<strong>固定價（fixed-price）</strong>合約若遇通膨、研發延誤，超支要自己吞，會侵蝕毛利甚至虧損。</li>
+<li><strong>國防預算與地緣政治</strong>：需求的源頭。各國因地緣緊張<strong>拉高國防支出佔 GDP 比重</strong>，是整個產業的長線順風。</li>
+</ul>
+<div class="scenarios">
+<div class="scenario"><span class="when">好訊號</span><span>拿到大型長約、backlog 創高、book-to-bill 大於 1</span><span class="pnl pos">能見度拉長</span></div>
+<div class="scenario"><span class="when">壞訊號</span><span>固定價大案執行延誤、認列超支損失</span><span class="pnl neg">毛利被專案吃掉</span></div>
+</div>
+<p><strong>陷阱：</strong>軍工股營收常因「大案交付時點」而<strong>單季暴起暴落</strong>，用單季 YoY 判斷會誤判——要看 backlog 趨勢與 book-to-bill，那才是真正的領先訊號。</p>
+</div>
+
+<h2>AI 算力供應鏈（賣鏟子的人）</h2>
+
+<div class="case">
+<div class="case-header"><span class="case-tag">台股 / 美股 · 光通訊</span><span class="case-title">光通訊 / CPO / 矽光子 — 跟著雲端 capex 與「速率升級」走</span></div>
+<p><span class="badge core">核心</span>商業模式：做資料中心裡讓 GPU、交換器互相高速傳輸資料的<strong>光收發模組（optical transceiver）</strong>。AI 訓練要把成千上萬顆 GPU 連起來，網路頻寬需求爆炸，光通訊就是這條「神經」。</p>
+<p>該盯的關鍵指標：</p>
+<ul>
+<li><strong>速率升級 + 出貨量</strong>：產品從 <code>400G → 800G → 1.6T</code> 一代代往上跳，<strong>新速率放量 = 量價齊揚</strong>（單價更高、又賣更多）。這是最重要的成長引擎。</li>
+<li><strong>CPO / 矽光子滲透</strong>：下一世代技術（把光學直接整合進晶片旁，降功耗）。誰的<strong>新技術滲透率先上來</strong>，誰就吃到下一波。</li>
+<li><strong>與雲端資本支出連動</strong>：客戶是雲端大廠（Hyperscaler）。它們的 <strong>capex 財測一上修，光通訊就是直接受惠者</strong>——看下游 capex 比看自己的歷史還準。</li>
+<li><strong>毛利率與客戶集中度</strong>：高速率產品佔比上升→毛利改善；但客戶高度集中在少數幾家雲端廠，<strong>單一客戶調整就劇烈波動</strong>。</li>
+</ul>
+<p><strong>陷阱：</strong>光通訊是<strong>典型的「賣鏟子」</strong>，股價與評價對「AI capex 還能不能加速」極度敏感。一旦市場開始擔心雲端 capex 見頂，即使當期營收還在成長，評價也會先殺——這時要回頭看下游大廠的 capex guidance，而不是只看它自己的營收。</p>
+</div>
+
+<div class="case">
+<div class="case-header"><span class="case-tag">台股 · 半導體封測</span><span class="case-title">封測 / 先進封裝（OSAT）— AI 時代從「後段配角」變主角</span></div>
+<p><span class="badge core">核心</span>商業模式：晶圓做好後的<strong>封裝（packaging）與測試（testing）</strong>，過去被視為半導體價值鏈裡技術含量較低、毛利較薄的後段。但 <strong>AI 改變了這件事</strong>——把多顆晶片（GPU + 高頻寬記憶體）整合在一起的<strong>先進封裝（CoWoS、SoIC 等）</strong>成了算力瓶頸，封測一躍成為 AI 最受惠的環節之一。</p>
+<p>該盯的關鍵指標：</p>
+<ul>
+<li><strong>先進封裝營收佔比</strong>：傳統封測 vs <strong>CoWoS / SoIC</strong> 的比重。<strong>先進封裝佔比上升 = 產品結構升級、毛利改善</strong>，這是看封測股最關鍵的「變化」。</li>
+<li><strong>產能與稼動率</strong>：先進封裝產能是 AI 晶片的硬瓶頸，<strong>稼動率滿載 + 擴產到位</strong>才接得住爆量需求。</li>
+<li><strong>ASP（平均單價）</strong>：先進封裝的單價遠高於傳統打線封裝，拉高整體均價。</li>
+<li><strong>capex 強度</strong>：為了擴 CoWoS 產能，<strong>資本支出 ÷ 營收</strong>會明顯拉高——這是看好未來，但也要留意折舊壓力（同 Ch20 半導體看 capex 的邏輯）。</li>
+</ul>
+<p><strong>陷阱：</strong>封測<strong>分兩個世界</strong>——做先進封裝、綁 AI 大客戶的，量價齊揚；只做傳統消費性封測的，仍受手機/PC 景氣循環擺布。看到「封測股」三個字別一概而論，要拆它的<strong>先進封裝佔比</strong>。</p>
+</div>
+
+<div class="case">
+<div class="case-header"><span class="case-tag">台股 / 美股 · AI 伺服器</span><span class="case-title">AI 伺服器 / 散熱 — 出貨佔比 +「液冷滲透」兩條線</span></div>
+<p><span class="badge core">核心</span>商業模式：組裝 AI 伺服器整機，或做其中的散熱、電源、機構件。重點是<strong>整機組裝毛利低（個位數），關鍵零件（散熱、電源）毛利高</strong>。</p>
+<ul>
+<li><strong>AI 伺服器出貨 / 佔比</strong>：營收裡 AI 機種佔比上升 = 動能來源。</li>
+<li><strong>散熱方案滲透（氣冷 → 液冷）</strong>：GPU 功耗暴增，散熱從氣冷轉<strong>液冷</strong>。誰的液冷滲透率先上來 = 高值化、毛利跳升。</li>
+<li><strong>毛利率組合</strong>：別被「營收爆增」迷惑，要看是賺<strong>低毛利的組裝</strong>還是<strong>高毛利的零件</strong>。</li>
+<li><strong>料況與客戶集中</strong>：受 GPU 供給節奏牽制，客戶又集中在少數雲端/品牌廠，出貨時點會跳動。</li>
+</ul>
+<p><strong>陷阱：</strong>整機組裝廠營收動輒翻倍但毛利只有幾 %，<strong>看絕對營收會高估它的賺錢能力</strong>——要看營業利益與毛利率結構（呼應 Ch6、cases 鴻海的邏輯：低毛利看營益率與週轉）。</p>
+</div>
+
+<div class="case">
+<div class="case-header"><span class="case-tag">台股 · PCB / 載板</span><span class="case-title">PCB / ABF 載板 — 高資本支出的循環供應鏈</span></div>
+<p>商業模式：做電路板與 IC 載板，AI 晶片需要的<strong>高階 ABF 載板</strong>技術門檻高、單價高。該盯：<strong>供需與稼動率</strong>（滿載則報價硬挺）、<strong>ASP 與技術升級</strong>（層數、材料）、<strong>capex 強度</strong>（高資本支出，擴產時機決定循環）、<strong>客戶</strong>（綁 CPU/GPU/AI 客戶受惠）。<strong>變化訊號：</strong>稼動率與報價是領先指標。<strong>陷阱：</strong>屬循環產業，擴產過頭會殺價，谷底要看 PB 而非 PE。</p>
+</div>
+
+<h2>循環與零組件（最會「PE 騙人」的一群）</h2>
+
+<div class="case">
+<div class="case-header"><span class="case-tag">台股 / 美股 · 車用</span><span class="case-title">電動車 / 車用半導體 — design-win 領先、通路庫存示警</span></div>
+<p>商業模式：供應電動車的電池、電控、車用晶片。該盯：<strong>出貨量與車用佔比</strong>、<strong>單車含矽量</strong>（電動化/智能化讓每台車用的晶片價值越來越高）、<strong>design-win</strong>（拿到車廠設計案，1～3 年後才放量，是<strong>領先指標</strong>）、<strong>通路庫存</strong>（庫存天數暴增＝需求修正前兆）。<strong>陷阱：</strong>EV 滲透是長線趨勢，但短期需求會大幅波動、引發<strong>庫存修正</strong>，這時車用半導體營收會急殺——盯通路庫存比盯訂單早看到。</p>
+</div>
+
+<div class="case">
+<div class="case-header"><span class="case-tag">台股 · 被動元件</span><span class="case-title">被動元件（MLCC）— 教科書級的循環股</span></div>
+<p>商業模式：做電子產品裡用量極大的小元件（如 MLCC 積層陶瓷電容）。<strong>典型循環股</strong>：景氣熱→缺貨漲價→大賺，景氣冷→跌價庫存堆積→大賠。該盯：<strong>出貨量與 ASP</strong>（量價）、<strong>稼動率</strong>（循環溫度計）、<strong>庫存週轉</strong>（去化完才回溫）、<strong>車規/工規高階佔比</strong>（高階佔比高＝抗循環、毛利穩）。<strong>陷阱：</strong>循環高峰 EPS 暴衝、PE 看起來最低時其實<strong>最危險</strong>——務必改看 PB 與循環位階（Ch23）。</p>
+</div>
+
+<div class="case">
+<div class="case-header"><span class="case-tag">台股 · 航運</span><span class="case-title">航運 / 海運 — 運價指數就是它的儀表板</span></div>
+<p>商業模式：用船把貨從 A 運到 B，賺運費。獲利幾乎由<strong>運價</strong>決定。該盯：<strong>運價指數</strong>（貨櫃看 <code>SCFI</code>、散裝看 <code>BDI</code>）是最直接的領先指標、<strong>運力供需</strong>（新船下水多＝供給壓力）、<strong>燃油成本</strong>、<strong>每股淨值與 PB</strong>。<strong>陷阱：</strong>強循環之最——景氣高峰運價狂飆、EPS 暴衝、PE 跌到個位數看似超便宜，往往正是<strong>賣點</strong>；判斷重點是「<strong>你站在循環的哪一段</strong>」，用 PB 與運價趨勢，不要用低 PE。</p>
+</div>
+
+<h2>能源轉型與防禦型</h2>
+
+<div class="case">
+<div class="case-header"><span class="case-tag">台股 / 美股 · 重電</span><span class="case-title">重電 / 電力設備 / 儲能 — 看在手訂單與交期</span></div>
+<p>商業模式：做變壓器、開關設備、電網與儲能系統。<strong>結構性成長題材</strong>：電網老化要升級、再生能源併網、<strong>AI 資料中心用電暴增</strong>，都在拉爆電力設備需求。該盯：<strong>在手訂單 backlog 與交期</strong>（訂單滿載、交期拉長＝供不應求，是最強訊號）、<strong>電網/綠能投資連動</strong>、<strong>毛利率</strong>（訂單滿手→議價力強→毛利改善）、<strong>產能</strong>。<strong>陷阱：</strong>題材熱時評價容易先衝過頭，要回頭用 backlog 與交期驗證需求是真的、不是想像的。</p>
+</div>
+
+<div class="case">
+<div class="case-header"><span class="case-tag">台股 / 美股 · 電信</span><span class="case-title">電信 / 5G — 防禦型存股，看 ARPU 與自由現金流</span></div>
+<p>商業模式：賣門號、網路、寬頻，收月租。特性是<strong>穩定、低成長、高股息</strong>，是<strong>防禦型存股</strong>的代表（呼應 Ch27 存股視角）。該盯：<strong>ARPU（每用戶平均貢獻）</strong>（回升＝資費競爭趨緩）、<strong>用戶數與流失率</strong>（低流失＝黏著高）、<strong>5G 滲透</strong>（帶動 ARPU）、<strong>資本支出與自由現金流</strong>（建網 capex 高峰過後 FCF 改善，撐起股息）、<strong>殖利率穩定度</strong>。<strong>陷阱：</strong>建網期 capex 大、FCF 受壓，要確認<strong>股息是用 FCF 配的、不是借錢配的</strong>（Ch27 高殖利率陷阱）。</p>
+</div>
+
+<div class="callout success">
+<div class="callout-title">一頁總結：熱門產業怎麼快速上手</div>
+<ul>
+<li><strong>賣鏟子供應鏈</strong>（光通訊、封測、AI 伺服器、載板）：看下游 <strong>capex 與訂單能見度</strong>，比看自己當期 EPS 更早。</li>
+<li><strong>訂單型</strong>（軍工、重電）：看 <strong>backlog 與 book-to-bill</strong>，別被單季營收跳動誤導。</li>
+<li><strong>循環型</strong>（MLCC、載板、航運、面板）：看 <strong>PB 與循環位階</strong>，高點低 PE 是陷阱。</li>
+<li><strong>防禦型</strong>（電信）：看 <strong>FCF 與殖利率穩定度</strong>。</li>
+</ul>
+</div>
+
+<p>下面的選擇器已經把這些產業都收進去了（共 16 個產業），選一個看它該盯的指標：</p>
+
+<div class="widget" data-component="industry" data-industry="光通訊 / CPO / 矽光子">
+  <div class="widget-header"><div class="widget-title"><span class="icon">🏭</span>產業指標選擇器 · 選產業看該盯的數字</div><div class="widget-meta">已擴充到 16 個產業</div></div>
+  <div class="widget-body"></div>
+</div>
+
+<div class="widget" data-component="quiz" data-questions='[{"q":"分析軍工 / 國防股，為什麼「在手訂單(backlog)與 book-to-bill」常比當期營收更重要？","opts":["因為軍工股不公布營收","因為合約金額大、交期長達數年，營收會因交付時點單季暴起暴落，backlog 才反映真實能見度","因為政府規定只能看訂單","因為軍工股沒有損益表"],"correct":1,"explain":"軍工合約大且交期長，單季營收受大案交付時點影響會暴起暴落，用單季 YoY 易誤判；在手訂單與 book-to-bill(大於1代表接單大於出貨)才是真正的領先指標。"},{"q":"光通訊 / CPO 這類「賣鏟子」的 AI 供應鏈，獲利與評價最該連動哪個外部變數？","opts":["黃金價格","下游雲端大廠的資本支出(capex)與 AI 網路需求","台幣匯率","國際油價"],"correct":1,"explain":"光通訊客戶是雲端大廠，模組需求直接連動它們的 AI capex；下游 capex 財測上修是直接受惠訊號，capex 見頂疑慮則會先殺評價，看下游 capex 比看自己歷史更準。"},{"q":"關於半導體封測 / 先進封裝(OSAT)，下列何者是看它的最關鍵「變化」？","opts":["傳統打線封裝的數量","先進封裝(CoWoS / SoIC)營收佔比上升，代表產品結構升級、毛利改善","員工人數","辦公室租金"],"correct":1,"explain":"AI 讓先進封裝從後段配角變主角，CoWoS/SoIC 單價與毛利遠高於傳統封裝，先進封裝營收佔比上升是結構改善的核心訊號；同一檔封測股要拆它的先進封裝佔比，別一概而論。"},{"q":"被動元件(MLCC)、航運等典型循環股，在景氣高峰出現「EPS 暴衝、本益比(PE)跌到個位數」時，較合理的解讀是？","opts":["PE 很低代表超便宜，應大力買進","這常是循環高點的危險訊號，盈餘不可持續，應改看 PB 與循環位階","PE 低一定是公司造假","循環股不需要看任何估值"],"correct":1,"explain":"循環股在景氣高峰盈餘暴衝會讓 PE 失真地偏低，這往往是賣點而非買點；應改用 PB 與循環位階(運價/稼動率/報價)判斷你站在循環哪一段，這是 Ch23 的核心觀念。"}]'>
+  <div class="widget-header"><div class="widget-title"><span class="icon">📝</span>本章測驗</div></div>
+  <div class="widget-body"></div>
+</div>
+</section>
+
 <section data-chapter="cases">
 <h1>個股實戰案例庫</h1>
 
@@ -3743,6 +3870,86 @@ const IndustryMetricPicker = {
       ['燒錢速度 burn rate', '每季淨現金流出', '配合 runway 看會不會缺血'],
       ['里程碑 / 授權金', '合作收入', '有大藥廠背書是重要訊號'],
       ['是否有產品營收', '商業化程度', '很多生技沒營收，只能看現金與題材']
+    ],
+    '國防 / 軍工': [
+      ['在手訂單 backlog', '未來營收能見度', '拿到大型長約 = 能見度拉長'],
+      ['book-to-bill', '接單 ÷ 出貨', '高於 1 訂單動能強、低於 1 轉弱'],
+      ['合約類型', '成本加成 vs 固定價', '固定價合約遇通膨 / 延誤會吃掉毛利'],
+      ['國防預算與地緣', '需求源頭', '地緣政治升溫、各國拉高國防支出 = 順風'],
+      ['毛利率與履約', '專案執行力', '大型專案延誤、罰款會侵蝕毛利'],
+      ['客戶集中', '政府 / 單一軍種佔比', '政策與預算波動是主要風險']
+    ],
+    '光通訊 / CPO / 矽光子': [
+      ['光模組出貨與速率', '400G→800G→1.6T 升級', '速率升級放量 = 量價齊揚'],
+      ['CPO / 矽光子滲透', '下一世代技術', '新技術滲透率上升搶佔先機'],
+      ['雲端 capex 連動', 'AI 網路需求源', '大廠資本支出上修 = 光通訊順風'],
+      ['毛利率', '產品組合與價格', '高速率產品佔比升 → 毛利改善'],
+      ['客戶集中度', '前幾大雲端客戶佔比', '單一客戶砍單衝擊大'],
+      ['產能與良率', '供給能力', '良率爬升、產能到位才接得住需求']
+    ],
+    '半導體封測 / 先進封裝': [
+      ['先進封裝佔比', 'CoWoS / SoIC 營收佔比', 'AI 最受惠環節之一，佔比升 = 結構改善'],
+      ['產能與稼動率', '先進封裝擴產', '稼動率高 + 擴產到位 = 量增'],
+      ['ASP 平均單價', '製程價值', '先進封裝 ASP 遠高於傳統，拉高均價'],
+      ['capex 強度', '資本支出 ÷ 營收', '為 AI 擴 CoWoS 產能、capex 大'],
+      ['測試 vs 封裝組合', '業務結構', '高階測試 / 封裝佔比決定毛利'],
+      ['客戶集中', '大客戶（AI 晶片廠）佔比', '綁大客戶受惠也受制']
+    ],
+    'AI 伺服器 / 散熱': [
+      ['AI 伺服器出貨 / 佔比', '營收結構', 'AI 機種佔比上升 = 動能來源'],
+      ['散熱滲透（液冷）', '氣冷 → 液冷轉換', '液冷滲透率上升 = 高值化'],
+      ['毛利率', '整機 vs 零件', '整機組裝毛利低、關鍵零件毛利高'],
+      ['雲端 capex 連動', '需求源頭', '大廠 AI 投資上修 = 順風'],
+      ['料況 / 供應鏈', 'GPU 與關鍵料供給', '缺料 / 排擠影響出貨節奏'],
+      ['客戶集中度', '前幾大客戶佔比', '集中度高、訂單波動大']
+    ],
+    '電動車 / 車用半導體': [
+      ['出貨量與車用佔比', '營收結構', '車用佔比上升 = 高值轉型'],
+      ['單車含矽量', '每台車用多少晶片', '電動化 / 智能化推升含矽量'],
+      ['design-win', '取得車廠設計案', '領先指標、1～3 年後才放量'],
+      ['通路庫存', '庫存天數', '庫存暴增 = 需求修正前兆'],
+      ['毛利率', '產品組合', '車規高毛利、消費級低'],
+      ['EV 終端需求', '車市銷量', 'EV 滲透是趨勢、但短期需求會波動']
+    ],
+    'PCB / ABF 載板': [
+      ['供需 / 稼動率', '產能利用', '稼動率高 = 報價硬挺'],
+      ['ASP 與技術升級', '層數 / 材料', '高階載板（ABF）ASP 高、門檻高'],
+      ['capex 強度', '擴產投入', '高資本支出、擴產時機影響循環'],
+      ['客戶集中', 'CPU / GPU / AI 客戶', '綁高速運算客戶受惠 AI'],
+      ['毛利率', '產品組合', '高階佔比決定毛利'],
+      ['循環性', '供需循環', '擴產過頭就殺價，屬循環（看 PB）']
+    ],
+    '被動元件（MLCC）': [
+      ['出貨量與 ASP', '量與價', '價格循環明顯，漲價 = 景氣熱'],
+      ['稼動率', '產能利用', '稼動率是循環溫度計'],
+      ['庫存週轉', '通路與自有庫存', '庫存去化完才會回溫'],
+      ['車規 / 工規佔比', '高階產品', '高階佔比升 = 抗循環、毛利高'],
+      ['毛利率', '產品結構與價格', '隨循環大起大落'],
+      ['循環位階', '供需循環', '典型循環股，高點低 PE 是陷阱（看 PB）']
+    ],
+    '重電 / 電力設備 / 儲能': [
+      ['在手訂單 backlog', '未來營收能見度', '訂單滿載、交期拉長 = 需求強'],
+      ['交期', '供需緊俏程度', '交期拉長代表供不應求'],
+      ['電網 / 綠能投資', '需求源頭', '電網升級、再生能源、AI 用電 = 結構成長'],
+      ['毛利率', '專案組合與議價', '訂單滿手 → 議價力強 → 毛利改善'],
+      ['產能', '供給能力', '擴產到位才接得住訂單'],
+      ['長約佔比', '營收穩定度', '長約多 = 能見度高']
+    ],
+    '航運 / 海運': [
+      ['運價指數', 'SCFI（貨櫃）/ BDI（散裝）', '運價是獲利最直接的領先指標'],
+      ['運力供需', '船舶供給 vs 貨量', '新船下水多 = 供給壓力'],
+      ['租金 / 傭船', '船舶租金行情', '租金漲 = 景氣熱'],
+      ['燃油成本', '成本端', '油價漲壓縮獲利'],
+      ['每股淨值 / PB', '循環股估值錨', '高點 EPS 暴衝、PE 失真，改看 PB'],
+      ['景氣位階', '循環位置', '強循環，判斷你站在哪一段']
+    ],
+    '電信 / 5G': [
+      ['ARPU', '每用戶平均貢獻', 'ARPU 回升 = 資費競爭趨緩'],
+      ['用戶數與流失率', '訂戶基礎', '低流失 = 黏著度高'],
+      ['5G 滲透', '升級動能', '5G 用戶佔比上升帶動 ARPU'],
+      ['資本支出', '建網投入', 'capex 高峰過後自由現金流改善'],
+      ['FCF 與殖利率', '存股價值', '穩定 FCF 撐高殖利率、防禦型'],
+      ['負債', '建網舉債', '高 capex 期負債要看得住']
     ]
   },
   render(body, key) {
@@ -4060,7 +4267,7 @@ function renderProgressDashboard() {
     { name: 'Part Ⅱ · 關鍵比率', chs: ['ch6', 'ch7', 'ch8', 'ch9', 'ch10'] },
     { name: 'Part Ⅲ · 看變化訊號', chs: ['ch11', 'ch12', 'ch13', 'ch14', 'ch15', 'ch16'] },
     { name: 'Part Ⅳ · 台股 vs 美股', chs: ['ch17', 'ch18', 'ch19'] },
-    { name: 'Part Ⅴ · 不同產業', chs: ['ch20', 'ch21', 'ch22', 'ch23', 'ch24', 'ch25'] },
+    { name: 'Part Ⅴ · 不同產業', chs: ['ch20', 'ch21', 'ch22', 'ch23', 'ch24', 'ch25', 'ch32'] },
     { name: 'Part Ⅶ · 決策框架', chs: ['ch26', 'ch27', 'ch28'] },
     { name: 'Part Ⅷ · 從框架到實戰', chs: ['ch29', 'ch30', 'ch31'] }
   ];
@@ -4135,12 +4342,12 @@ const LLMAssistant = {
   systemPrompt() {
     return `你是 FIN 台股美股財報自學系統的學習助教。用繁體中文回答。
 
-FIN 是「台股 + 美股財報判讀」單檔 HTML 自學手冊，共 31 章 + 案例庫，分 8 個 Part：
+FIN 是「台股 + 美股財報判讀」單檔 HTML 自學手冊，共 32 章 + 案例庫，分 8 個 Part：
 - Part Ⅰ Ch1-5：財報基礎（三表全景 / 損益表 / 資產負債表 / 現金流量表 / 三表串聯）
 - Part Ⅱ Ch6-10：關鍵比率（獲利能力 / 成長性 / 安全性 / 經營效率 / 評價）
 - Part Ⅲ Ch11-16：看「變化」的訊號（趨勢 / 毛利率變化 / 存貨應收警訊 / 盈餘品質 / 一次性損益 / 地雷）
 - Part Ⅳ Ch17-19：台股 vs 美股（月營收 MOPS / 10-K·10-Q·8-K / GAAP vs Non-GAAP）
-- Part Ⅴ Ch20-25：不同產業（半導體 / 金融 / 零售 / 製造循環 / SaaS / 生技）
+- Part Ⅴ Ch20-25 + Ch32：不同產業（半導體 / 金融 / 零售 / 製造循環 / SaaS / 生技；Ch32 主流產業速查：軍工 / 光通訊CPO / 封測先進封裝 / AI伺服器散熱 / 電動車 / PCB載板 / MLCC / 重電儲能 / 航運 / 電信，互動選擇器共 16 產業）
 - Part Ⅵ 案例庫：個股實戰（台積電 / 鴻海 / AAPL / NVDA / SaaS / 地雷）
 - Part Ⅶ Ch26-28：決策框架（看財報 SOP / 投資風格 / 財報+估值）
 - Part Ⅷ Ch29-31：從框架到實戰（端到端演練 / 估值落地：DCF·PEG·PE區間 / 實戰導覽：MOPS·EDGAR 怎麼抓、中英科目對照）

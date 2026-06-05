@@ -4,8 +4,9 @@
 
 ## 現在狀態
 
-- **v1.1 完成、可運作、已上線**。單檔 `index.html`（~253 KB）。線上：<https://people7771025.github.io/FIN/>
-- 內容：intro + **31 章（ch1–31）** + 案例庫 + 名詞表 + 學習進度，分 **8 個 Part**（章節對照見 HANDOFF §2）。
+- **v1.1 完成、可運作、已上線**。單檔 `index.html`（~266 KB）。線上：<https://people7771025.github.io/FIN/>
+- 內容：intro + **32 章（ch1–32）** + 案例庫 + 名詞表 + 學習進度，分 **8 個 Part**（章節對照見 HANDOFF §2）。
+- **2026-06-05 新增 ch32「當紅主流產業速查」**（版面排在 Part Ⅴ 產業末、ch25 之後）：依現今主流產業擴大教學——地緣政治線（軍工）、AI 算力供應鏈、光通訊/CPO/矽光子、循環與零組件（封測等）、能源轉型與防禦型；industry 選擇器預設顯示熱門產業。已過完整驗證（瀏覽器實跑、0 console error、quiz JSON 合法）。
 - 互動元件 **11 種** + Quiz（10 組）+ 學習路徑：dupont / ratio / waterfall / trend / pebands / dividend / quality / redflag / industry / compare / **worksheet（六步工作底稿，可填可存可匯出）**。
 - v1.1 重點：做了「能否養成獨立分析能力」的 5 視角審查，據此**補上實戰閉環**——
   - 新增 **Part Ⅷ ch29-31**：端到端走完一家公司 / 估值落地（DCF·PEG·PE 區間·殖利率）/ 實戰導覽（MOPS·EDGAR·中英科目對照）。
