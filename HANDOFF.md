@@ -87,7 +87,7 @@ Quiz 用資料驅動：
 
 ## 5. localStorage keys（沿用 OPT 命名，前綴改 `fin/`）
 
-`fin/state` `fin/visited` `fin/bookmark` `fin/completed` `fin/completed-ts` `fin/learning-plan` `fin/worksheet` `fin/gemini-key` `fin/chat-history` `fin/sync-code`
+`fin/state` `fin/visited` `fin/bookmark` `fin/completed` `fin/completed-ts` `fin/learning-plan` `fin/worksheet` `fin/quiz-review` `fin/gemini-key` `fin/chat-history` `fin/sync-code`
 
 ## 6. 內容寫作準則
 
@@ -108,6 +108,16 @@ Quiz 用資料驅動：
 
 審查報告原始輸出在 session transcript（workflow w8w19ppkn）；本檔僅留結論。
 
-## 8. 待辦 / 下一步
+## 8. 學習閉環補強（2026-06-09）
+
+本輪目標是把 FIN 從「可讀懂」推向「會練到能獨立判斷」，未新增章節編號，集中補強 ch29 / progress / quiz / worksheet：
+
+- **QuizReview 錯題重練**：新增 `fin/quiz-review`。Quiz 答錯會記錄章節、題幹、上次答案、正確答案與錯誤次數；進度頁顯示「錯題重練」，可單題或全部標為已掌握；回章節重做答對會自動移出。
+- **Worksheet 自我檢核**：六步工作底稿新增完整度分數、待補欄位、紅旗提醒。硬性目標是逼使用者把公司名稱、六步判讀、結論與評級補完整，而不是只填幾個片段。
+- **ch29 地雷反例**：在正例「宏曜電子」後加入「景峰通路」反例走查，示範低 PE / 營收成長表象下，CFO 轉負、存貨應收暴增、負債與利息壓力同步惡化時應淘汰；另加 2 題反例小測驗。
+
+驗證：`node` 解析 12 組 quiz JSON OK；抽出 `<script>` 後 `new Function()` JS parser OK；功能存在性檢查 OK。瀏覽器 localhost 實跑因本環境 Browser enterprise policy 擋 `127.0.0.1`，未做互動實跑。
+
+## 9. 待辦 / 下一步
 
 見 `WIP.md`。
