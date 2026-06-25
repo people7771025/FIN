@@ -14,47 +14,102 @@
 <link rel="manifest" href='data:application/manifest+json;charset=utf-8,{"name":"FIN 台股美股財報自學系統","short_name":"FIN","description":"財報判讀自學手冊","start_url":"./","display":"standalone","background_color":"%230f172a","theme_color":"%230f172a","orientation":"any","icons":[{"src":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxOTIgMTkyIj48cmVjdCB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgcng9IjM0IiBmaWxsPSIjMGYxNzJhIi8+PHBhdGggZD0iTTQ0IDEzMmwzMC0zNiAyNCAyMCA0Mi01OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMzRkMzk5IiBzdHJva2Utd2lkdGg9IjEyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=","sizes":"192x192","type":"image/svg+xml","purpose":"any"}]}' />
 <style>
 /* ============================================================
-   設計系統：CSS variables（light / dark / print）
-   配色：slate-900 + emerald-400 + rose-400（沿用姊妹專案 OPT/STK）
+   設計系統 v2（視覺重設計）
+   ------------------------------------------------------------
+   · 配色刻意克制：暖灰紙感淺色 / 深 slate 暗色，單一綠主色
+     語意色（漲跌/警示）降彩度、降亮度，避免刺眼與「彩虹感」
+   · Type scale（6 級，~1.20 比例）+ 8pt 間距節奏，全走 CSS 變數
+   · 變數名稱與 JS 內聯樣式相容：accent / info / warn / danger /
+     bg* / fg* / border* / radius* / shadow* / font* 一律保留
    ============================================================ */
 :root {
-  --bg: #fafaf9;
-  --bg-elev: #ffffff;
-  --bg-sunken: #f1f1ef;
-  --fg: #1c1c1c;
-  --fg-muted: #6b6b6b;
-  --fg-subtle: #9b9b9b;
-  --border: #e4e4e2;
-  --border-strong: #c8c8c5;
-  --accent: #047857;          /* emerald-700 */
-  --accent-soft: #d1fae5;
-  --warn: #c2410c;            /* orange-700 */
-  --danger: #be123c;          /* rose-700 */
-  --info: #1d4ed8;            /* blue-700 */
-  --info-soft: #dbeafe;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.05);
-  --shadow-md: 0 4px 12px rgba(0,0,0,.08);
-  --radius: 8px;
-  --radius-sm: 4px;
+  /* ── 中性色：暖灰紙感（light）─────────────────────────── */
+  --bg: #f7f6f3;             /* 紙白偏暖 */
+  --bg-elev: #fffefb;        /* 抬升面 */
+  --bg-sunken: #efece6;      /* 下沉面 */
+  --fg: #1a1a18;             /* 近黑（高對比正文）*/
+  --fg-muted: #5d5b55;       /* 輔助文字 */
+  --fg-subtle: #8f8d86;      /* 最弱層（標籤/註）*/
+  --border: #e6e3dc;
+  --border-strong: #cbc7bd;
+
+  /* ── 主色＋語意色（克制、低彩）──────────────────────── */
+  --accent: #0c6b54;         /* 深松綠：唯一主色 */
+  --accent-soft: #d9eee6;    /* 主色淡底 */
+  --accent-ink: #08503f;     /* 主色更深（文字用）*/
+  --warn: #a85a1f;           /* 赭橙（降彩）*/
+  --warn-soft: #f4e7d8;
+  --danger: #a8323f;         /* 磚紅（降彩）*/
+  --danger-soft: #f3dcdf;
+  --info: #2a5a8c;           /* 靛藍（降彩）*/
+  --info-soft: #dce6f0;
+  --pos: var(--accent);      /* 漲：與主色同系，沉穩 */
+  --neg: #b14a4a;            /* 跌：磚紅，較 danger 柔 */
+
+  /* ── 陰影（克制，無彩色光暈）────────────────────────── */
+  --shadow-sm: 0 1px 2px rgba(28,25,20,.05);
+  --shadow-md: 0 6px 24px -8px rgba(28,25,20,.13);
+  --shadow-pop: 0 18px 50px -16px rgba(28,25,20,.28);
+
+  /* ── 圓角（一致階梯）────────────────────────────────── */
+  --radius: 10px;
+  --radius-sm: 6px;
+  --radius-lg: 16px;
+
+  /* ── Type scale（base 16 · ratio ~1.2）──────────────── */
+  --fs-2xs: 11px;
+  --fs-xs:  12.5px;
+  --fs-sm:  14px;
+  --fs-base: 16px;
+  --fs-md:  17px;            /* lead / h3 */
+  --fs-lg:  20.5px;         /* h2 */
+  --fs-xl:  25px;            /* 章內大標 */
+  --fs-2xl: 31px;           /* h1 */
+  --lh-tight: 1.25;
+  --lh-snug: 1.45;
+  --lh-body: 1.78;          /* 中文長文舒適行高 */
+
+  /* ── 間距節奏（8pt 系統）────────────────────────────── */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+
+  /* ── 長文量測行寬（CJK ~38-42 字）──────────────────── */
+  --measure: 40em;
+
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
-  --font-mono: "SF Mono", Menlo, Consolas, monospace;
+  --font-mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
 }
 [data-theme="dark"] {
-  --bg: #0f172a;              /* slate-900 */
-  --bg-elev: #1e293b;          /* slate-800 */
-  --bg-sunken: #0a0f1f;
-  --fg: #e2e8f0;               /* slate-200 */
-  --fg-muted: #94a3b8;         /* slate-400 */
-  --fg-subtle: #64748b;        /* slate-500 */
-  --border: #334155;           /* slate-700 */
-  --border-strong: #475569;
-  --accent: #34d399;           /* emerald-400 */
-  --accent-soft: #064e3b;
-  --warn: #fb923c;             /* orange-400 */
-  --danger: #fb7185;           /* rose-400 */
-  --info: #60a5fa;             /* blue-400 */
-  --info-soft: #1e3a8a;
-  --shadow-md: 0 4px 12px rgba(0,0,0,.4);
+  --bg: #0e1320;             /* 深 slate（偏冷中性）*/
+  --bg-elev: #18202f;
+  --bg-sunken: #090d17;
+  --fg: #e7ecf3;
+  --fg-muted: #9aa5b6;
+  --fg-subtle: #6a7484;
+  --border: #283142;
+  --border-strong: #3b475c;
+
+  --accent: #4ec9a3;         /* 提亮松綠，暗底可讀 */
+  --accent-soft: #0f3a30;
+  --accent-ink: #7fe0c0;
+  --warn: #d99a5b;
+  --warn-soft: #3a2c1a;
+  --danger: #e2818c;
+  --danger-soft: #3a1f24;
+  --info: #6fa8dc;
+  --info-soft: #1a2c40;
+  --pos: var(--accent);
+  --neg: #e08a8a;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4);
+  --shadow-md: 0 8px 28px -10px rgba(0,0,0,.55);
+  --shadow-pop: 0 22px 58px -18px rgba(0,0,0,.7);
 }
 
 /* 重置與基礎 */
@@ -69,326 +124,479 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.75;
+  font-size: var(--fs-base);
+  line-height: var(--lh-body);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1;
 }
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
-code { font-family: var(--font-mono); font-size: .92em; background: var(--bg-sunken); padding: 1px 5px; border-radius: var(--radius-sm); }
-kbd { font-family: var(--font-mono); font-size: .85em; background: var(--bg-sunken); padding: 2px 6px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); border-bottom-width: 2px; }
-strong { color: var(--fg); font-weight: 600; }
-hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+a { color: var(--accent-ink); text-decoration: none; text-underline-offset: 2px; }
+a:hover { text-decoration: underline; text-decoration-thickness: 1px; }
+[data-theme="dark"] a { color: var(--accent); }
+code { font-family: var(--font-mono); font-size: .9em; background: var(--bg-sunken); padding: 1.5px 6px; border-radius: var(--radius-sm); border: 1px solid var(--border); color: var(--accent-ink); letter-spacing: -.01em; }
+[data-theme="dark"] code { color: var(--accent); }
+kbd { font-family: var(--font-mono); font-size: .82em; background: var(--bg-elev); padding: 2px 7px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong); border-bottom-width: 2px; color: var(--fg-muted); box-shadow: var(--shadow-sm); }
+strong { color: var(--fg); font-weight: 650; }
+/* CJK 斜體渲染不佳：em 改以底線＋字重表達強調，不上色避免噪點 */
+em { font-style: normal; font-weight: 600; color: var(--fg); text-decoration: underline; text-decoration-color: var(--border-strong); text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+hr { border: 0; border-top: 1px solid var(--border); margin: var(--sp-6) 0; }
+::selection { background: var(--accent-soft); color: var(--accent-ink); }
+[data-theme="dark"] ::selection { background: var(--accent-soft); color: var(--accent-ink); }
 
 /* Layout：頂部進度 / 左側導覽 / 主內容 */
 .topbar {
   position: sticky; top: 0; z-index: 50;
-  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-  padding: 10px 18px;
-  background: var(--bg-elev);
+  display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap;
+  padding: 10px 20px;
+  background: color-mix(in srgb, var(--bg-elev) 86%, transparent);
   border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(6px);
+  backdrop-filter: saturate(1.4) blur(12px);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
 }
-.topbar .brand { font-weight: 700; font-size: 14px; color: var(--fg); letter-spacing: .02em; white-space: nowrap; }
-.topbar .brand .sub { color: var(--fg-muted); font-weight: 400; margin-left: 8px; }
-.topbar .progress { flex: 1; height: 4px; background: var(--bg-sunken); border-radius: 2px; overflow: hidden; }
-.topbar .progress-fill { height: 100%; width: 0; background: var(--accent); transition: width .3s; }
-.topbar .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.topbar .brand { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: var(--fs-sm); color: var(--fg); letter-spacing: -.01em; white-space: nowrap; }
+.topbar .brand .mark { display: inline-flex; width: 22px; height: 22px; color: var(--accent); flex-shrink: 0; }
+.topbar .brand .mark svg { width: 100%; height: 100%; }
+.topbar .brand .sub { color: var(--fg-subtle); font-weight: 500; font-size: var(--fs-2xs); letter-spacing: .06em; text-transform: uppercase; padding-left: 9px; margin-left: 1px; border-left: 1px solid var(--border); }
+.topbar .progress { flex: 1; min-width: 60px; height: 3px; background: var(--bg-sunken); border-radius: 999px; overflow: hidden; }
+.topbar .progress-fill { height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .3s ease; }
+.topbar .actions { display: flex; gap: var(--sp-2); flex-wrap: wrap; }
 .btn {
-  font: inherit; font-size: 13px;
-  padding: 6px 12px;
-  background: var(--bg-elev); color: var(--fg);
+  font: inherit; font-size: var(--fs-xs); font-weight: 550;
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 11px;
+  background: var(--bg-elev); color: var(--fg-muted);
   border: 1px solid var(--border); border-radius: var(--radius-sm);
-  cursor: pointer; transition: all .15s;
+  cursor: pointer; transition: color .15s, border-color .15s, background .15s, box-shadow .15s;
 }
-.btn:hover { border-color: var(--accent); color: var(--accent); }
-.btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+.btn:hover { border-color: var(--border-strong); color: var(--fg); background: var(--bg-sunken); }
+.btn .ic { width: 14px; height: 14px; flex-shrink: 0; }
+.btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: var(--shadow-sm); }
+.btn.active:hover { background: var(--accent-ink); color: #fff; }
 
 .layout { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 49px); }
 .sidebar {
   background: var(--bg-elev);
   border-right: 1px solid var(--border);
-  padding: 18px 0;
+  padding: 18px 0 28px;
   position: sticky; top: 49px;
   height: calc(100vh - 49px);
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
 }
+.sidebar::-webkit-scrollbar { width: 8px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 999px; border: 2px solid var(--bg-elev); }
 .sidebar .path-pill {
-  margin: 0 14px 14px;
-  padding: 10px 12px;
+  margin: 0 14px 18px;
+  padding: 12px 14px;
   background: var(--bg-sunken);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  font-size: 12px; color: var(--fg-muted); line-height: 1.6;
+  font-size: var(--fs-xs); color: var(--fg-muted); line-height: 1.65;
 }
-.sidebar .path-pill b { color: var(--fg); }
-.sidebar .nav-group { margin-bottom: 16px; }
+.sidebar .path-pill b { color: var(--fg); font-weight: 650; }
+.sidebar .nav-group { margin-bottom: 18px; }
 .sidebar .nav-group-title {
-  padding: 6px 18px 4px;
-  font-size: 11px; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .08em;
+  padding: 6px 20px 6px;
+  font-size: var(--fs-2xs); font-weight: 700;
+  text-transform: uppercase; letter-spacing: .1em;
   color: var(--fg-subtle);
 }
 .sidebar a.nav-item {
-  display: block; padding: 5px 18px;
-  color: var(--fg-muted); font-size: 13.5px;
+  display: flex; align-items: baseline; gap: 2px;
+  padding: 7px 20px;
+  color: var(--fg-muted); font-size: var(--fs-sm); line-height: 1.4;
   border-left: 2px solid transparent;
-  text-decoration: none; transition: all .12s;
+  text-decoration: none; transition: color .12s, background .12s, border-color .12s;
 }
 .sidebar a.nav-item:hover { color: var(--fg); background: var(--bg-sunken); text-decoration: none; }
-.sidebar a.nav-item.active { color: var(--accent); border-left-color: var(--accent); background: var(--bg-sunken); font-weight: 600; }
-.sidebar a.nav-item .ch-num { color: var(--fg-subtle); font-family: var(--font-mono); margin-right: 6px; font-size: 12px; }
-.sidebar a.nav-item.active .ch-num { color: var(--accent); }
-.sidebar a.nav-item.visited::before { content: "✓"; color: var(--accent); font-weight: 700; margin-right: 5px; font-size: 11px; opacity: .55; }
+.sidebar a.nav-item.active { color: var(--accent-ink); border-left-color: var(--accent); background: var(--accent-soft); font-weight: 650; }
+[data-theme="dark"] .sidebar a.nav-item.active { color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
+.sidebar a.nav-item .ch-num { color: var(--fg-subtle); font-family: var(--font-mono); margin-right: 6px; font-size: var(--fs-xs); letter-spacing: -.02em; }
+.sidebar a.nav-item .ch-num.ch-ico { display: inline-flex; align-items: center; transform: translateY(2px); }
+.sidebar a.nav-item .ch-num.ch-ico svg { width: 15px; height: 15px; }
+.sidebar a.nav-item.active .ch-num { color: var(--accent-ink); }
+[data-theme="dark"] .sidebar a.nav-item.active .ch-num { color: var(--accent); }
+.sidebar a.nav-item.visited::before { content: ""; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); margin-right: 7px; opacity: .5; transform: translateY(-1px); flex-shrink: 0; }
 .sidebar a.nav-item.visited.active::before { opacity: 1; }
-.sidebar a.nav-item.completed { font-weight: 600; color: var(--fg); }
-.sidebar a.nav-item.completed::before { content: "✓"; color: var(--accent); font-weight: 700; margin-right: 5px; font-size: 12px; opacity: 1; }
-.sidebar a.nav-item.in-plan { background: var(--info-soft); color: var(--info); }
-.sidebar a.nav-item.in-plan.active { background: var(--bg-sunken); }
-[data-theme="dark"] .sidebar a.nav-item.in-plan { background: rgba(96,165,250,0.12); }
+.sidebar a.nav-item.completed { font-weight: 650; color: var(--fg); }
+.sidebar a.nav-item.completed::before { content: "✓"; display: inline-block; width: auto; height: auto; background: none; color: var(--accent); font-weight: 700; margin-right: 6px; font-size: var(--fs-xs); opacity: 1; transform: none; }
+.sidebar a.nav-item.in-plan { color: var(--info); box-shadow: inset 3px 0 0 var(--info); }
+.sidebar a.nav-item.in-plan.active { background: var(--accent-soft); box-shadow: none; }
 
-/* 複習提醒 */
-.sidebar a.nav-item.review-7d::after { content: " 🔄"; font-size: 11px; opacity: .85; }
-.sidebar a.nav-item.review-14d::after { content: " 🔁"; font-size: 11px; opacity: .9; }
-.sidebar a.nav-item.review-30d::after { content: " ⚠️"; font-size: 11px; }
+/* 複習提醒：以克制的小圓點分級，取代彩色 emoji */
+.sidebar a.nav-item[class*="review-"]::after { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-left: auto; align-self: center; flex-shrink: 0; }
+.sidebar a.nav-item.review-7d::after  { background: var(--info); opacity: .8; }
+.sidebar a.nav-item.review-14d::after { background: var(--warn); }
+.sidebar a.nav-item.review-30d::after { background: var(--danger); box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 22%, transparent); }
 .review-reset-btn {
-  font-size: 11px; padding: 3px 8px;
+  font-size: var(--fs-2xs); padding: 3px 9px;
   background: transparent; color: var(--warn);
-  border: 1px solid var(--warn); border-radius: var(--radius-sm);
-  cursor: pointer; font-family: inherit; margin-left: 6px; white-space: nowrap;
+  border: 1px solid color-mix(in srgb, var(--warn) 55%, var(--border)); border-radius: 999px;
+  cursor: pointer; font-family: inherit; margin-left: 6px; white-space: nowrap; transition: background .12s, color .12s;
 }
-.review-reset-btn:hover { background: var(--warn); color: white; }
+.review-reset-btn:hover { background: var(--warn); color: #fff; border-color: var(--warn); }
 
 /* LLM 助教 */
 #llm-fab {
   position: fixed; bottom: 24px; right: 24px;
-  width: 56px; height: 56px; border-radius: 50%;
-  background: var(--accent); color: white; border: none;
-  font-size: 24px; cursor: pointer;
-  box-shadow: 0 4px 18px rgba(0,0,0,.3); z-index: 90;
-  transition: transform .15s; font-family: inherit;
+  width: 54px; height: 54px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent); color: #fff; border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-pop); z-index: 90;
+  transition: transform .18s cubic-bezier(.34,1.56,.64,1), background .15s; font-family: inherit;
 }
-#llm-fab:hover { transform: scale(1.08); }
+#llm-fab svg { width: 24px; height: 24px; }
+#llm-fab:hover { transform: scale(1.08) rotate(-3deg); background: var(--accent-ink); }
+[data-theme="dark"] #llm-fab:hover { background: var(--accent-ink); }
 #llm-panel {
-  position: fixed; bottom: 92px; right: 24px;
-  width: 380px; max-width: calc(100vw - 32px);
-  height: 540px; max-height: calc(100vh - 130px);
+  position: fixed; bottom: 90px; right: 24px;
+  width: 384px; max-width: calc(100vw - 32px);
+  height: 544px; max-height: calc(100vh - 130px);
   background: var(--bg-elev); border: 1px solid var(--border);
-  border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0,0,0,.35);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-pop);
   z-index: 95; display: flex !important; flex-direction: column; overflow: hidden;
 }
 #llm-panel[hidden] { display: none !important; }
-.llm-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--bg-sunken); border-bottom: 1px solid var(--border); font-size: 14px; }
-.llm-close, .llm-icon-btn { background: transparent; border: none; color: var(--fg-muted); font-size: 14px; cursor: pointer; padding: 2px 6px; font-family: inherit; }
-.llm-close:hover, .llm-icon-btn:hover { color: var(--accent); }
-.llm-messages { flex: 1; overflow-y: auto; padding: 14px; min-height: 180px; background: var(--bg); }
-.llm-input-area { padding: 10px 14px; border-top: 1px solid var(--border); background: var(--bg-elev); }
+.llm-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--bg-sunken); border-bottom: 1px solid var(--border); font-size: var(--fs-sm); }
+.llm-close, .llm-icon-btn { background: transparent; border: none; color: var(--fg-muted); font-size: var(--fs-sm); cursor: pointer; padding: 3px 7px; border-radius: var(--radius-sm); font-family: inherit; transition: color .12s, background .12s; }
+.llm-close:hover, .llm-icon-btn:hover { color: var(--accent); background: var(--bg-elev); }
+.llm-messages { flex: 1; overflow-y: auto; padding: 16px; min-height: 180px; background: var(--bg); }
+.llm-input-area { padding: 12px 14px; border-top: 1px solid var(--border); background: var(--bg-elev); }
 @media (max-width: 600px) {
-  #llm-fab { bottom: 16px; right: 16px; width: 48px; height: 48px; font-size: 20px; }
-  #llm-panel { bottom: 72px; right: 12px; left: 12px; width: auto; height: 70vh; }
+  #llm-fab { bottom: 16px; right: 16px; width: 50px; height: 50px; }
+  #llm-fab svg { width: 22px; height: 22px; }
+  #llm-panel { bottom: 74px; right: 12px; left: 12px; width: auto; height: 70vh; }
 }
 @media print { #llm-fab, #llm-panel { display: none !important; } }
 
 /* 章節完成按鈕 */
 section[data-chapter] > h1 { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .completion-btn {
-  font-size: 12px; padding: 4px 10px;
+  font-size: var(--fs-xs); font-weight: 550; padding: 5px 12px;
   background: transparent; color: var(--fg-muted);
-  border: 1px solid var(--border); border-radius: var(--radius-sm);
-  cursor: pointer; font-family: inherit; white-space: nowrap; transition: all .12s;
+  border: 1px solid var(--border); border-radius: 999px;
+  cursor: pointer; font-family: inherit; white-space: nowrap; transition: color .12s, border-color .12s, background .12s;
 }
-.completion-btn:hover { color: var(--accent); border-color: var(--accent); }
-.completion-btn.done { background: var(--accent); color: white; border-color: var(--accent); }
-.topbar .completion-counter { font-size: 12px; color: var(--fg-muted); font-family: var(--font-mono); margin-right: 4px; }
-.topbar .completion-counter .count { color: var(--accent); font-weight: 700; }
-.sidebar .badge-mini { display: inline-block; margin-left: 4px; font-size: 10px; padding: 1px 5px; border-radius: 3px; background: var(--bg-sunken); color: var(--fg-muted); }
+.completion-btn:hover { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 55%, var(--border)); background: var(--accent-soft); }
+.completion-btn.done { background: var(--accent); color: #fff; border-color: var(--accent); }
+.completion-btn.done:hover { background: var(--accent-ink); color: #fff; }
+.topbar .completion-counter { font-size: var(--fs-xs); color: var(--fg-muted); font-family: var(--font-mono); margin-right: 4px; letter-spacing: -.01em; }
+.topbar .completion-counter .count { color: var(--accent-ink); font-weight: 700; }
+[data-theme="dark"] .topbar .completion-counter .count { color: var(--accent); }
+.sidebar .badge-mini { display: inline-block; margin-left: 6px; font-size: 9.5px; font-weight: 600; padding: 1.5px 6px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); letter-spacing: .02em; }
+[data-theme="dark"] .sidebar .badge-mini { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); }
+.sidebar a.nav-item.active .badge-mini { background: var(--bg-elev); }
 
-.content { padding: 32px 48px 80px; max-width: 980px; margin: 0 auto; width: 100%; min-width: 0; }
+/* 主內容欄：寬欄容納表格/圖表/widget；段落另以 --measure 收窄行寬 */
+.content { padding: var(--sp-7) var(--sp-7) 96px; max-width: 1040px; margin: 0 auto; width: 100%; min-width: 0; }
 
 /* Mobile menu */
-.menu-btn { display: none; font-size: 16px; padding: 5px 10px; background: var(--bg-elev); border: 1px solid var(--border); color: var(--fg); border-radius: var(--radius-sm); cursor: pointer; }
-.sidebar-overlay { display: none; position: fixed; top: 49px; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.5); z-index: 49; }
+.menu-btn { display: none; align-items: center; justify-content: center; padding: 6px; width: 34px; height: 34px; background: var(--bg-elev); border: 1px solid var(--border); color: var(--fg); border-radius: var(--radius-sm); cursor: pointer; }
+.menu-btn svg { width: 18px; height: 18px; }
+.sidebar-overlay { display: none; position: fixed; top: 49px; left: 0; right: 0; bottom: 0; background: rgba(10,13,23,.42); backdrop-filter: blur(2px); z-index: 49; }
 .sidebar-overlay.open { display: block; }
 
 @media (max-width: 900px) {
-  .menu-btn { display: inline-block; }
+  .menu-btn { display: inline-flex; }
   .layout { grid-template-columns: 1fr; }
   .sidebar {
-    position: fixed; top: 49px; left: 0; width: 82%; max-width: 320px;
+    position: fixed; top: 49px; left: 0; width: 84%; max-width: 330px;
     height: calc(100vh - 49px); transform: translateX(-105%);
     transition: transform .25s ease; z-index: 50;
-    border-right: 1px solid var(--border); box-shadow: 4px 0 16px rgba(0,0,0,.25);
+    border-right: 1px solid var(--border); box-shadow: var(--shadow-pop);
     overflow-y: auto; background: var(--bg-elev);
   }
   .sidebar.open { transform: translateX(0); }
-  .content { padding: 20px 14px; }
-  .topbar { padding: 8px 10px; gap: 8px; }
-  .topbar .brand { font-size: 13px; }
+  /* 觸控：抽屜內 nav-item 列高拉到 ~44px、行內小按鈕加大可點區 */
+  .sidebar a.nav-item { padding: 11px 20px; font-size: 15px; }
+  .sidebar .nav-group-title { padding: 8px 20px 6px; }
+  .review-reset-btn { padding: 6px 12px; font-size: var(--fs-xs); }
+  .content { padding: var(--sp-5) var(--sp-4); }
+  .topbar { padding: 9px 12px; gap: var(--sp-2); }
+  .topbar .brand { font-size: var(--fs-xs); }
   .topbar .brand .sub { display: none; }
-  .topbar .actions { gap: 4px; }
-  .topbar .actions .btn { padding: 5px 8px; font-size: 12px; }
+  .topbar .actions { gap: 5px; }
+  .topbar .actions .btn { padding: 7px 9px; font-size: var(--fs-xs); }
   .topbar .completion-counter { display: none; }
-  .widget-controls { grid-template-columns: 1fr; gap: 8px; }
-  .widget-body { padding: 14px 12px; }
-  .widget-header { padding: 10px 12px; flex-wrap: wrap; gap: 4px; }
-  .widget-meta { font-size: 11px; }
-  section[data-chapter] > h1 { font-size: 22px; gap: 8px; }
-  section[data-chapter] > h1 .completion-btn { font-size: 11px; padding: 3px 8px; }
-  section[data-chapter] h2 { font-size: 18px; }
-  section[data-chapter] h3 { font-size: 15.5px; }
-  section[data-chapter] table { display: block; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; font-size: 12px; }
-  section[data-chapter] table th, section[data-chapter] table td { padding: 6px 8px; }
-  .case { padding: 14px 14px; }
-  .case .scenarios .scenario { grid-template-columns: 70px 1fr; gap: 6px; font-size: 12.5px; }
-  .case .scenarios .scenario .pnl { grid-column: 1 / -1; text-align: left; padding-top: 2px; border-top: 1px dashed var(--border); margin-top: 4px; }
+  .widget-controls { grid-template-columns: 1fr; gap: var(--sp-2); }
+  .widget-body { padding: 15px 13px; }
+  .widget-header { padding: 11px 13px; flex-wrap: wrap; gap: 4px; }
+  .widget-meta { font-size: var(--fs-2xs); }
+  section[data-chapter] > h1 { font-size: var(--fs-xl); gap: var(--sp-2); }
+  section[data-chapter] > h1 .completion-btn { font-size: var(--fs-2xs); padding: 5px 11px; }
+  section[data-chapter] h2 { font-size: var(--fs-md); }
+  section[data-chapter] h3 { font-size: var(--fs-base); }
+  section[data-chapter] table { display: block; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; font-size: var(--fs-xs); }
+  section[data-chapter] table th, section[data-chapter] table td { padding: 7px 10px; }
+  .case { padding: 16px 15px; }
+  .case .scenarios .scenario { grid-template-columns: 72px 1fr; gap: 6px; font-size: var(--fs-xs); }
+  .case .scenarios .scenario .pnl { grid-column: 1 / -1; text-align: left; padding-top: 3px; border-top: 1px dashed var(--border); margin-top: 5px; }
   .stat-grid { grid-template-columns: repeat(2, 1fr); }
   .widget-stats { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 480px) {
-  body { font-size: 15px; }
-  .content { padding: 16px 12px; }
-  .topbar .brand { font-size: 11.5px; }
-  section[data-chapter] > h1 { font-size: 19px; }
-  section[data-chapter] h2 { font-size: 16.5px; }
+  body { font-size: 15.5px; }
+  .content { padding: var(--sp-4) var(--sp-3); }
+  .topbar .brand { font-size: var(--fs-2xs); }
+  .topbar .brand .mark { width: 19px; height: 19px; }
+  section[data-chapter] > h1 { font-size: 22px; }
+  section[data-chapter] h2 { font-size: var(--fs-base); }
   .stat-grid { grid-template-columns: 1fr; }
 }
 
-/* 章節 / Badge / Callout */
-section[data-chapter] { margin-bottom: 64px; padding-top: 16px; }
-section[data-chapter] h1 { font-size: 28px; font-weight: 800; margin: 0 0 6px; color: var(--fg); letter-spacing: -.01em; }
-section[data-chapter] h2 { font-size: 20px; font-weight: 700; margin: 32px 0 12px; padding-top: 6px; border-top: 1px solid var(--border); }
-section[data-chapter] h3 { font-size: 16.5px; font-weight: 600; margin: 24px 0 8px; }
-section[data-chapter] p { margin: 12px 0; color: var(--fg); }
-section[data-chapter] ul, section[data-chapter] ol { padding-left: 24px; }
-section[data-chapter] li { margin: 4px 0; }
+/* ============================================================
+   章節長文閱讀層級（type ladder + 量測行寬 + 節奏）
+   ============================================================ */
+section[data-chapter] { margin-bottom: var(--sp-8); padding-top: var(--sp-4); }
+section[data-chapter] h1 { font-size: var(--fs-2xl); font-weight: 800; margin: 0 0 var(--sp-3); color: var(--fg); letter-spacing: -.022em; line-height: var(--lh-tight); }
+/* h2：清楚的段落分界。上方留白拉開、左側一道短主色標記、字級與正文差兩級 */
+section[data-chapter] h2 {
+  font-size: var(--fs-lg); font-weight: 700; letter-spacing: -.012em; line-height: var(--lh-snug);
+  margin: var(--sp-7) 0 var(--sp-3); padding-top: var(--sp-5);
+  border-top: 1px solid var(--border);
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px;
+}
+section[data-chapter] h2::before {
+  content: ""; position: relative; top: 1px;
+  width: 18px; height: 3px; border-radius: 999px; background: var(--accent);
+  flex-shrink: 0; align-self: center;
+}
+/* h3：與正文拉開字重＋字級對比，不再只差 0.5px */
+section[data-chapter] h3 { font-size: var(--fs-md); font-weight: 700; letter-spacing: -.01em; margin: var(--sp-5) 0 var(--sp-2); color: var(--fg); }
+/* 附錄章首標題的線性圖示 */
+.h1-title { display: inline-flex; align-items: center; gap: 11px; }
+.h1-title .h1-ico { display: inline-flex; color: var(--accent); }
+.h1-title .h1-ico svg { width: 26px; height: 26px; }
+section[data-chapter] p { margin: var(--sp-4) 0; color: var(--fg); max-width: var(--measure); }
+section[data-chapter] ul, section[data-chapter] ol { padding-left: var(--sp-5); max-width: var(--measure); }
+section[data-chapter] li { margin: 6px 0; }
+section[data-chapter] li::marker { color: var(--fg-subtle); }
+/* 各章首段（h1 後第一段）給 lead 樣式：略大、稍淡、字距放鬆 */
+section[data-chapter] > h1 + p {
+  font-size: var(--fs-md); color: var(--fg-muted); line-height: 1.7;
+  margin-top: calc(var(--sp-2) * -1 + 2px); margin-bottom: var(--sp-5);
+}
+/* 段落內 code 與表格貼齊量測欄左緣；公式行（純 code 段）允許滿寬不換行 */
+section[data-chapter] p code { white-space: nowrap; }
 
-.badge { display: inline-block; font-size: 11.5px; font-weight: 600; padding: 2px 8px; border-radius: 999px; margin-right: 6px; border: 1px solid; vertical-align: middle; }
-.badge.core { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
-.badge.op   { color: var(--info);   border-color: var(--info);   background: var(--info-soft); }
-.badge.adv  { color: var(--warn);   border-color: var(--warn);   background: color-mix(in srgb, var(--warn) 14%, transparent); }
-.badge.stub { color: var(--fg-subtle); border-color: var(--border-strong); }
+/* ── Badge 規範 ───────────────────────────────────────────
+   標題上的 badge＝層級標籤（實心淡底、置於標題尾）
+   句中內嵌的 badge（p/li 內）＝降級為安靜的註記片，不搶眼 */
+.badge { display: inline-block; font-size: var(--fs-2xs); font-weight: 650; padding: 2px 9px; border-radius: 999px; margin-right: 6px; border: 1px solid transparent; vertical-align: middle; letter-spacing: .02em; line-height: 1.5; white-space: nowrap; }
+h1 .badge, h2 .badge, h3 .badge { margin-left: 2px; margin-right: 0; transform: translateY(-1px); }
+.badge.core { color: var(--accent-ink); border-color: color-mix(in srgb, var(--accent) 30%, transparent); background: var(--accent-soft); }
+.badge.op   { color: var(--info);   border-color: color-mix(in srgb, var(--info) 28%, transparent);   background: var(--info-soft); }
+.badge.adv  { color: var(--warn);   border-color: color-mix(in srgb, var(--warn) 30%, transparent);   background: var(--warn-soft); }
+.badge.stub { color: var(--fg-subtle); border-color: var(--border-strong); background: transparent; }
+[data-theme="dark"] .badge.core { color: var(--accent); }
+/* 句中（正文 p / li 內）的 badge：縮成小型上標標籤，緊貼前詞、讀作註記，
+   不論落在句中或句尾都不像草稿按鈕；保留淡色語意底以維持可辨識 */
+:is(section[data-chapter] p, section[data-chapter] li) > .badge {
+  font-size: 9.5px; font-weight: 700; line-height: 1; letter-spacing: .02em;
+  padding: 1.5px 5px; margin: 0 3px; border-radius: 999px; border: none;
+  position: relative; top: -.5em; vertical-align: baseline; white-space: nowrap;
+}
+:is(section[data-chapter] p, section[data-chapter] li) > .badge.core { background: var(--accent-soft); color: var(--accent-ink); }
+:is(section[data-chapter] p, section[data-chapter] li) > .badge.op   { background: var(--info-soft); color: var(--info); }
+:is(section[data-chapter] p, section[data-chapter] li) > .badge.adv  { background: var(--warn-soft); color: var(--warn); }
+[data-theme="dark"] :is(section[data-chapter] p, section[data-chapter] li) > .badge.core { color: var(--accent); }
 
-.callout { margin: 16px 0; padding: 14px 18px; border-left: 3px solid var(--info); background: var(--bg-elev); border-radius: 0 var(--radius) var(--radius) 0; font-size: 14.5px; }
-.callout.warn { border-left-color: var(--warn); }
-.callout.danger { border-left-color: var(--danger); }
-.callout.success { border-left-color: var(--accent); }
-.callout .callout-title { font-weight: 700; margin-bottom: 4px; color: var(--fg); }
+/* ── Callout：左側語意色條 + 同色極淡底，標題加小圓點 ──────── */
+.callout { margin: var(--sp-4) 0; padding: 14px 18px 14px 20px; border-left: 3px solid var(--info); background: color-mix(in srgb, var(--info-soft) 40%, var(--bg-elev)); border-radius: 0 var(--radius) var(--radius) 0; font-size: var(--fs-sm); line-height: 1.7; max-width: var(--measure); }
+.callout > :first-child { margin-top: 0; }
+.callout > :last-child { margin-bottom: 0; }
+.callout p, .callout ul, .callout ol { max-width: none; }
+.callout.warn { border-left-color: var(--warn); background: color-mix(in srgb, var(--warn-soft) 40%, var(--bg-elev)); }
+.callout.danger { border-left-color: var(--danger); background: color-mix(in srgb, var(--danger-soft) 40%, var(--bg-elev)); }
+.callout.success { border-left-color: var(--accent); background: color-mix(in srgb, var(--accent-soft) 40%, var(--bg-elev)); }
+.callout .callout-title { font-weight: 700; margin-bottom: 5px; color: var(--fg); display: flex; align-items: center; gap: 8px; }
+.callout .callout-title::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--info); flex-shrink: 0; }
+.callout.warn .callout-title::before { background: var(--warn); }
+.callout.danger .callout-title::before { background: var(--danger); }
+.callout.success .callout-title::before { background: var(--accent); }
 
-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
-th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
-th { font-weight: 700; color: var(--fg-muted); background: var(--bg-sunken); font-size: 13px; }
-tr:hover td { background: var(--bg-sunken); }
+/* ── 表格：表頭、斑馬紋、hover 三層分明 ───────────────────── */
+table { width: 100%; border-collapse: collapse; margin: var(--sp-4) 0; font-size: var(--fs-sm); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+th, td { padding: 9px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+thead th { font-weight: 650; color: var(--fg-muted); background: var(--bg-sunken); font-size: var(--fs-xs); text-transform: none; letter-spacing: .01em; border-bottom: 1px solid var(--border-strong); }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--bg-sunken) 42%, transparent); }
+tbody tr:hover td { background: color-mix(in srgb, var(--accent) 8%, var(--bg-sunken)); }
+[data-theme="dark"] tbody tr:hover td { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+td code { background: color-mix(in srgb, var(--bg-elev) 70%, transparent); }
 
-details { margin: 16px 0; padding: 12px 16px; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); }
-details summary { cursor: pointer; font-weight: 600; color: var(--fg-muted); font-size: 14px; user-select: none; list-style: none; }
-details summary::before { content: "▸ "; color: var(--accent); }
-details[open] summary::before { content: "▾ "; }
-details[open] { background: var(--bg-sunken); }
+/* ── details：折疊塊，三角自繪、開合背景變化 ─────────────── */
+details { margin: var(--sp-4) 0; padding: 12px 18px; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); max-width: var(--measure); transition: background .15s, border-color .15s; }
+details:hover { border-color: var(--border-strong); }
+details summary { cursor: pointer; font-weight: 650; color: var(--fg); font-size: var(--fs-sm); user-select: none; list-style: none; display: flex; align-items: center; gap: 9px; }
+details summary::-webkit-details-marker { display: none; }
+details summary::before { content: ""; width: 0; height: 0; border-left: 6px solid var(--accent); border-top: 4px solid transparent; border-bottom: 4px solid transparent; transition: transform .18s ease; flex-shrink: 0; }
+details[open] summary::before { transform: rotate(90deg); }
+details[open] { background: var(--bg-sunken); border-color: var(--border-strong); }
+details[open] summary { margin-bottom: 8px; color: var(--accent-ink); }
+[data-theme="dark"] details[open] summary { color: var(--accent); }
+details p { max-width: none; }
 
-/* 互動元件樣式 */
-.widget { margin: 24px 0; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.widget-header { padding: 12px 16px; background: var(--bg-sunken); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-.widget-title { font-weight: 700; font-size: 14px; }
-.widget-title .icon { color: var(--accent); margin-right: 6px; }
-.widget-meta { font-size: 12px; color: var(--fg-muted); }
-.widget-body { padding: 16px; }
-.widget-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 12px; }
-.ctrl { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; }
-.ctrl label { color: var(--fg-muted); display: flex; justify-content: space-between; }
-.ctrl label .val { color: var(--accent); font-family: var(--font-mono); font-weight: 600; }
-.ctrl input[type="range"] { width: 100%; -webkit-appearance: none; appearance: none; height: 4px; background: var(--bg-sunken); border-radius: 2px; outline: none; }
-.ctrl input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 2px solid var(--bg-elev); box-shadow: var(--shadow-sm); }
-.ctrl input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 2px solid var(--bg-elev); }
-.ctrl input.ctrl-num { background: transparent; border: 1px solid transparent; color: var(--accent); font-family: var(--font-mono); font-weight: 600; font-size: 12px; width: 90px; text-align: right; padding: 1px 4px; border-radius: 3px; outline: none; -moz-appearance: textfield; }
+/* ============================================================
+   互動元件（widget）
+   ============================================================ */
+.widget { margin: var(--sp-5) 0; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+.widget-header { padding: 13px 18px; background: var(--bg-sunken); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.widget-title { font-weight: 700; font-size: var(--fs-sm); display: flex; align-items: center; gap: 9px; letter-spacing: -.01em; }
+.widget-title .icon { color: var(--accent); margin-right: 0; display: inline-flex; align-items: center; }
+.widget-title .icon svg { width: 17px; height: 17px; display: block; }
+.widget-meta { font-size: var(--fs-xs); color: var(--fg-muted); text-align: right; }
+.widget-body { padding: 18px; }
+.widget-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--sp-4); margin-top: var(--sp-3); }
+.ctrl { display: flex; flex-direction: column; gap: 5px; font-size: var(--fs-xs); }
+.ctrl label { color: var(--fg-muted); display: flex; justify-content: space-between; gap: 8px; font-weight: 500; }
+.ctrl label .val { color: var(--accent-ink); font-family: var(--font-mono); font-weight: 700; }
+[data-theme="dark"] .ctrl label .val { color: var(--accent); }
+.ctrl input[type="range"] { width: 100%; -webkit-appearance: none; appearance: none; height: 5px; background: var(--bg-sunken); border-radius: 999px; outline: none; border: 1px solid var(--border); }
+.ctrl input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 2.5px solid var(--bg-elev); box-shadow: var(--shadow-sm); transition: transform .1s; }
+.ctrl input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.ctrl input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 2.5px solid var(--bg-elev); box-shadow: var(--shadow-sm); }
+.ctrl input.ctrl-num { background: transparent; border: 1px solid transparent; color: var(--accent-ink); font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-xs); width: 90px; text-align: right; padding: 1px 5px; border-radius: var(--radius-sm); outline: none; -moz-appearance: textfield; }
+[data-theme="dark"] .ctrl input.ctrl-num { color: var(--accent); }
 .ctrl input.ctrl-num::-webkit-inner-spin-button, .ctrl input.ctrl-num::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
 .ctrl input.ctrl-num:hover { border-color: var(--border-strong); cursor: text; }
 .ctrl input.ctrl-num:focus { border-color: var(--accent); background: var(--bg-sunken); }
 
-/* 鍵盤焦點環：只在鍵盤聚焦時出現，不影響滑鼠點擊外觀（focus-visible） */
+/* 鍵盤焦點環：只在鍵盤聚焦時出現（focus-visible），克制不刺眼 */
 :where(a, button, input, textarea, select, [tabindex]):focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
+:where(.btn, .preset-btn, .completion-btn, .nav-item):focus-visible { outline-offset: 2px; }
 
-.widget-stats, .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--border); margin-top: 12px; }
-.stat { background: var(--bg-elev); padding: 10px 12px; text-align: left; }
-.stat .label { font-size: 11px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: .04em; }
-.stat .value { font-size: 17px; font-family: var(--font-mono); font-weight: 700; color: var(--fg); margin-top: 2px; }
-.stat .value.pos { color: var(--accent); }
-.stat .value.neg { color: var(--danger); }
-.stat .hint { font-size: 11px; color: var(--fg-subtle); margin-top: 2px; line-height: 1.4; }
+.widget-stats, .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--border); margin-top: var(--sp-3); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.stat { background: var(--bg-elev); padding: 12px 14px; text-align: left; }
+.stat .label { font-size: var(--fs-2xs); color: var(--fg-subtle); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+.stat .value { font-size: var(--fs-md); font-family: var(--font-mono); font-weight: 700; color: var(--fg); margin-top: 3px; letter-spacing: -.01em; }
+.stat .value.pos { color: var(--pos); }
+.stat .value.neg { color: var(--neg); }
+.stat .hint { font-size: var(--fs-2xs); color: var(--fg-subtle); margin-top: 3px; line-height: 1.45; }
 
-.preset-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
-.preset-btn { font-size: 12px; padding: 4px 10px; background: var(--bg-sunken); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; color: var(--fg-muted); font-family: inherit; }
-.preset-btn:hover { color: var(--accent); border-color: var(--accent); }
-.preset-btn.active { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+.preset-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--sp-2); }
+.preset-btn { font-size: var(--fs-xs); font-weight: 500; padding: 5px 12px; background: var(--bg-sunken); border: 1px solid var(--border); border-radius: 999px; cursor: pointer; color: var(--fg-muted); font-family: inherit; transition: color .12s, border-color .12s, background .12s; }
+.preset-btn:hover { color: var(--accent-ink); border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
+[data-theme="dark"] .preset-btn:hover { color: var(--accent); }
+.preset-btn.active { color: var(--accent-ink); border-color: color-mix(in srgb, var(--accent) 50%, transparent); background: var(--accent-soft); font-weight: 600; }
+[data-theme="dark"] .preset-btn.active { color: var(--accent); }
 
 svg.chart { display: block; width: 100%; height: auto; max-height: 420px; }
 svg.chart .axis { stroke: var(--border-strong); stroke-width: 1; }
-svg.chart .grid { stroke: var(--border); stroke-width: 1; stroke-dasharray: 3,3; opacity: .6; }
-svg.chart .axis-label { fill: var(--fg-muted); font-size: 11px; font-family: var(--font-mono); }
+svg.chart .grid { stroke: var(--border); stroke-width: 1; stroke-dasharray: 2,4; opacity: .7; }
+svg.chart .axis-label { fill: var(--fg-subtle); font-size: 11px; font-family: var(--font-mono); }
 svg.chart .axis-title { fill: var(--fg-muted); font-size: 12px; }
 svg.chart .bar-pos { fill: var(--accent); }
-svg.chart .bar-neg { fill: var(--danger); }
-svg.chart .bar-base { fill: var(--fg-subtle); opacity: .35; }
-svg.chart .line-main { fill: none; stroke: var(--accent); stroke-width: 2.5; }
-svg.chart .line-alt { fill: none; stroke: var(--info); stroke-width: 2; stroke-dasharray: 4,3; }
+svg.chart .bar-neg { fill: var(--neg); }
+svg.chart .bar-base { fill: var(--fg-subtle); opacity: .3; }
+svg.chart .line-main { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+svg.chart .line-alt { fill: none; stroke: var(--info); stroke-width: 2; stroke-dasharray: 5,3; stroke-linejoin: round; stroke-linecap: round; }
 svg.chart .dot { fill: var(--accent); }
 svg.chart .dot-alt { fill: var(--info); }
 svg.chart .band { opacity: .14; }
 svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fill: var(--fg-muted); }
 
-.legend { display: flex; gap: 16px; font-size: 12px; color: var(--fg-muted); margin-top: 8px; flex-wrap: wrap; }
+.legend { display: flex; gap: var(--sp-4); font-size: var(--fs-xs); color: var(--fg-muted); margin-top: var(--sp-2); flex-wrap: wrap; }
 .legend-item { display: flex; align-items: center; gap: 6px; }
-.legend-swatch { width: 18px; height: 3px; border-radius: 2px; }
+.legend-swatch { width: 18px; height: 3px; border-radius: 999px; }
 
 /* 杜邦拆解 */
-.dupont-flow { display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
-.dupont-node { flex: 1; min-width: 130px; background: var(--bg-sunken); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; text-align: center; }
-.dupont-node .dn-label { font-size: 11px; color: var(--fg-muted); }
-.dupont-node .dn-val { font-size: 20px; font-family: var(--font-mono); font-weight: 700; color: var(--accent); margin: 4px 0; }
+.dupont-flow { display: flex; align-items: stretch; gap: var(--sp-2); flex-wrap: wrap; margin-top: var(--sp-4); }
+.dupont-node { flex: 1; min-width: 130px; background: var(--bg-sunken); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 12px; text-align: center; }
+.dupont-node .dn-label { font-size: var(--fs-2xs); color: var(--fg-muted); font-weight: 600; letter-spacing: .02em; }
+.dupont-node .dn-val { font-size: var(--fs-lg); font-family: var(--font-mono); font-weight: 700; color: var(--accent-ink); margin: 5px 0; letter-spacing: -.01em; }
+[data-theme="dark"] .dupont-node .dn-val { color: var(--accent); }
 .dupont-node .dn-formula { font-size: 10.5px; color: var(--fg-subtle); }
-.dupont-op { display: flex; align-items: center; font-size: 20px; color: var(--fg-muted); font-weight: 700; }
+.dupont-op { display: flex; align-items: center; font-size: var(--fs-lg); color: var(--fg-subtle); font-weight: 700; }
 
 /* checklist / redflag */
-.check-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+.check-row { display: flex; align-items: flex-start; gap: 11px; padding: 11px 12px; border-bottom: 1px solid var(--border); }
 .check-row:last-child { border-bottom: none; }
-.check-row input[type="checkbox"] { margin-top: 3px; width: 16px; height: 16px; accent-color: var(--danger); flex-shrink: 0; }
+.check-row input[type="checkbox"] { margin-top: 3px; width: 17px; height: 17px; accent-color: var(--danger); flex-shrink: 0; cursor: pointer; }
 .check-row .cr-body { flex: 1; }
-.check-row .cr-title { font-weight: 600; font-size: 13.5px; }
-.check-row .cr-desc { font-size: 12.5px; color: var(--fg-muted); }
-.redflag-score { margin-top: 14px; padding: 12px 16px; border-radius: var(--radius); font-size: 14px; font-weight: 600; }
+.check-row .cr-title { font-weight: 650; font-size: var(--fs-sm); }
+.check-row .cr-desc { font-size: var(--fs-xs); color: var(--fg-muted); line-height: 1.55; }
+.redflag-score { margin-top: var(--sp-4); padding: 13px 16px; border-radius: var(--radius); font-size: var(--fs-sm); font-weight: 650; }
 
-/* 案例卡 */
-.case { margin: 24px 0; padding: 18px 22px; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); position: relative; }
-.case .case-header { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; margin-bottom: 12px; border-bottom: 1px dashed var(--border); flex-wrap: wrap; }
-.case .case-tag { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 3px; background: var(--info-soft); color: var(--info); text-transform: uppercase; letter-spacing: .04em; }
-.case .case-title { font-weight: 700; font-size: 15px; }
-.case .scenarios { display: grid; grid-template-columns: 1fr; gap: 8px; margin: 12px 0; }
-.case .scenario { display: grid; grid-template-columns: 90px 1fr 110px; gap: 12px; padding: 8px 12px; background: var(--bg-sunken); border-radius: var(--radius-sm); font-size: 13.5px; align-items: center; }
-.case .scenario .when { font-weight: 600; color: var(--fg-muted); }
-.case .scenario .pnl { font-family: var(--font-mono); font-weight: 700; text-align: right; }
-.case .scenario .pnl.pos { color: var(--accent); }
-.case .scenario .pnl.neg { color: var(--danger); }
+/* ── 案例卡：左側語意條 + 標號式分頁標籤 ──────────────────── */
+.case { margin: var(--sp-5) 0; padding: 20px 24px; background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius-lg); position: relative; box-shadow: var(--shadow-sm); }
+.case::before { content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 999px; background: var(--accent); opacity: .85; }
+.case .case-header { display: flex; align-items: center; gap: 10px; padding-bottom: 11px; margin-bottom: 13px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.case .case-tag { font-size: var(--fs-2xs); font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); letter-spacing: .03em; text-transform: none; }
+[data-theme="dark"] .case .case-tag { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); }
+.case .case-title { font-weight: 700; font-size: var(--fs-md); letter-spacing: -.01em; }
+.case p { max-width: none; }
+.case .scenarios { display: grid; grid-template-columns: 1fr; gap: var(--sp-2); margin: var(--sp-3) 0; }
+.case .scenario { display: grid; grid-template-columns: 92px 1fr 118px; gap: var(--sp-3); padding: 9px 13px; background: var(--bg-sunken); border-radius: var(--radius-sm); font-size: var(--fs-sm); align-items: center; border: 1px solid var(--border); }
+.case .scenario .when { font-weight: 650; color: var(--fg-muted); font-size: var(--fs-xs); }
+.case .scenario .pnl { font-family: var(--font-mono); font-weight: 700; text-align: right; font-size: var(--fs-xs); }
+.case .scenario .pnl.pos { color: var(--pos); }
+.case .scenario .pnl.neg { color: var(--neg); }
 .case .scenario .pnl.neutral { color: var(--fg-muted); }
 
 /* Footer */
-.foot { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--fg-subtle); font-size: 12.5px; text-align: center; }
+.foot { margin-top: var(--sp-8); padding-top: var(--sp-5); border-top: 1px solid var(--border); color: var(--fg-subtle); font-size: var(--fs-xs); text-align: center; line-height: 1.7; }
+.foot a { color: var(--fg-muted); text-decoration: underline; text-decoration-color: var(--border-strong); }
+.foot a:hover { color: var(--accent); }
+
+/* ============================================================
+   名詞表搜尋「查無結果」空狀態（新增）
+   ============================================================ */
+#gloss-empty {
+  display: none; margin: var(--sp-5) 0; padding: 28px 24px;
+  text-align: center; background: var(--bg-sunken);
+  border: 1px dashed var(--border-strong); border-radius: var(--radius-lg);
+  color: var(--fg-muted); max-width: var(--measure);
+}
+#gloss-empty .ge-icon { display: inline-flex; color: var(--fg-subtle); margin-bottom: 10px; }
+#gloss-empty .ge-icon svg { width: 30px; height: 30px; }
+#gloss-empty .ge-title { font-weight: 650; color: var(--fg); font-size: var(--fs-sm); }
+#gloss-empty .ge-title .q { color: var(--accent-ink); }
+[data-theme="dark"] #gloss-empty .ge-title .q { color: var(--accent); }
+#gloss-empty .ge-hint { font-size: var(--fs-xs); margin-top: 6px; }
+
+/* ============================================================
+   標題錨點（新增）：hover h2/h3 露出 # 連結，方便深連到任一節
+   只在桌機指標裝置上出現，不干擾觸控與列印
+   ============================================================ */
+.anchorable { position: relative; }
+.anchor-link {
+  position: absolute; left: -22px; top: 50%; transform: translateY(-50%);
+  width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center;
+  color: var(--fg-subtle); opacity: 0; text-decoration: none;
+  transition: opacity .12s, color .12s; border-radius: var(--radius-sm);
+}
+.anchor-link svg { width: 14px; height: 14px; }
+.anchorable:hover .anchor-link, .anchor-link:focus-visible { opacity: 1; }
+.anchor-link:hover { color: var(--accent); }
+@media (hover: none), (max-width: 900px) { .anchor-link { display: none; } }
 
 /* Print */
 @media print {
-  .topbar, .sidebar, .sidebar-overlay, .menu-btn { display: none !important; }
+  .topbar, .sidebar, .sidebar-overlay, .menu-btn, .anchor-link, #gloss-empty { display: none !important; }
   .layout { grid-template-columns: 1fr; }
   .content { max-width: 100%; padding: 0; }
-  body { background: white; color: black; font-size: 12pt; }
+  body { background: white; color: black; font-size: 12pt; line-height: 1.6; }
+  section[data-chapter] p, section[data-chapter] li, .callout, details, .case { max-width: none; }
   section[data-chapter] { page-break-before: always; }
   section[data-chapter="intro"] { page-break-before: avoid; }
+  section[data-chapter] h2 { border-top: 1px solid #ccc; }
+  section[data-chapter] h2::before, .case::before, .callout .callout-title::before { display: none !important; }
   details { break-inside: avoid; }
   details:not([open]) summary::after { content: " （摺疊內容已隱藏）"; color: gray; }
   .widget-controls, .widget-stats, .stat-grid, .completion-btn, .review-reset-btn, .preset-row, #glossary-search { display: none !important; }
   .widget-header { border-bottom: 1px solid #999; }
-  .case, .callout, .widget { border: 1px solid #999 !important; background: white !important; color: black !important; }
+  .case, .callout, .widget { border: 1px solid #999 !important; background: white !important; color: black !important; box-shadow: none !important; }
   .badge { border: 1px solid #999 !important; color: black !important; background: white !important; }
+  table { border: 1px solid #999 !important; }
+  tbody tr:nth-child(even) td { background: #f5f5f5 !important; }
   a { color: black !important; text-decoration: none !important; }
   .print-cover { display: block !important; page-break-after: always; text-align: center; padding-top: 30%; font-family: var(--font-sans); }
   .print-cover h1 { font-size: 32pt; margin: 0; }
@@ -401,16 +609,27 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <body>
 
 <header class="topbar">
-  <button class="menu-btn" id="menu-btn" title="開啟 / 關閉目錄" aria-label="Toggle menu">☰</button>
-  <div class="brand">財報自學系統<span class="sub">台股 × 美股</span></div>
-  <div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
+  <button class="menu-btn" id="menu-btn" title="開啟 / 關閉目錄" aria-label="開啟或關閉目錄">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+  <div class="brand">
+    <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5"/><path d="M4 19h16"/><rect x="7.5" y="11" width="2.6" height="6" rx=".6" fill="currentColor" stroke="none"/><rect x="13.9" y="7.5" width="2.6" height="9.5" rx=".6" fill="currentColor" stroke="none"/><path d="M8.8 11V8.6M8.8 17v1.6M15.2 7.5V5.6M15.2 17v1.4"/></svg></span>
+    財報自學系統<span class="sub">台股 × 美股</span>
+  </div>
+  <div class="progress" role="progressbar" aria-label="閱讀進度"><div class="progress-fill" id="progress-fill"></div></div>
   <div class="actions">
     <span class="completion-counter" id="completion-counter" title="已完成章節數">已完成 <span class="count">0</span> / 0</span>
-    <button class="btn" id="goto-bookmark-btn" title="跳到上次標記位置" style="display:none;">📂</button>
-    <button class="btn" id="set-bookmark-btn" title="把目前位置記下來">📍 標記</button>
-    <button class="btn" id="sync-btn" title="跨裝置同步" style="display:none;">☁️ 同步</button>
+    <button class="btn" id="goto-bookmark-btn" title="跳到上次標記位置" style="display:none;">跳回標記</button>
+    <button class="btn" id="set-bookmark-btn" title="把目前位置記下來">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12a1 1 0 0 1 1 1v16l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>標記
+    </button>
+    <button class="btn" id="sync-btn" title="跨裝置同步" style="display:none;">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-7.5-4M3 12a9 9 0 0 1 9-9 9 9 0 0 1 7.5 4"/><path d="M21 3v4h-4M3 21v-4h4"/></svg>同步
+    </button>
     <button class="btn" id="theme-btn" title="切換深色 / 淺色主題">深色</button>
-    <button class="btn" id="reset-btn" title="清除閱讀進度">重置</button>
+    <button class="btn" id="reset-btn" title="清除閱讀進度">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>重置
+    </button>
   </div>
 </header>
 
@@ -418,7 +637,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
   <aside class="sidebar">
     <div class="path-pill">
       <b>台股美股財報自學系統</b>：32 章 + 案例庫 + 11 互動（產業選擇器 16 產業）+ Quiz + 名詞表。
-      右下 🤖 開 LLM 助教（自帶 Gemini key）· 按 <kbd>?</kbd> 看快速鍵。
+      右下角圓鈕開 LLM 助教（自帶 Gemini key）· 按 <kbd>?</kbd> 看快速鍵。
     </div>
 
     <div class="nav-group">
@@ -440,7 +659,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
     </div>
 
     <div class="nav-group">
-      <div class="nav-group-title">Part Ⅲ · 看「變化」的訊號 ⭐</div>
+      <div class="nav-group-title">Part Ⅲ · 看「變化」的訊號</div>
       <a class="nav-item" href="#ch11"><span class="ch-num">Ch11</span>趨勢判讀 <span class="badge-mini">✓ 趨勢</span></a>
       <a class="nav-item" href="#ch12"><span class="ch-num">Ch12</span>毛利率與成本變化</a>
       <a class="nav-item" href="#ch13"><span class="ch-num">Ch13</span>存貨 / 應收警訊</a>
@@ -480,7 +699,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
     </div>
 
     <div class="nav-group">
-      <div class="nav-group-title">Part Ⅷ · 從框架到實戰 🎯</div>
+      <div class="nav-group-title">Part Ⅷ · 從框架到實戰</div>
       <a class="nav-item" href="#ch29"><span class="ch-num">Ch29</span>實戰演練：走完一家公司 <span class="badge-mini">✓ 底稿</span></a>
       <a class="nav-item" href="#ch30"><span class="ch-num">Ch30</span>估值落地：算出一個數字</a>
       <a class="nav-item" href="#ch31"><span class="ch-num">Ch31</span>去哪抓、怎麼讀真實財報</a>
@@ -488,8 +707,8 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 
     <div class="nav-group">
       <div class="nav-group-title">附錄</div>
-      <a class="nav-item" href="#glossary"><span class="ch-num">📖</span>名詞表（中英對照）</a>
-      <a class="nav-item" href="#progress"><span class="ch-num">📊</span>學習進度</a>
+      <a class="nav-item" href="#glossary"><span class="ch-num ch-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2 2 0 0 1 6 4h5v15H6a2 2 0 0 0-2 1.5z"/><path d="M20 5.5A2 2 0 0 0 18 4h-5v15h5a2 2 0 0 1 2 1.5z"/></svg></span>名詞表（中英對照）</a>
+      <a class="nav-item" href="#progress"><span class="ch-num ch-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="12" width="3" height="5" rx=".5" fill="currentColor" stroke="none"/><rect x="12" y="8" width="3" height="9" rx=".5" fill="currentColor" stroke="none"/><rect x="17" y="14" width="0.1" height="3"/></svg></span>學習進度</a>
     </div>
   </aside>
 
@@ -530,14 +749,14 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 
       <div class="widget" data-component="path">
         <div class="widget-header">
-          <div class="widget-title"><span class="icon">🧭</span>LearningPathBuilder · 個人學習計畫</div>
+          <div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z" fill="currentColor" stroke="none"/></svg></span>LearningPathBuilder · 個人學習計畫</div>
           <div class="widget-meta">3 步 → 推薦路徑</div>
         </div>
         <div class="widget-body"></div>
       </div>
 
       <div class="callout warn">
-        <div class="callout-title">⚠️ 重要聲明</div>
+        <div class="callout-title">重要聲明</div>
         <p style="margin-top: 6px;">
           本系統純為<strong>學習用途</strong>，不構成任何投資建議。範例中的公司財務數字多為<strong>示意</strong>，用來幫助理解概念，不代表任何時點的真實申報數據；引用真實公司（台積電、AAPL 等）僅作教學案例。會計準則與申報規定以 MOPS / SEC 公告為準。
         </p>
@@ -677,7 +896,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="waterfall">
-<div class="widget-header"><div class="widget-title"><span class="icon">📊</span>損益瀑布圖 · 看錢從營收一層層被扣到淨利</div><div class="widget-meta">拖動或調整各層占比，觀察最後 EPS 怎麼變</div></div>
+<div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="11" width="3" height="6" rx=".5" fill="currentColor" stroke="none"/><rect x="13" y="7" width="3" height="10" rx=".5" fill="currentColor" stroke="none"/></svg></span>損益瀑布圖 · 看錢從營收一層層被扣到淨利</div><div class="widget-meta">拖動或調整各層占比，觀察最後 EPS 怎麼變</div></div>
 <div class="widget-body"></div>
 </div>
 
@@ -906,7 +1125,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </ul>
 
 <div class="widget" data-component="quiz" data-questions='[{"q":"一家公司連續三年淨利成長，但營業活動現金流（CFO）卻逐年落後、甚至轉負，最可能的解讀是什麼？","opts":["公司很賺錢，可以放心","可能是應收帳款或存貨大幅膨脹，獲利品質有疑慮","代表公司發了太多股利","現金流量表記錯了"],"correct":1,"explain":"灌水或惡化的淨利會推高應收帳款與存貨，反過來把 CFO 拖下去。淨利成長但 CFO 長期落後，是經典的財報地雷訊號，要回頭檢查應收與存貨的變化。"},{"q":"資產負債表上的「保留盈餘」每年是如何變動的？","opts":["等於當年營收","期初保留盈餘＋本期淨利−發放股利","等於當年的營業現金流","由公司董事會任意決定一個數字"],"correct":1,"explain":"保留盈餘是損益表連到資產負債表的橋：把每年賺到的淨利、扣掉發出去的股利後留下來累積。這也是長期獲利會讓股東權益越來越厚的原因。"},{"q":"自由現金流（FCF）的正確算法與意義是？","opts":["FCF＝淨利−股利，代表可分配盈餘","FCF＝營收−成本，代表毛利","FCF＝CFO−資本支出，代表維持營運投資後真正能自由運用的現金","FCF＝總資產−總負債，代表公司淨值"],"correct":2,"explain":"FCF＝營業活動現金流 CFO 減去資本支出 CapEx。它代表公司在養活與擴充自己之後，還能交到股東與債權人手上的真金白銀，長期為正才是會自己賺現金的機器。"},{"q":"關於三大報表的時間性質，下列何者正確？","opts":["三張表都是某一天的快照","資產負債表是某一天的存量快照，損益表與現金流量表是一段期間的流量","損益表是快照，資產負債表是流量","三張表都是一段期間的流量"],"correct":1,"explain":"資產負債表是某個特定日期的定格照片（存量）；損益表與現金流量表都涵蓋一段期間（流量）。搞懂這個差別，才不會把『某天的家底』和『一段期間的賺賠』混為一談。"}]'>
-<div class="widget-header"><div class="widget-title"><span class="icon">📝</span>本章測驗 · 三表觀念總驗收</div><div class="widget-meta">作答後看解析，重點在理解原理</div></div>
+<div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V6"/><path d="M9 3.5h2a1 1 0 0 1 1 1V5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z" fill="currentColor" stroke="none"/><path d="M10 11h4M10 15h4"/></svg></span>本章測驗 · 三表觀念總驗收</div><div class="widget-meta">作答後看解析，重點在理解原理</div></div>
 <div class="widget-body"></div>
 </div>
 </section>
@@ -985,12 +1204,12 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <p>同樣是 ROE 20%，A 公司靠「高淨利率」（像品牌精品），B 公司靠「高週轉」（像量販超市薄利多銷），C 公司靠「高槓桿」（像房地產、銀行）。三種來源風險完全不同——下面的互動元件讓你動手拉拉看，感受哪一塊在驅動 ROE。</p>
 
 <div class="widget" data-component="dupont">
-  <div class="widget-header"><div class="widget-title"><span class="icon">🧮</span>ROE 杜邦拆解 · 拉動三因子看 ROE 怎麼變</div><div class="widget-meta">調整淨利率／週轉率／槓桿，觀察來源差異</div></div>
+  <div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M5 8h14"/><path d="M9 12h0M12 12h0M15 12h0M9 15h0M12 15h0M15 15h0M9 18h0M12 18h0M15 18h0"/></svg></span>ROE 杜邦拆解 · 拉動三因子看 ROE 怎麼變</div><div class="widget-meta">調整淨利率／週轉率／槓桿，觀察來源差異</div></div>
   <div class="widget-body"></div>
 </div>
 
 <div class="widget" data-component="ratio">
-  <div class="widget-header"><div class="widget-title"><span class="icon">📊</span>比率計算機 · 輸入損益表數字算出五大獲利率</div><div class="widget-meta">填入營收／成本／淨利等，自動算比率</div></div>
+  <div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="11" width="3" height="6" rx=".5" fill="currentColor" stroke="none"/><rect x="13" y="7" width="3" height="10" rx=".5" fill="currentColor" stroke="none"/></svg></span>比率計算機 · 輸入損益表數字算出五大獲利率</div><div class="widget-meta">填入營收／成本／淨利等，自動算比率</div></div>
   <div class="widget-body"></div>
 </div>
 
@@ -1072,7 +1291,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <p>單看一季容易被雜訊騙。把營收／EPS 拉成<strong>多期趨勢</strong>，你才看得出「是持續加速、穩定成長、還是已經高點反轉」。下面的元件讓你輸入幾期數字，自動畫出 YoY 與趨勢，感受「動能」是往上還往下。</p>
 
 <div class="widget" data-component="trend">
-  <div class="widget-header"><div class="widget-title"><span class="icon">📈</span>成長趨勢圖 · 輸入多期營收/EPS 看 YoY 動能</div><div class="widget-meta">觀察成長是在加速還是減速</div></div>
+  <div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4"/><path d="M4 20h16"/><path d="M7 15l3.5-4 3 2.5L20 7"/><path d="M20 7h-3M20 7v3"/></svg></span>成長趨勢圖 · 輸入多期營收/EPS 看 YoY 動能</div><div class="widget-meta">觀察成長是在加速還是減速</div></div>
   <div class="widget-body"></div>
 </div>
 
@@ -1217,7 +1436,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="trend">
-  <div class="widget-header"><div class="widget-title"><span class="icon">🔄</span>週轉天數趨勢 · 輸入多期存貨/應收看 CCC 變化</div><div class="widget-meta">觀察現金循環是在縮短還是拉長</div></div>
+  <div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14-4.5L4 8"/><path d="M4 4v4h4"/><path d="M4 13a8 8 0 0 0 14 4.5L20 16"/><path d="M20 20v-4h-4"/></svg></span>週轉天數趨勢 · 輸入多期存貨/應收看 CCC 變化</div><div class="widget-meta">觀察現金循環是在縮短還是拉長</div></div>
   <div class="widget-body"></div>
 </div>
 
@@ -1257,7 +1476,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </details>
 
 <div class="widget" data-component="pebands">
-  <div class="widget-header"><div class="widget-title"><span class="icon">🌊</span>本益比河流圖 · 看現價落在歷史估值哪一段</div><div class="widget-meta">高估/合理/低估色帶對照</div></div>
+  <div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8c2 0 2 1.6 4 1.6S9 8 11 8s2 1.6 4 1.6S17 8 19 8s2 1.6 2 1.6"/><path d="M3 13c2 0 2 1.6 4 1.6S9 13 11 13s2 1.6 4 1.6S17 13 19 13s2 1.6 2 1.6"/><path d="M3 18c2 0 2 1.4 4 1.4S9 18 11 18s2 1.4 4 1.4S17 18 19 18"/></svg></span>本益比河流圖 · 看現價落在歷史估值哪一段</div><div class="widget-meta">高估/合理/低估色帶對照</div></div>
   <div class="widget-body"></div>
 </div>
 
@@ -1294,7 +1513,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="dividend">
-  <div class="widget-header"><div class="widget-title"><span class="icon">💰</span>殖利率／填息試算 · 輸入股價與股利看報酬與填息</div><div class="widget-meta">區分「領到股利」與「真的賺到」</div></div>
+  <div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v9M14.3 9.3c-.6-.9-3.8-1.4-3.8.7 0 2 3.8 1 3.8 3 0 2.1-3.2 1.7-3.9.6"/></svg></span>殖利率／填息試算 · 輸入股價與股利看報酬與填息</div><div class="widget-meta">區分「領到股利」與「真的賺到」</div></div>
   <div class="widget-body"></div>
 </div>
 
@@ -1314,7 +1533,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="quiz" data-questions='[{"q":"某公司營收 YoY +30%，但毛利率從 45% 降到 38%、應收帳款週轉天數(DSO)同時拉長。最合理的解讀是？","opts":["高品質成長，可放心追價","可能靠降價／放寬授信硬衝量，成長品質存疑","營收成長就是好事，毛利率不重要","代表公司有強大定價權"],"correct":1,"explain":"營收雖成長，但毛利率下滑代表可能在流血換量，DSO拉長代表賒帳塞貨、現金收不回來。營收(面子)成長但獲利與現金(裡子)惡化，是典型的低品質成長訊號。"},{"q":"兩家公司 ROE 同為 18%，A 靠「淨利率高」，B 靠「權益乘數(槓桿)高」。下列何者正確？","opts":["兩者一樣安全，ROE 相同即可","B 風險較高，景氣或利率反轉時會放大虧損","A 風險較高，因為利潤太集中","ROE 相同就不需要再分析"],"correct":1,"explain":"杜邦拆解的價值就在分辨 ROE 來源。靠高槓桿撐出的 ROE，在景氣反轉或升息時，利息與虧損會被放大，安全性遠低於靠真實獲利能力(高淨利率)的公司。"},{"q":"一檔股票現金殖利率高達 9%，看起來很誘人。最該優先檢查的是？","opts":["殖利率越高一定越好，直接買進","股息發放率是否>100%、股利能否持續、除息後能否填息","只要看本益比就夠了","高殖利率代表公司一定很賺錢"],"correct":1,"explain":"高殖利率可能是股價大跌灌出來的。若發放率長期>100%代表在吃老本配息、不可持續；且除息後若不填息，只是把本金配回給你，並非真正賺到。殖利率要配發放率與填息一起看。"},{"q":"關於本益比 P/E，下列敘述何者最正確？","opts":["P/E 越低一定越便宜越該買","景氣循環股在獲利高峰時 P/E 偏低，反而可能是危險訊號","P/E 可以跨產業直接比大小","高 P/E 一定代表股價泡沫"],"correct":1,"explain":"景氣循環股(鋼鐵、航運、面板)在獲利最高峰時分母EPS最大，P/E反而最低，但下一步常是獲利反轉，是『最危險的便宜』。低P/E也可能是價值陷阱。P/E不能單用，且不能跨產業硬比。"}]'>
-  <div class="widget-header"><div class="widget-title"><span class="icon">📝</span>本章測驗 · 評價與比率綜合</div></div>
+  <div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V6"/><path d="M9 3.5h2a1 1 0 0 1 1 1V5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z" fill="currentColor" stroke="none"/><path d="M10 11h4M10 15h4"/></svg></span>本章測驗 · 評價與比率綜合</div></div>
   <div class="widget-body"></div>
 </div>
 </section>
@@ -1338,7 +1557,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </ul>
 <div class="callout">
 <div class="callout-title">為什麼零售、消費電子要看 YoY</div>
-<p>消費電子在 Q4（西方耶誕、新機上市）通常最旺，零售在年節最旺。如果你用 QoQ 看 Q1 比 Q4「衰退」，那只是季節循環，不是公司變差。<span class="badge core">核心</span> 有明顯季節性的產業，主看 YoY；QoQ 只當輔助看動能轉折。</p>
+<p>消費電子在 Q4（西方耶誕、新機上市）通常最旺，零售在年節最旺。如果你用 QoQ 看 Q1 比 Q4「衰退」，那只是季節循環，不是公司變差。有明顯季節性的產業，主看 YoY；QoQ 只當輔助看動能轉折。<span class="badge core">核心</span></p>
 </div>
 
 <h3>台股的特殊利器：月營收</h3>
@@ -1358,7 +1577,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <p>（以上為示意數字）兩家都還在成長，但 A 的成長在<strong>加速</strong>（斜率向上），B 的成長在<strong>急速降溫</strong>（斜率向下）。市場往往對「成長率的二階變化」反應最大：B 雖然數字還是正的，但動能轉弱，股價可能先跌。<strong>看趨勢時，要看的是成長率本身的趨勢，而不只是營收的趨勢。</strong></p>
 
 <h2>一定要和同業、大盤比</h2>
-<p>一家公司 YoY +10% 是好是壞？答案是「看別人」。如果整個產業都 +25%，那 +10% 其實是在<strong>輸掉市占</strong>；如果同業全部衰退、它還能 +10%，那是逆勢搶單。<span class="badge op">實務</span> 絕對成長率要放進產業脈絡才有意義，務必拉 2~3 家同業疊在同一張圖上比。</p>
+<p>一家公司 YoY +10% 是好是壞？答案是「看別人」。如果整個產業都 +25%，那 +10% 其實是在<strong>輸掉市占</strong>；如果同業全部衰退、它還能 +10%，那是逆勢搶單。絕對成長率要放進產業脈絡才有意義，務必拉 2~3 家同業疊在同一張圖上比。<span class="badge op">實務</span></p>
 
 <div class="callout danger">
 <div class="callout-title">趨勢判讀三大陷阱</div>
@@ -1370,7 +1589,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="trend">
-<div class="widget-header"><div class="widget-title"><span class="icon">📈</span>趨勢實驗室 · 拖出 4~8 季數字看方向與斜率</div><div class="widget-meta">切換 YoY／QoQ，疊上同業比一比</div></div>
+<div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4"/><path d="M4 20h16"/><path d="M7 15l3.5-4 3 2.5L20 7"/><path d="M20 7h-3M20 7v3"/></svg></span>趨勢實驗室 · 拖出 4~8 季數字看方向與斜率</div><div class="widget-meta">切換 YoY／QoQ，疊上同業比一比</div></div>
 <div class="widget-body"></div>
 </div>
 
@@ -1539,7 +1758,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="quality">
-<div class="widget-header"><div class="widget-title"><span class="icon">💧</span>盈餘品質檢測 · 輸入淨利與 CFO 立刻算比值</div><div class="widget-meta">看連續幾年趨勢，紅燈會自動標示</div></div>
+<div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5c3.2 3.8 5.5 6.7 5.5 9.5a5.5 5.5 0 0 1-11 0c0-2.8 2.3-5.7 5.5-9.5z"/><path d="M9.5 13.5c0 1.4 1.1 2.5 2.5 2.5"/></svg></span>盈餘品質檢測 · 輸入淨利與 CFO 立刻算比值</div><div class="widget-meta">看連續幾年趨勢，紅燈會自動標示</div></div>
 <div class="widget-body"></div>
 </div>
 
@@ -1671,12 +1890,12 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="redflag">
-<div class="widget-header"><div class="widget-title"><span class="icon">🚩</span>地雷檢查清單 · 逐項打勾算出風險分數</div><div class="widget-meta">勾愈多燈愈紅，亮 3 盞以上請追原因</div></div>
+<div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V4"/><path d="M6 4.5c3-1.6 6 1.4 9 0v8c-3 1.4-6-1.6-9 0" fill="currentColor" fill-opacity=".14"/></svg></span>地雷檢查清單 · 逐項打勾算出風險分數</div><div class="widget-meta">勾愈多燈愈紅，亮 3 盞以上請追原因</div></div>
 <div class="widget-body"></div>
 </div>
 
 <div class="widget" data-component="quiz" data-questions='[{"q":"某公司營收連兩季 YoY 成長，但存貨 YoY +45%、應收 YoY +50%、營收只 YoY +10%，且 CFO 連續為負。最合理的判讀是？","opts":["本業強勁，可安心追蹤","獲利品質惡化，疑似塞貨/賣不動，現金沒進來","只是季節性，無須在意","毛利率一定同步上升"],"correct":1,"explain":"存貨與應收成長遠超營收、加上 CFO 為負，是盈餘品質惡化的典型組合：收入認了卻變成收不回的應收與賣不掉的存貨，現金沒真的進來。漂亮的損益表被資產負債表與現金流量表打臉。"},{"q":"關於毛利率上升的解讀，下列哪一項屬於「會反轉、不代表體質變強」的原因？","opts":["產品有護城河、漲價客戶仍買單（定價力）","高毛利產品佔比結構性提升（mix 改善）","原料成本下跌使單位成本降低","品牌價值長期累積"],"correct":2,"explain":"原料成本下跌是外生且會反轉的因素，原料反彈時毛利率就會吐回去。定價力與產品組合 mix 的結構性改善才反映體質。判讀毛利率變化一定要拆原因，分清楚是『體質』還是『外部行情』。"},{"q":"觀察『毛利率上升，但營益率持平或下降』這種背離，最可能的解讀是？","opts":["公司一定在作假帳","產品變賺，但銷售/管理/研發等營業費用大幅膨脹，吃掉了毛利改善","稅率突然上升所致","業外損益暴增"],"correct":1,"explain":"毛利率在毛利層、營益率再扣掉營業三費。毛利改善卻換不到營益改善，代表錢花在費用上，要進一步查是『投資未來』還是『費用失控』。背離本身就是值得追問的訊號。"},{"q":"下列哪一項『不是』判斷一次性 vs 經常性損益、或盈餘品質時的正確做法？","opts":["看獲利趨勢主看本業營業利益，而非被業外灌出來的淨利","美股看 Non-GAAP 時要檢視公司剔除了哪些項目、合不合理","只要 EPS 創新高就代表本業變強，可直接給高本益比","算業外佔稅前淨利的比重，判斷淨利有多少靠本業以外湊出來"],"correct":2,"explain":"EPS 創新高可能是處分資產、匯兌、評價等一次性業外灌進來的，明年不會再有，不能直接視為本業變強。要剝離一次性項目、回到營業利益的趨勢，並對照現金流，才知道獲利能不能持續。"}]'>
-<div class="widget-header"><div class="widget-title"><span class="icon">📝</span>本章測驗</div></div>
+<div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V6"/><path d="M9 3.5h2a1 1 0 0 1 1 1V5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z" fill="currentColor" stroke="none"/><path d="M10 11h4M10 15h4"/></svg></span>本章測驗</div></div>
 <div class="widget-body"></div>
 </div>
 </section>
@@ -1810,7 +2029,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="quiz" data-questions='[{"q":"台股的「月營收」最大的價值與限制是？","opts":["完整揭露三表，可直接算出毛利率","高頻領先訊號，但只有營收、看不到獲利與現金","等同於季報，不必再看季報","只有美股才有月營收"],"correct":1,"explain":"月營收每月10日前公告，是台股獨有的高頻領先訊號，但只有營收一個數字，看不到毛利、淨利與現金流，需等季報驗證。"},{"q":"美股財報「數字很好股價卻大跌」，最常見的原因是？","opts":["財報造假被抓","實際結果不如市場原本的高預期，或 guidance 保守","美股不看財報","當天大盤一定下跌"],"correct":1,"explain":"美股股價反映的是「預期差」。即使 YoY 大增，只要不如分析師共識預期或公司下修 guidance，仍可能重挫。"},{"q":"關於 Non-GAAP，正確的觀念是？","opts":["Non-GAAP 一定比 GAAP 準確","應以 GAAP 為基準，並追問 Non-GAAP 剔除了什麼、合不合理","SBC（股權薪酬）不是真實成本，剔除很合理","台股也普遍使用 Non-GAAP"],"correct":1,"explain":"Non-GAAP 是公司自行調整的數字，常剔除 SBC 等真實費用。應以法定 GAAP 為基準，並檢視 Non-GAAP 剔除項目的金額與合理性。"}]'>
-  <div class="widget-header"><div class="widget-title"><span class="icon">📝</span>本章測驗</div></div>
+  <div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V6"/><path d="M9 3.5h2a1 1 0 0 1 1 1V5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z" fill="currentColor" stroke="none"/><path d="M10 11h4M10 15h4"/></svg></span>本章測驗</div></div>
   <div class="widget-body"></div>
 </div>
 </section>
@@ -1868,7 +2087,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="industry">
-<div class="widget-header"><div class="widget-title"><span class="icon">📊</span>產業指標選擇器 · 半導體/科技硬體</div><div class="widget-meta">挑指標看它的好壞訊號</div></div>
+<div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="11" width="3" height="6" rx=".5" fill="currentColor" stroke="none"/><rect x="13" y="7" width="3" height="10" rx=".5" fill="currentColor" stroke="none"/></svg></span>產業指標選擇器 · 半導體/科技硬體</div><div class="widget-meta">挑指標看它的好壞訊號</div></div>
 <div class="widget-body"></div>
 </div>
 
@@ -1923,7 +2142,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="industry">
-<div class="widget-header"><div class="widget-title"><span class="icon">📊</span>產業指標選擇器 · 金融</div><div class="widget-meta">銀行與保險指標分開挑</div></div>
+<div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="11" width="3" height="6" rx=".5" fill="currentColor" stroke="none"/><rect x="13" y="7" width="3" height="10" rx=".5" fill="currentColor" stroke="none"/></svg></span>產業指標選擇器 · 金融</div><div class="widget-meta">銀行與保險指標分開挑</div></div>
 <div class="widget-body"></div>
 </div>
 
@@ -1975,7 +2194,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="industry">
-<div class="widget-header"><div class="widget-title"><span class="icon">📊</span>產業指標選擇器 · 零售/消費</div><div class="widget-meta">挑指標看它的好壞訊號</div></div>
+<div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="11" width="3" height="6" rx=".5" fill="currentColor" stroke="none"/><rect x="13" y="7" width="3" height="10" rx=".5" fill="currentColor" stroke="none"/></svg></span>產業指標選擇器 · 零售/消費</div><div class="widget-meta">挑指標看它的好壞訊號</div></div>
 <div class="widget-body"></div>
 </div>
 
@@ -2023,7 +2242,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="industry">
-<div class="widget-header"><div class="widget-title"><span class="icon">📊</span>產業指標選擇器 · 製造/傳產/循環</div><div class="widget-meta">挑指標看它的好壞訊號</div></div>
+<div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="11" width="3" height="6" rx=".5" fill="currentColor" stroke="none"/><rect x="13" y="7" width="3" height="10" rx=".5" fill="currentColor" stroke="none"/></svg></span>產業指標選擇器 · 製造/傳產/循環</div><div class="widget-meta">挑指標看它的好壞訊號</div></div>
 <div class="widget-body"></div>
 </div>
 
@@ -2075,7 +2294,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="industry">
-<div class="widget-header"><div class="widget-title"><span class="icon">📊</span>產業指標選擇器 · 軟體/SaaS</div><div class="widget-meta">挑指標看它的好壞訊號</div></div>
+<div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="11" width="3" height="6" rx=".5" fill="currentColor" stroke="none"/><rect x="13" y="7" width="3" height="10" rx=".5" fill="currentColor" stroke="none"/></svg></span>產業指標選擇器 · 軟體/SaaS</div><div class="widget-meta">挑指標看它的好壞訊號</div></div>
 <div class="widget-body"></div>
 </div>
 
@@ -2134,14 +2353,14 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="industry">
-<div class="widget-header"><div class="widget-title"><span class="icon">📊</span>產業指標選擇器 · 生技/製藥</div><div class="widget-meta">挑指標看它的好壞訊號</div></div>
+<div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="11" width="3" height="6" rx=".5" fill="currentColor" stroke="none"/><rect x="13" y="7" width="3" height="10" rx=".5" fill="currentColor" stroke="none"/></svg></span>產業指標選擇器 · 生技/製藥</div><div class="widget-meta">挑指標看它的好壞訊號</div></div>
 <div class="widget-body"></div>
 </div>
 
 <details><summary>想深入：為什麼生技要看「現金增資」與股本變化</summary><p>沒有營收的生技靠不斷現金增資（發新股募資）續命。所以即使你看好它的藥，也要追蹤「在成功之前，它會增資稀釋你幾次」。現金跑道短的公司，常在股價低點被迫增資，老股東權益被嚴重稀釋。看財報時把「在外流通股數」的歷史變化拉出來看，和現金跑道一起評估——一家好藥但不斷以低價增資的公司，散戶未必賺得到那個成功。</p></details>
 
 <div class="widget" data-component="quiz" data-questions='[{"q":"某景氣循環股（如航運）目前本益比只有 4 倍，遠低於歷史，下列判斷何者較正確？","opts":["本益比很低，現在是難得的便宜買點","可能是景氣高點、盈餘見頂，低 P/E 反而是警訊","循環股本益比越低風險越低","應該直接和科技成長股比本益比"],"correct":1,"explain":"循環股在景氣高點 EPS 暴衝，分母 E 變大讓 P/E 被壓到很低，這常是盈餘見頂的訊號而非便宜。循環股應改用股價淨值比（P/B）與長期平均盈餘判斷景氣位階。"},{"q":"一家 SaaS 公司淨收入留存率（NRR）為 120%，這代表什麼？","opts":["毛利率有 120%","就算完全不開發新客，舊客戶因加購升級明年仍會付更多錢","公司今年成長率是 120%","客戶流失率高達 120%"],"correct":1,"explain":"NRR 只計算既有客戶的收入變化，>100% 代表舊客戶的加購、升級、用量成長超過了流失與降級，產品黏著、有自然擴張力。這是 SaaS 護城河最誠實的指標之一。"},{"q":"看銀行股時，下列哪一組才是合適的核心指標？","opts":["毛利率、存貨週轉、同店銷售成長","淨利差 NIM、逾放比、覆蓋率、資本適足率","綜合成本率、保費成長、解盲進度","稼動率、運價指數、原物料價差"],"correct":1,"explain":"銀行不適用製造業或零售業的比率。核心要看賺利差能力（NIM）、資產品質（逾放比、覆蓋率）與抗風險能力（資本適足率 BIS），評價常用股價淨值比 P/B 而非本益比。"},{"q":"一家尚無營收的早期生技公司，最該優先確認的是什麼？","opts":["本益比是否低於同業","關鍵藥物的臨床階段，以及現金跑道夠不夠撐到下一個關鍵數據","毛利率與營業利益率的趨勢","同店銷售成長與線上佔比"],"correct":1,"explain":"沒有營收的生技，本益比與毛利率多半無意義。價值來自研發管線的臨床進度，而現金（燒錢速度與跑道）決定它能不能撐到下一個解盲或審核事件——撐不到就可能被迫低價增資稀釋股東。"}]'>
-<div class="widget-header"><div class="widget-title"><span class="icon">📝</span>本章測驗</div></div>
+<div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V6"/><path d="M9 3.5h2a1 1 0 0 1 1 1V5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z" fill="currentColor" stroke="none"/><path d="M10 11h4M10 15h4"/></svg></span>本章測驗</div></div>
 <div class="widget-body"></div>
 </div>
 </section>
@@ -2262,12 +2481,12 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <p>下面的選擇器已經把這些產業都收進去了（共 16 個產業），選一個看它該盯的指標：</p>
 
 <div class="widget" data-component="industry" data-industry="光通訊 / CPO / 矽光子">
-  <div class="widget-header"><div class="widget-title"><span class="icon">🏭</span>產業指標選擇器 · 選產業看該盯的數字</div><div class="widget-meta">已擴充到 16 個產業</div></div>
+  <div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V10l5 3.5V10l5 3.5V10l5 3.5V21z"/><path d="M3 21h18"/><path d="M6 7.5L5.6 4h1.8L7 7.5"/></svg></span>產業指標選擇器 · 選產業看該盯的數字</div><div class="widget-meta">已擴充到 16 個產業</div></div>
   <div class="widget-body"></div>
 </div>
 
 <div class="widget" data-component="quiz" data-questions='[{"q":"分析軍工 / 國防股，為什麼「在手訂單(backlog)與 book-to-bill」常比當期營收更重要？","opts":["因為軍工股不公布營收","因為合約金額大、交期長達數年，營收會因交付時點單季暴起暴落，backlog 才反映真實能見度","因為政府規定只能看訂單","因為軍工股沒有損益表"],"correct":1,"explain":"軍工合約大且交期長，單季營收受大案交付時點影響會暴起暴落，用單季 YoY 易誤判；在手訂單與 book-to-bill(大於1代表接單大於出貨)才是真正的領先指標。"},{"q":"光通訊 / CPO 這類「賣鏟子」的 AI 供應鏈，獲利與評價最該連動哪個外部變數？","opts":["黃金價格","下游雲端大廠的資本支出(capex)與 AI 網路需求","台幣匯率","國際油價"],"correct":1,"explain":"光通訊客戶是雲端大廠，模組需求直接連動它們的 AI capex；下游 capex 財測上修是直接受惠訊號，capex 見頂疑慮則會先殺評價，看下游 capex 比看自己歷史更準。"},{"q":"關於半導體封測 / 先進封裝(OSAT)，下列何者是看它的最關鍵「變化」？","opts":["傳統打線封裝的數量","先進封裝(CoWoS / SoIC)營收佔比上升，代表產品結構升級、毛利改善","員工人數","辦公室租金"],"correct":1,"explain":"AI 讓先進封裝從後段配角變主角，CoWoS/SoIC 單價與毛利遠高於傳統封裝，先進封裝營收佔比上升是結構改善的核心訊號；同一檔封測股要拆它的先進封裝佔比，別一概而論。"},{"q":"被動元件(MLCC)、航運等典型循環股，在景氣高峰出現「EPS 暴衝、本益比(PE)跌到個位數」時，較合理的解讀是？","opts":["PE 很低代表超便宜，應大力買進","這常是循環高點的危險訊號，盈餘不可持續，應改看 PB 與循環位階","PE 低一定是公司造假","循環股不需要看任何估值"],"correct":1,"explain":"循環股在景氣高峰盈餘暴衝會讓 PE 失真地偏低，這往往是賣點而非買點；應改用 PB 與循環位階(運價/稼動率/報價)判斷你站在循環哪一段，這是 Ch23 的核心觀念。"}]'>
-  <div class="widget-header"><div class="widget-title"><span class="icon">📝</span>本章測驗</div></div>
+  <div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V6"/><path d="M9 3.5h2a1 1 0 0 1 1 1V5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z" fill="currentColor" stroke="none"/><path d="M10 11h4M10 15h4"/></svg></span>本章測驗</div></div>
   <div class="widget-body"></div>
 </div>
 </section>
@@ -2416,7 +2635,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <p>學會了「不同模式看不同指標」，最好的練習就是<strong>把兩家公司並排比較</strong>，並提醒自己「比的是同一個東西嗎」。例如高毛利的台積電 vs 低毛利的鴻海，比毛利率毫無意義，要比的是<strong>ROE 的來源拆解</strong>；又如成長期的 NVDA vs 成熟的 AAPL，比的重點是<strong>成長性 vs 股東回報</strong>。用下面的工具自己挑兩家試試。</p>
 
 <div class="widget" data-component="compare">
-  <div class="widget-header"><div class="widget-title"><span class="icon">⚖️</span>兩公司比一比 · 並排對照關鍵財務指標</div><div class="widget-meta">選兩家公司，看哪些指標才該拿來比</div></div>
+  <div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M7 7h10"/><path d="M7 7l-3 6h6z" fill="currentColor" fill-opacity=".12"/><path d="M17 7l-3 6h6z" fill="currentColor" fill-opacity=".12"/><path d="M2.5 20h19" stroke-opacity=".5"/></svg></span>兩公司比一比 · 並排對照關鍵財務指標</div><div class="widget-meta">選兩家公司，看哪些指標才該拿來比</div></div>
   <div class="widget-body"></div>
 </div>
 
@@ -2430,7 +2649,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="quiz" data-questions='[{"q":"看台積電 2330 的財報，下列哪個是最核心的觀察重點？","opts":["毛利率趨勢與資本支出(capex)","存款利息與放款利息的利差","年度經常性收入 ARR","逾放比與覆蓋率"],"correct":0,"explain":"台積電是高毛利、巨額 capex 的半導體代工，護城河反映在毛利率，而 capex 會轉為未來折舊壓在成本上，因此要盯毛利率趨勢與 capex；NIM/ARR/逾放比分別是銀行與 SaaS 的指標，不適用。"},{"q":"鴻海 2317 屬於「毛三到四」的低毛利代工模式，為什麼不該用毛利率高低來評斷它？","opts":["代工廠不需要看任何財務指標","因為它賺的是規模×週轉，重點在營益率與資產週轉率","因為代工廠沒有損益表","因為毛利率越低代表公司越好"],"correct":1,"explain":"EMS 代工是低毛利高週轉模式，利潤靠龐大營收與快速週轉滾出來，所以要看營益率(費用控管)與總資產/存貨週轉率，並用杜邦分解理解其 ROE 主要靠週轉撐起，而非單位毛利。"},{"q":"一家公司淨利連續四年成長，但營運現金流(CFO)由正轉負、存貨與應收帳款增速遠超營收。最合理的解讀是？","opts":["獲利品質良好，可放心","這是盈餘品質惡化、可能灌收入/塞貨的爆雷前兆","CFO 為負是好事，代表積極投資","存貨增加一定代表需求旺盛"],"correct":1,"explain":"淨利與 CFO 長期背離，加上存貨、應收同步暴增，典型是用塞貨或放寬授信美化損益表，賺到的是帳上利潤而非現金。口訣:淨利可以化妝、現金流很難說謊。"},{"q":"關於蘋果(AAPL)用龐大自由現金流大量回購股票，下列敘述何者正確？","opts":["回購會增加流通在外股數","回購使分母(流通股數)變小，即使淨利持平 EPS 也會上升，需分辨成長是來自本業還是股數減少","回購一定代表本業淨利成長","回購對 EPS 沒有任何影響"],"correct":1,"explain":"EPS = 稅後淨利 ÷ 流通在外股數。持續回購使股數(分母)下降，會放大 EPS，因此看到 EPS 創高要分辨是淨利真的成長，還是財務工程把股數買掉了，最好同時看淨利成長率與股數變化。"}]'>
-  <div class="widget-header"><div class="widget-title"><span class="icon">📝</span>本章測驗</div></div>
+  <div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V6"/><path d="M9 3.5h2a1 1 0 0 1 1 1V5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z" fill="currentColor" stroke="none"/><path d="M10 11h4M10 15h4"/></svg></span>本章測驗</div></div>
   <div class="widget-body"></div>
 </div>
 
@@ -2638,7 +2857,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="quiz" data-questions='[{"q":"依照 ch26 的看財報 SOP，由上而下的閱讀順序，下列何者最適合放在「最後一步」？","opts":["營收趨勢","現金流品質","評價（PE/PB/殖利率）","獲利結構"],"correct":2,"explain":"先用營收、獲利、現金流、負債、比率確認「體質好不好」，最後才看「現在貴不貴」。評價放最後，是為了避免被「便宜」綁架而買進爛公司（價值陷阱）。"},{"q":"某公司連續三年淨利為正，但營業現金流（CFO）卻持續為負，最該優先懷疑什麼？","opts":["公司現金太多不知道怎麼用","獲利可能是帳面數字，例如靠應收帳款灌出來、未真正收到現金","這是成長股的正常現象，不用理會","代表公司配息能力很強"],"correct":1,"explain":"淨利是會計上的獲利，CFO 才是實際收到的現金。淨利為正但 CFO 長期為負，常見原因是把還沒收到錢的銷貨先認列為獲利（應收暴增），獲利品質有疑慮，須回去翻附註找原因。"},{"q":"關於存股族最在意的「殖利率」，下列敘述何者正確？","opts":["殖利率越高一定越好，看到高殖利率就該買","要確認股利是用自由現金流（FCF）支應、且能穩定持續，而非靠借錢或賣資產","殖利率只看今年一年即可，不必看歷史","股價暴跌讓殖利率變高，是穩賺不賠的好機會"],"correct":1,"explain":"殖利率＝股利÷股價，股價暴跌會讓殖利率「看起來」變高，往往是市場提前反映股利將被砍。真正能存的標的，股利要由 FCF 穩定覆蓋、能穿越景氣循環，而不是掏老本或借錢硬發。"},{"q":"「好公司不等於好股票」這句話，最核心的意涵是？","opts":["財報好的公司其實都不能買","公司體質（財報）與股價是否便宜（估值）是兩個獨立問題，都要過關才出手","只要本益比低就一定是好股票","估值比財報重要，可以不用看財報"],"correct":1,"explain":"財報只回答「公司好不好」，估值回答「現在貴不貴」。再好的公司買在過高價格也可能套牢；要先過體質關（SOP），再判斷價格並要求安全邊際，兩者結合才是完整決策。只看便宜會踩價值陷阱，只看好會買貴。"}]'>
-  <div class="widget-header"><div class="widget-title"><span class="icon">📝</span>Part Ⅶ 綜合測驗 · 決策框架</div><div class="widget-meta">共 4 題，作答後看解析</div></div>
+  <div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V6"/><path d="M9 3.5h2a1 1 0 0 1 1 1V5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z" fill="currentColor" stroke="none"/><path d="M10 11h4M10 15h4"/></svg></span>Part Ⅶ 綜合測驗 · 決策框架</div><div class="widget-meta">共 4 題，作答後看解析</div></div>
   <div class="widget-body"></div>
 </div>
 </section>
@@ -2701,7 +2920,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <li>月營收近 6 個月平均約 <code>+20%</code>，且 3～6 月明顯加速（+22%→+27%）。</li>
 </ul>
 <p><strong>判讀：</strong>年成長從 +16.7% 走到 +20%，<strong>沒有失速、反而加速</strong>；月營收同步往上墊，代表這個成長到「最近」都還在延續，不是去年的舊故事。月營收 2 月掉到 +9% 屬於台股農曆年工作天數變少的常見現象，3 月就補回來，不算警訊。</p>
-<div class="callout success"><div class="callout-title">第 1 步：過關 ✅</div><p>營收連兩年雙位數成長且加速，月營收佐證成長延續到當下。</p></div>
+<div class="callout success"><div class="callout-title">第 1 步：過關</div><p>營收連兩年雙位數成長且加速，月營收佐證成長延續到當下。</p></div>
 
 <h2>第 2 步：獲利結構——三率有沒有同向？</h2>
 
@@ -2719,7 +2938,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </table>
 
 <p><strong>判讀：</strong>三率<strong>同向往上</strong>（毛利率、營業利益率、淨利率三條線一起爬），這是最健康的型態——代表不只「賣得多」，而且「賣得越來越賺」，且費用控制沒有把毛利的進步吃光。最怕的反例是「營收衝、毛利率掉」（殺價搶單）或「毛利率升、營業利益率反而掉」（費用失控），這裡都沒發生。</p>
-<div class="callout success"><div class="callout-title">第 2 步：過關 ✅</div><p>三率連兩年同向上升，獲利結構紮實，營收成長是「有品質的成長」。</p></div>
+<div class="callout success"><div class="callout-title">第 2 步：過關</div><p>三率連兩年同向上升，獲利結構紮實，營收成長是「有品質的成長」。</p></div>
 
 <h2>第 3 步：現金流品質——賺到的是真錢嗎？</h2>
 
@@ -2731,7 +2950,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <li>FCF：9 → 11 → 18 億，<strong>三年都是正的且擴大</strong>（反推 capex 約 11 → 12.5 → 15.5 億，隨擴張而增，合理）。</li>
 </ul>
 <p><strong>判讀：</strong>CFO/淨利連續三年大於 1，代表帳上的「稅後淨利」確實有對應的現金流進來，不是靠應收帳款或存貨膨脹堆出來的紙上獲利。再對照第 2 步：營收成長 20%、但應收（30→40）與存貨（28→36）增幅低於營收增幅，<strong>沒有「貨越賣越多、錢越收越慢」</strong>的惡化。FCF 為正且擴大，代表它賺的錢扣掉維持與擴張的資本支出後還有餘裕——這也是後面能配得出現金股利的底氣。</p>
-<div class="callout success"><div class="callout-title">第 3 步：過關 ✅</div><p>盈餘含金量高（CFO/淨利＞1）、FCF 正且擴大，獲利是「真錢」。</p></div>
+<div class="callout success"><div class="callout-title">第 3 步：過關</div><p>盈餘含金量高（CFO/淨利＞1）、FCF 正且擴大，獲利是「真錢」。</p></div>
 
 <h2>第 4 步：資產負債安全——撐得住嗎？</h2>
 
@@ -2742,7 +2961,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </ul>
 <p><strong>判讀：</strong>負債比 41.5% 屬於穩健區間（製造業常見約 40～60%，越低越保守），而且<strong>在快速成長的同時負債比還往下走</strong>，代表成長主要靠自己賺的錢支撐，不是靠借錢硬撐。利息保障 23 倍，付利息對它根本不痛。</p>
 <div class="callout warn"><div class="callout-title">提醒：流動比要看細項，這裡只給概念</div><p>本章摘要沒拆「流動資產／流動負債」，所以流動比只能定性判斷：存貨與應收都沒異常膨脹、又有正 FCF，短期周轉壓力低。實戰中你應該到資產負債表把流動資產、流動負債抓出來算 <code>流動資產 ÷ 流動負債</code>（概念上＞1 較安全），這一步別只看負債比就放心。</p></div>
-<div class="callout success"><div class="callout-title">第 4 步：過關 ✅</div><p>負債比逐年下降至 41.5%、利息保障約 23 倍，財務結構安全。</p></div>
+<div class="callout success"><div class="callout-title">第 4 步：過關</div><p>負債比逐年下降至 41.5%、利息保障約 23 倍，財務結構安全。</p></div>
 
 <h2>第 5 步：比率與同業比——它到底好不好？（ROE 杜邦拆解）</h2>
 
@@ -2785,7 +3004,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <div class="scenario"><span class="when">看「品質」選股</span><span>宏曜三因子均衡、槓桿溫和</span><span class="pnl pos">宏曜勝出</span></div>
 </div>
 </div>
-<div class="callout success"><div class="callout-title">第 5 步：過關 ✅（且相對同業有品質優勢）</div><p>ROE 18% 在同業前段，且是「靠本業賺、不是靠槓桿」，品質優於高槓桿的 B。</p></div>
+<div class="callout success"><div class="callout-title">第 5 步：過關（且相對同業有品質優勢）</div><p>ROE 18% 在同業前段，且是「靠本業賺、不是靠槓桿」，品質優於高槓桿的 B。</p></div>
 
 <h2>第 6 步：估值——好公司，但這個價貴不貴？</h2>
 
@@ -2797,7 +3016,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <li><strong>PEG</strong>＝<code>PE ÷ 盈餘成長率（取百分比的數字）</code>。EPS 成長率 2024→2025＝<code>(5.60 − 4.32) ÷ 4.32 ≈ 29.6%</code>，取近年成長約 30，PEG＝<code>20 ÷ 30 ≈ 0.67</code></li>
 </ul>
 <p><strong>判讀：</strong>PE 20 倍對一家連續雙位數成長、三率向上、ROE 18% 的公司，<strong>不算便宜但也不離譜</strong>。關鍵在 PEG＝0.67：<strong>成長速度比本益比還快</strong>（PEG 小於 1 常被視為「成長還沒被股價完全反映」；注意分母是用百分比的數字 30，不是小數 0.30）。殖利率只有 2.5% 偏低，但這是成長股的常態——它把賺到的錢更多拿去再投資而不是全配出來（配息率＝<code>2.80 ÷ 5.60 = 50%</code>，留一半擴張，合理）。PB 3.6 倍偏高，要靠它持續維持高 ROE 才撐得住，這是<strong>主要的價格風險點</strong>。</p>
-<div class="callout warn"><div class="callout-title">第 6 步：過關但有條件 ⚠️</div><p>以成長性看 PEG 0.67 估值合理；但 PB 3.6、殖利率 2.5% 偏向「成長股定價」，一旦成長放緩，回檔空間會比想像大。</p></div>
+<div class="callout warn"><div class="callout-title">第 6 步：過關但有條件</div><p>以成長性看 PEG 0.67 估值合理；但 PB 3.6、殖利率 2.5% 偏向「成長股定價」，一旦成長放緩，回檔空間會比想像大。</p></div>
 
 <h2>把零件組成機器：一句結論</h2>
 
@@ -2805,12 +3024,12 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <table>
 <thead><tr><th>步驟</th><th>結果</th><th>一句話</th></tr></thead>
 <tbody>
-<tr><td>1 營收趨勢</td><td>✅ 過關</td><td>連兩年雙位數成長且加速，月營收佐證</td></tr>
-<tr><td>2 獲利結構</td><td>✅ 過關</td><td>三率同向上升，有品質的成長</td></tr>
-<tr><td>3 現金流品質</td><td>✅ 過關</td><td>CFO/淨利＞1、FCF 正且擴大，賺真錢</td></tr>
-<tr><td>4 資產負債安全</td><td>✅ 過關</td><td>負債比降到 41.5%、利息保障 23 倍</td></tr>
-<tr><td>5 同業比（杜邦）</td><td>✅ 過關</td><td>ROE 18% 靠本業不靠槓桿，品質優於同業 B</td></tr>
-<tr><td>6 估值</td><td>⚠️ 過關但有條件</td><td>PEG 0.67 合理，但 PB 3.6 偏貴、殖利率低</td></tr>
+<tr><td>1 營收趨勢</td><td><span style="color:var(--accent-ink);font-weight:650;">✓ 過關</span></td><td>連兩年雙位數成長且加速，月營收佐證</td></tr>
+<tr><td>2 獲利結構</td><td><span style="color:var(--accent-ink);font-weight:650;">✓ 過關</span></td><td>三率同向上升，有品質的成長</td></tr>
+<tr><td>3 現金流品質</td><td><span style="color:var(--accent-ink);font-weight:650;">✓ 過關</span></td><td>CFO/淨利＞1、FCF 正且擴大，賺真錢</td></tr>
+<tr><td>4 資產負債安全</td><td><span style="color:var(--accent-ink);font-weight:650;">✓ 過關</span></td><td>負債比降到 41.5%、利息保障 23 倍</td></tr>
+<tr><td>5 同業比（杜邦）</td><td><span style="color:var(--accent-ink);font-weight:650;">✓ 過關</span></td><td>ROE 18% 靠本業不靠槓桿，品質優於同業 B</td></tr>
+<tr><td>6 估值</td><td><span style="color:var(--warn);font-weight:650;">△ 過關但有條件</span></td><td>PEG 0.67 合理，但 PB 3.6 偏貴、殖利率低</td></tr>
 </tbody>
 </table>
 
@@ -2860,15 +3079,15 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 </div>
 
 <div class="widget" data-component="quiz" data-questions='[{"q":"景峰通路 PE 只剩 8 倍，但 CFO 轉負、存貨與應收暴增。最合理的結論是？","opts":["PE 很低，代表安全邊際很厚","先淘汰或觀察，因為市場可能不相信帳上獲利能變成現金","只要營收成長就能買","毛利率下降與現金流無關"],"correct":1,"explain":"低 PE 的 E 必須可信。CFO 轉負、存貨與應收暴增，代表帳上獲利品質差，PE 低可能是價值陷阱。"},{"q":"六步 SOP 中，哪一種狀況最接近一票否決？","opts":["殖利率只有 2.5%","月營收某一個月因農曆年較低","CFO 長期遠低於淨利，且負債與利息壓力同步上升","PE 比同業高 2 倍"],"correct":2,"explain":"CFO 長期跟淨利背離代表盈餘品質有問題；負債與利息壓力同步上升代表公司缺乏緩衝。這種組合比單純估值貴或單月波動更嚴重。"}]'>
-  <div class="widget-header"><div class="widget-title"><span class="icon">📝</span>反例小測驗</div></div>
+  <div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V6"/><path d="M9 3.5h2a1 1 0 0 1 1 1V5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z" fill="currentColor" stroke="none"/><path d="M10 11h4M10 15h4"/></svg></span>反例小測驗</div></div>
   <div class="widget-body"></div>
 </div>
 
-<div class="widget" data-component="worksheet"><div class="widget-header"><div class="widget-title"><span class="icon">📋</span>我的看財報工作底稿 · 六步體檢可填可存</div><div class="widget-meta">填完可匯出</div></div><div class="widget-body"></div></div>
+<div class="widget" data-component="worksheet"><div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3.5h6a1 1 0 0 1 1 1V5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z" fill="currentColor" stroke="none"/><path d="M8.5 11l1.2 1.2 2-2M8.5 16l1.2 1.2 2-2M14 11.2h3M14 16.2h3"/></svg></span>我的看財報工作底稿 · 六步體檢可填可存</div><div class="widget-meta">填完可匯出</div></div><div class="widget-body"></div></div>
 
 <p>輪到你了：挑一家你正在研究的公司，把它的數字填進上面的工作底稿，照宏曜的流程<strong>一步一步算、一步一步判、最後逼自己寫下一句結論</strong>。你會發現，當六步被攤開來，「為什麼買、什麼情況要賣」自然就有了答案——這就是從「看得懂財報」跨到「能獨立做決定」的那一步。</p>
 
-<div class="widget" data-component="quiz" data-questions='[{"q":"宏曜 2025 年 CFO÷淨利 ≈ 1.20，這代表什麼？","opts":["公司現金不足、快周轉不靈","稅後淨利大致有對應現金進帳，盈餘含金量高","公司在虛增營收","負債比過高"],"correct":1,"explain":"CFO÷淨利大於 1，代表帳上獲利確實收到了現金，不是靠應收或存貨膨脹堆出來的紙上獲利，屬於高品質獲利。"},{"q":"宏曜、同業 A、同業 B 的 ROE 都在 16～19%，杜邦拆解最主要想告訴你什麼？","opts":["ROE 越高的公司一定越好","同樣的 ROE 來源可能完全不同，B 是靠高槓桿撐出來的","三家公司可以視為完全一樣","ROE 跟負債無關"],"correct":1,"explain":"杜邦把 ROE 拆成淨利率×周轉率×權益乘數。B 的高 ROE 主要來自權益乘數 2.5（負債比 60%）而非本業，品質明顯較脆弱。"},{"q":"宏曜 PE 20 倍、近年 EPS 成長約 30%，PEG ≈ 0.67，較合理的解讀是？","opts":["PEG 小於 1，成長速度比本益比快，估值相對合理","PEG 0.67 代表公司虧損","PEG 越小代表越貴","PEG 不能跟成長一起看"],"correct":0,"explain":"PEG＝PE÷盈餘成長率（取百分比數字 30）。0.67 表示成長性還沒被本益比完全反映，相對而言估值不算過貴，但仍要留意 PB 偏高的價格風險。"},{"q":"六步體檢中，宏曜唯一「有條件」的是第 6 步估值。這對最終結論的正確影響是？","opts":["只要有一步不完美就該直接淘汰","因價格不便宜，從『一次重押』降為『觀察＋分批』，並追蹤月營收","估值不重要，基本面好就全押","應該忽略估值風險"],"correct":1,"explain":"基本面五步全過支持較高的研究等級，但估值靠成長撐（PB 3.6、殖利率 2.5%），故採分批佈局並把月營收 YoY 是否守住雙位數設為關鍵追蹤訊號，而非無腦重押。"}]'><div class="widget-header"><div class="widget-title"><span class="icon">📝</span>本章測驗</div></div><div class="widget-body"></div></div>
+<div class="widget" data-component="quiz" data-questions='[{"q":"宏曜 2025 年 CFO÷淨利 ≈ 1.20，這代表什麼？","opts":["公司現金不足、快周轉不靈","稅後淨利大致有對應現金進帳，盈餘含金量高","公司在虛增營收","負債比過高"],"correct":1,"explain":"CFO÷淨利大於 1，代表帳上獲利確實收到了現金，不是靠應收或存貨膨脹堆出來的紙上獲利，屬於高品質獲利。"},{"q":"宏曜、同業 A、同業 B 的 ROE 都在 16～19%，杜邦拆解最主要想告訴你什麼？","opts":["ROE 越高的公司一定越好","同樣的 ROE 來源可能完全不同，B 是靠高槓桿撐出來的","三家公司可以視為完全一樣","ROE 跟負債無關"],"correct":1,"explain":"杜邦把 ROE 拆成淨利率×周轉率×權益乘數。B 的高 ROE 主要來自權益乘數 2.5（負債比 60%）而非本業，品質明顯較脆弱。"},{"q":"宏曜 PE 20 倍、近年 EPS 成長約 30%，PEG ≈ 0.67，較合理的解讀是？","opts":["PEG 小於 1，成長速度比本益比快，估值相對合理","PEG 0.67 代表公司虧損","PEG 越小代表越貴","PEG 不能跟成長一起看"],"correct":0,"explain":"PEG＝PE÷盈餘成長率（取百分比數字 30）。0.67 表示成長性還沒被本益比完全反映，相對而言估值不算過貴，但仍要留意 PB 偏高的價格風險。"},{"q":"六步體檢中，宏曜唯一「有條件」的是第 6 步估值。這對最終結論的正確影響是？","opts":["只要有一步不完美就該直接淘汰","因價格不便宜，從『一次重押』降為『觀察＋分批』，並追蹤月營收","估值不重要，基本面好就全押","應該忽略估值風險"],"correct":1,"explain":"基本面五步全過支持較高的研究等級，但估值靠成長撐（PB 3.6、殖利率 2.5%），故採分批佈局並把月營收 YoY 是否守住雙位數設為關鍵追蹤訊號，而非無腦重押。"}]'><div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V6"/><path d="M9 3.5h2a1 1 0 0 1 1 1V5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z" fill="currentColor" stroke="none"/><path d="M10 11h4M10 15h4"/></svg></span>本章測驗</div></div><div class="widget-body"></div></div>
 
 </section>
 
@@ -3025,14 +3244,14 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <h3>動手做：把這一章套到你自己的標的</h3>
 <p>觀念看懂不等於會用。挑一檔你正在看的公司，照下面的工作表把四種方法各跑一次、交叉出合理價帶，再依把握度打折成目標買進價。</p>
 
-<p style="font-size:13.5px;color:var(--fg-muted);">👉 想動手算，用 <a href="#ch29">Ch29 的「我的看財報工作底稿」</a>（第 6 步就是估值），把這幾種方法的合理價結果填進去交叉看。</p>
+<p style="font-size:13.5px;color:var(--fg-muted);">→ 想動手算，用 <a href="#ch29">Ch29 的「我的看財報工作底稿」</a>（第 6 步就是估值），把這幾種方法的合理價結果填進去交叉看。</p>
 
 <div class="callout success">
 <div class="callout-title">本章一句話帶走</div>
 <p>用 2～3 種方法交叉估出一個合理價帶（彼此印證最安心），再依把握度打折成「目標買進價」。估值給你錨點，安全邊際保護你看錯——兩者缺一不可。</p>
 </div>
 
-<div class="widget" data-component="quiz" data-questions='[{"q":"用歷史本益比區間法估合理價，最該搭配哪一種 EPS？","opts":["去年已公布的 EPS","明年的預估 EPS","近五年 EPS 平均","上市第一年的 EPS"],"correct":1,"explain":"股價反映未來，買的是公司之後的賺錢能力，所以要用前瞻的明年預估 EPS；用落後的去年 EPS 會慢半拍。"},{"q":"某股 PE 30 倍，你保守估未來盈餘成長 25%，PEG 約為多少？","opts":["0.83","1.2","7.5","120"],"correct":1,"explain":"PEG = PE ÷ 成長率的數字 = 30 ÷ 25 = 1.2。成長率要代入 25（百分比的數字），不是 0.25，否則會算成 120。"},{"q":"關於 DCF 兩段式模型，下列何者正確？","opts":["算出來的數字最精準，可直接當買進價","結果對折現率與永續成長率極度敏感，假設稍動價差很大","永續成長率可以設得比折現率高","只要公式對，垃圾假設也能得出好答案"],"correct":1,"explain":"DCF 是「垃圾進垃圾出」：價值大多押在最不確定的永續價值上，折現率或永續成長率變一點，結果就大幅波動，所以要跑多組假設看區間、並留厚安全邊際。"},{"q":"以存股角度，預估股利 5 元、目標殖利率 6%，合理價約為？","opts":["30 元","83 元","120 元","300 元"],"correct":1,"explain":"合理價 = 預估股利 ÷ 目標殖利率 = 5 ÷ 0.06 ≈ 83 元。要求的殖利率越高，回推的合理買進價就越低（要更便宜才買）。"}]'><div class="widget-header"><div class="widget-title"><span class="icon">📝</span>本章測驗</div></div><div class="widget-body"></div></div>
+<div class="widget" data-component="quiz" data-questions='[{"q":"用歷史本益比區間法估合理價，最該搭配哪一種 EPS？","opts":["去年已公布的 EPS","明年的預估 EPS","近五年 EPS 平均","上市第一年的 EPS"],"correct":1,"explain":"股價反映未來，買的是公司之後的賺錢能力，所以要用前瞻的明年預估 EPS；用落後的去年 EPS 會慢半拍。"},{"q":"某股 PE 30 倍，你保守估未來盈餘成長 25%，PEG 約為多少？","opts":["0.83","1.2","7.5","120"],"correct":1,"explain":"PEG = PE ÷ 成長率的數字 = 30 ÷ 25 = 1.2。成長率要代入 25（百分比的數字），不是 0.25，否則會算成 120。"},{"q":"關於 DCF 兩段式模型，下列何者正確？","opts":["算出來的數字最精準，可直接當買進價","結果對折現率與永續成長率極度敏感，假設稍動價差很大","永續成長率可以設得比折現率高","只要公式對，垃圾假設也能得出好答案"],"correct":1,"explain":"DCF 是「垃圾進垃圾出」：價值大多押在最不確定的永續價值上，折現率或永續成長率變一點，結果就大幅波動，所以要跑多組假設看區間、並留厚安全邊際。"},{"q":"以存股角度，預估股利 5 元、目標殖利率 6%，合理價約為？","opts":["30 元","83 元","120 元","300 元"],"correct":1,"explain":"合理價 = 預估股利 ÷ 目標殖利率 = 5 ÷ 0.06 ≈ 83 元。要求的殖利率越高，回推的合理買進價就越低（要更便宜才買）。"}]'><div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V6"/><path d="M9 3.5h2a1 1 0 0 1 1 1V5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z" fill="currentColor" stroke="none"/><path d="M10 11h4M10 15h4"/></svg></span>本章測驗</div></div><div class="widget-body"></div></div>
 </section>
 
 <section data-chapter="ch31">
@@ -3183,16 +3402,24 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <p>做完你會發現：看財報不再是「讀懂教材」，而是「能對一家真實公司有自己的判斷」。這就是這本書要送你的能力。（以上純為教學流程，數字皆為示意，不構成任何投資建議。）</p>
 </div>
 
-<p style="font-size:13.5px;color:var(--fg-muted);">👉 開始你的「換你做」：打開 <a href="#ch29">Ch29 的「我的看財報工作底稿」</a>，照本章抓到的資料把六步走一遍、填好自動存起來。</p>
+<p style="font-size:13.5px;color:var(--fg-muted);">→ 開始你的「換你做」：打開 <a href="#ch29">Ch29 的「我的看財報工作底稿」</a>，照本章抓到的資料把六步走一遍、填好自動存起來。</p>
 
-<div class="widget" data-component="quiz" data-questions='[{"q":"想看台積電(2330)最新一季完整的合併財務三表與附註，最該去哪裡抓第一手資料？","opts":["財報狗整理頁","公開資訊觀測站 MOPS 的財務報表(採IFRSs後→合併報表)","公司臉書粉專","Google 圖片搜尋"],"correct":1,"explain":"法定、權威、免費的第一手台股財報在公開資訊觀測站(MOPS)，選採IFRSs後的合併報表並輸入代號與年度季別下載；整理站只適合當過渡，關鍵數字仍要回原始檔。"},{"q":"關於美股文件，下列敘述何者正確？","opts":["10-Q 是年報、10-K 是季報","8-K 是用來公告重大即時事件的","新聞稿裡的 Non-GAAP 數字就是 10-K 的正規 GAAP 數字","earnings call 逐字稿一定在 EDGAR"],"correct":1,"explain":"10-K=年報、10-Q=季報、8-K=重大事件即時公告。新聞稿常主打 Non-GAAP，10-K/10-Q 裡才是 GAAP；earnings call 多在公司 IR 頁，不一定在 EDGAR。"},{"q":"台股某公司前三季累計營業利益 90 億、上半年累計 55 億。它「第三季單季」營業利益約為多少？","opts":["90 億","145 億","35 億","55 億"],"correct":2,"explain":"台股損益多為累計數，單季要相減：單季Q3 = 前三季累計 − 上半年累計 = 90 − 55 = 35 億。"},{"q":"自由現金流(FCF)最常見的算法是下列何者？","opts":["營業活動現金流 ÷ 營收","營業活動現金流(CFO) − 資本支出(capex)","稅後淨利 + 折舊","投資活動現金流 − 籌資活動現金流"],"correct":1,"explain":"FCF 兩邊財報通常都不直接列，要自算：FCF = 營業活動現金流(CFO) − 資本支出(capex)；capex 取現金流量表投資活動裡的取得不動產、廠房及設備。"},{"q":"把蘋果(Apple)和一家台股公司並排比較時，下列哪一點最可能造成誤判？","opts":["兩家都用阿拉伯數字","蘋果財年9月底結束、幣別是USD、且新聞稿常用Non-GAAP口徑","兩家都有營收這個科目","兩家股票都能買到"],"correct":1,"explain":"幣別(USD vs NTD)、會計年度截止月(蘋果9月底)、準則與口徑(US GAAP/Non-GAAP vs IFRS)若不先對齊就並排，就會把口徑差異誤當成基本面差異。"}]'><div class="widget-header"><div class="widget-title"><span class="icon">📝</span>本章測驗</div></div><div class="widget-body"></div></div>
+<div class="widget" data-component="quiz" data-questions='[{"q":"想看台積電(2330)最新一季完整的合併財務三表與附註，最該去哪裡抓第一手資料？","opts":["財報狗整理頁","公開資訊觀測站 MOPS 的財務報表(採IFRSs後→合併報表)","公司臉書粉專","Google 圖片搜尋"],"correct":1,"explain":"法定、權威、免費的第一手台股財報在公開資訊觀測站(MOPS)，選採IFRSs後的合併報表並輸入代號與年度季別下載；整理站只適合當過渡，關鍵數字仍要回原始檔。"},{"q":"關於美股文件，下列敘述何者正確？","opts":["10-Q 是年報、10-K 是季報","8-K 是用來公告重大即時事件的","新聞稿裡的 Non-GAAP 數字就是 10-K 的正規 GAAP 數字","earnings call 逐字稿一定在 EDGAR"],"correct":1,"explain":"10-K=年報、10-Q=季報、8-K=重大事件即時公告。新聞稿常主打 Non-GAAP，10-K/10-Q 裡才是 GAAP；earnings call 多在公司 IR 頁，不一定在 EDGAR。"},{"q":"台股某公司前三季累計營業利益 90 億、上半年累計 55 億。它「第三季單季」營業利益約為多少？","opts":["90 億","145 億","35 億","55 億"],"correct":2,"explain":"台股損益多為累計數，單季要相減：單季Q3 = 前三季累計 − 上半年累計 = 90 − 55 = 35 億。"},{"q":"自由現金流(FCF)最常見的算法是下列何者？","opts":["營業活動現金流 ÷ 營收","營業活動現金流(CFO) − 資本支出(capex)","稅後淨利 + 折舊","投資活動現金流 − 籌資活動現金流"],"correct":1,"explain":"FCF 兩邊財報通常都不直接列，要自算：FCF = 營業活動現金流(CFO) − 資本支出(capex)；capex 取現金流量表投資活動裡的取得不動產、廠房及設備。"},{"q":"把蘋果(Apple)和一家台股公司並排比較時，下列哪一點最可能造成誤判？","opts":["兩家都用阿拉伯數字","蘋果財年9月底結束、幣別是USD、且新聞稿常用Non-GAAP口徑","兩家都有營收這個科目","兩家股票都能買到"],"correct":1,"explain":"幣別(USD vs NTD)、會計年度截止月(蘋果9月底)、準則與口徑(US GAAP/Non-GAAP vs IFRS)若不先對齊就並排，就會把口徑差異誤當成基本面差異。"}]'><div class="widget-header"><div class="widget-title"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4h7a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V6"/><path d="M9 3.5h2a1 1 0 0 1 1 1V5a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-.5a1 1 0 0 1 1-1z" fill="currentColor" stroke="none"/><path d="M10 11h4M10 15h4"/></svg></span>本章測驗</div></div><div class="widget-body"></div></div>
 </section>
 
 <section data-chapter="glossary">
-      <h1>📖 名詞表（中英對照）</h1>
-      <p style="color: var(--fg-muted); margin-top: -2px;">財報常見術語速查。輸入關鍵字即時篩選（中英都可）。按 <kbd>/</kbd> 快速聚焦。</p>
-      <input type="text" id="glossary-search" placeholder="🔍 搜尋術語（例：毛利率 / ROE / FCF / NIM）"
-        style="width:100%;padding:10px 14px;margin:12px 0 20px;background:var(--bg-elev);color:var(--fg);border:1px solid var(--border);border-radius:var(--radius);font:inherit;font-size:14px;box-sizing:border-box;" />
+      <h1><span class="h1-title"><span class="h1-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2 2 0 0 1 6 4h5v15H6a2 2 0 0 0-2 1.5z"/><path d="M20 5.5A2 2 0 0 0 18 4h-5v15h5a2 2 0 0 1 2 1.5z"/></svg></span>名詞表（中英對照）</span></h1>
+      <p style="color: var(--fg-muted); margin-top: -2px; max-width: var(--measure);">財報常見術語速查。輸入關鍵字即時篩選（中英都可）。按 <kbd>/</kbd> 快速聚焦。</p>
+      <div class="gloss-search-wrap" style="position:relative;max-width:var(--measure);margin:14px 0 22px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:17px;height:17px;color:var(--fg-subtle);pointer-events:none;"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="glossary-search" placeholder="搜尋術語（例：毛利率 / ROE / FCF / NIM）" aria-label="搜尋名詞表"
+          style="width:100%;padding:11px 14px 11px 40px;background:var(--bg-elev);color:var(--fg);border:1px solid var(--border);border-radius:var(--radius);font:inherit;font-size:14px;box-sizing:border-box;" />
+      </div>
+      <div id="gloss-empty" role="status" aria-live="polite">
+        <span class="ge-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M8.5 11h5"/></svg></span>
+        <div class="ge-title">找不到符合「<span class="q"></span>」的術語</div>
+        <div class="ge-hint">試試英文縮寫（如 ROE / FCF / NIM）或只輸入部分關鍵字</div>
+      </div>
 
       <h2>三大報表</h2>
       <table><thead><tr><th>中文</th><th>English</th><th>白話</th></tr></thead><tbody>
@@ -3271,7 +3498,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
     </section>
 
     <section data-chapter="progress">
-      <h1>📊 我的學習進度</h1>
+      <h1><span class="h1-title"><span class="h1-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="7" y="12" width="3" height="5" rx=".5" fill="currentColor" stroke="none"/><rect x="12" y="8" width="3" height="9" rx=".5" fill="currentColor" stroke="none"/></svg></span>我的學習進度</span></h1>
       <p style="color: var(--fg-muted); margin-top: -2px;">
         每章 h1 旁邊有「☐ 標為已完成」按鈕。手動勾選後這頁與 sidebar 都會顯示 ✓。答錯的測驗題會自動進「錯題重練」，完成後 7 / 14 / 30 天會出現複習提醒。
       </p>
@@ -3381,9 +3608,9 @@ const LearningPathBuilder = {
             </div>
             <div style="font-size:13px;color:var(--fg-muted);margin-top:10px;">按每週 ${plan.perWeek} 小時、每章平均 ${this.HOURS_PER_CH} 小時估算。</div>
           </div>
-          <div style="margin:16px 0;"><div style="font-size:13px;color:var(--fg-muted);margin-bottom:8px;">📚 推薦章節順序：</div><div>${chListHTML}</div></div>
+          <div style="margin:16px 0;"><div style="font-size:13px;color:var(--fg-muted);margin-bottom:8px;font-weight:600;">推薦章節順序</div><div>${chListHTML}</div></div>
           <div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="btn" data-action="save" style="background:var(--accent);color:white;border-color:var(--accent);">💾 儲存為我的學習計畫</button>
+            <button class="btn" data-action="save" style="background:var(--accent);color:white;border-color:var(--accent);"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7"/><path d="M8 14h8v6H8z"/></svg>儲存為我的學習計畫</button>
             <button class="btn" data-action="restart">重新選擇</button>
           </div>
           <div style="margin-top:12px;font-size:12px;color:var(--fg-muted);">存了之後 sidebar 計畫中的章節會 highlight。</div>
@@ -3932,7 +4159,7 @@ const RedFlagScanner = {
       <div>${this.ITEMS.map((it, i) => `<label class="check-row" style="cursor:pointer;">
         <input type="checkbox" data-i="${i}" ${checked[i] ? 'checked' : ''}>
         <span class="cr-body"><span class="cr-title">${it.t}</span><br><span class="cr-desc">${it.d}</span></span></label>`).join('')}</div>
-      <div class="redflag-score" style="background:${color}1f;border:1px solid ${color};color:${color};">⚠️ ${label}</div>`;
+      <div class="redflag-score" style="background:${color}1f;border:1px solid ${color};color:${color};display:flex;align-items:center;gap:8px;"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.5v.01"/></svg><span>${label}</span></div>`;
     body.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.addEventListener('change', () => {
       const nc = checked.slice(); nc[parseInt(cb.dataset.i)] = cb.checked; this.render(body, nc);
     }));
@@ -4209,9 +4436,9 @@ const WorksheetTool = {
       </div>
       <div data-check>${this.checkHTML(d)}</div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-        <button class="btn" data-act="export" style="background:var(--accent);color:white;border-color:var(--accent);">📤 匯出文字</button>
-        <button class="btn" data-act="clear">🗑 清空</button>
-        <span style="font-size:11.5px;color:var(--fg-muted);">💾 自動存在這台瀏覽器</span>
+        <button class="btn" data-act="export" style="background:var(--accent);color:white;border-color:var(--accent);"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4"/><path d="M8 8l4-4 4 4"/><path d="M5 14v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5"/></svg>匯出文字</button>
+        <button class="btn" data-act="clear"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13"/></svg>清空</button>
+        <span style="font-size:11.5px;color:var(--fg-muted);">自動存在這台瀏覽器</span>
       </div>
       <div data-out style="margin-top:10px;"></div>`;
     const persist = () => {
@@ -4337,7 +4564,7 @@ function goToBookmark() {
 }
 function updateBookmarkUI() {
   const b = loadBookmark(), gotoBtn = document.getElementById('goto-bookmark-btn');
-  if (b && gotoBtn) { gotoBtn.style.display = ''; gotoBtn.textContent = '📂 ' + chapterLabel(b.chapterId); gotoBtn.title = '跳回標記位置（' + new Date(b.ts).toLocaleString() + '）'; }
+  if (b && gotoBtn) { gotoBtn.style.display = ''; gotoBtn.textContent = '↩ ' + chapterLabel(b.chapterId); gotoBtn.title = '跳回標記位置（' + new Date(b.ts).toLocaleString() + '）'; }
   else if (gotoBtn) gotoBtn.style.display = 'none';
 }
 function showSnackbar(text) {
@@ -4452,9 +4679,9 @@ function renderProgressDashboard() {
         <div><div style="font-size:11px;color:var(--fg-muted);letter-spacing:.08em;">待重練</div><div style="font-size:26px;font-weight:700;color:${quizReviewItems.length ? 'var(--danger)' : 'var(--accent)'};font-family:var(--font-mono);">${quizReviewItems.length}</div><div style="font-size:12px;color:var(--fg-muted);">答錯題會自動收入</div></div>
       </div>
     </div>${html}
-    ${reviewItems.length ? `<div style="margin-top:18px;padding:14px 18px;background:rgba(251,146,60,0.08);border:1px solid var(--warn);border-radius:var(--radius);"><div style="font-weight:700;color:var(--warn);margin-bottom:8px;">📅 待複習章節（${reviewItems.length} 章）</div><div style="font-size:12.5px;">${reviewItems.map(r => { const ic = r.level === 30 ? '⚠️' : r.level === 14 ? '🔁' : '🔄'; return `<a href="#${r.id}" style="display:inline-block;margin:3px 4px;padding:3px 8px;background:var(--bg-elev);border:1px solid var(--warn);border-radius:var(--radius-sm);text-decoration:none;color:var(--fg);font-family:var(--font-mono);">${ic} ${r.id.toUpperCase()} (${Math.floor(r.days)}d)</a>`; }).join('')}</div><div style="margin-top:8px;font-size:12px;color:var(--fg-muted);">7+ 天 🔄 / 14+ 天 🔁 / 30+ 天 ⚠️。點該章後 h1 旁有「重置」按鈕。</div></div>` : ''}
+    ${reviewItems.length ? `<div style="margin-top:18px;padding:14px 18px;background:rgba(251,146,60,0.08);border:1px solid var(--warn);border-radius:var(--radius);"><div style="font-weight:700;color:var(--warn);margin-bottom:8px;">待複習章節（${reviewItems.length} 章）</div><div style="font-size:12.5px;">${reviewItems.map(r => { const ic = r.level === 30 ? '⚠️' : r.level === 14 ? '🔁' : '🔄'; return `<a href="#${r.id}" style="display:inline-block;margin:3px 4px;padding:3px 8px;background:var(--bg-elev);border:1px solid var(--warn);border-radius:var(--radius-sm);text-decoration:none;color:var(--fg);font-family:var(--font-mono);">${ic} ${r.id.toUpperCase()} (${Math.floor(r.days)}d)</a>`; }).join('')}</div><div style="margin-top:8px;font-size:12px;color:var(--fg-muted);">7+ 天 🔄 / 14+ 天 🔁 / 30+ 天 ⚠️。點該章後 h1 旁有「重置」按鈕。</div></div>` : ''}
     ${quizReviewItems.length ? `<div style="margin-top:18px;padding:14px 18px;background:rgba(190,18,60,0.08);border:1px solid var(--danger);border-radius:var(--radius);">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;"><div style="font-weight:700;color:var(--danger);">🧠 錯題重練（${quizReviewItems.length} 題）</div><button class="btn" data-review-clear-all style="font-size:12px;">全部標為已掌握</button></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px;"><div style="font-weight:700;color:var(--danger);">錯題重練（${quizReviewItems.length} 題）</div><button class="btn" data-review-clear-all style="font-size:12px;">全部標為已掌握</button></div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;">
         ${quizReviewItems.slice(0, 8).map(item => `<div style="padding:10px 12px;background:var(--bg-elev);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:12.5px;line-height:1.55;">
           <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;"><a href="#${item.chapterId}" style="color:var(--accent);font-weight:700;text-decoration:none;">${esc(chapterLabel(item.chapterId))}</a><button class="btn" data-review-clear="${esc(item.id)}" style="font-size:11px;padding:2px 6px;">已掌握</button></div>
@@ -4574,7 +4801,7 @@ FIN 是「台股 + 美股財報判讀」單檔 HTML 自學手冊，共 32 章 + 
   initUI() {
     if (document.getElementById('llm-fab')) return;
     const fab = document.createElement('button');
-    fab.id = 'llm-fab'; fab.innerHTML = '🤖'; fab.title = 'FIN 財報助教';
+    fab.id = 'llm-fab'; fab.setAttribute('aria-label', 'FIN 財報助教'); fab.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4.5"/><circle cx="12" cy="3.4" r="1.3" fill="currentColor" stroke="none"/><circle cx="9" cy="13" r="1.15" fill="currentColor" stroke="none"/><circle cx="15" cy="13" r="1.15" fill="currentColor" stroke="none"/><path d="M9.2 16h5.6"/><path d="M1.5 12.5v2M22.5 12.5v2"/></svg>'; fab.title = 'FIN 財報助教';
     fab.addEventListener('click', () => this.togglePanel());
     document.body.appendChild(fab);
     const panel = document.createElement('div'); panel.id = 'llm-panel'; panel.hidden = true;
@@ -4585,7 +4812,7 @@ FIN 是「台股 + 美股財報判讀」單檔 HTML 自學手冊，共 32 章 + 
     const p = document.getElementById('llm-panel'); if (!p) return;
     const key = this.loadKey();
     if (!key) {
-      p.innerHTML = `<div class="llm-header"><strong>🤖 FIN 助教設定</strong><button class="llm-close" data-action="close">✕</button></div>
+      p.innerHTML = `<div class="llm-header"><strong style="display:flex;align-items:center;gap:7px;"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="var(--accent)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4.8"/><circle cx="9" cy="13" r="1.1" fill="var(--accent)" stroke="none"/><circle cx="15" cy="13" r="1.1" fill="var(--accent)" stroke="none"/><path d="M9.4 16h5.2"/></svg>FIN 助教設定</strong><button class="llm-close" data-action="close">✕</button></div>
         <div class="llm-messages">
           <p style="font-size:13.5px;margin-top:0;">問問題前需要貼 Google Gemini API key。免費 tier 足夠日常學習。</p>
           <ol style="font-size:13px;padding-left:20px;line-height:1.7;">
@@ -4610,7 +4837,7 @@ FIN 是「台股 + 美股財報判讀」單檔 HTML 自學手冊，共 32 章 + 
     const msgsHTML = history.length === 0
       ? `<div style="color:var(--fg-muted);text-align:center;padding:24px;font-size:13px;line-height:1.7;">問我關於財報的任何問題。<br/><br/>例如：<br/><em>「毛利率掉但營益率升，代表什麼？」<br/>「為什麼 CFO 比淨利重要？」<br/>「循環股為什麼不能看本益比？」</em></div>`
       : history.map(m => `<div style="margin-bottom:12px;${m.role === 'user' ? 'text-align:right;' : ''}"><div style="display:inline-block;max-width:90%;padding:8px 12px;border-radius:${m.role === 'user' ? '12px 12px 2px 12px' : '12px 12px 12px 2px'};background:${m.role === 'user' ? 'var(--accent)' : 'var(--bg-sunken)'};color:${m.role === 'user' ? 'white' : 'var(--fg)'};font-size:13.5px;line-height:1.55;text-align:left;white-space:pre-wrap;word-break:break-word;">${this.formatReply(m.content)}</div></div>`).join('');
-    p.innerHTML = `<div class="llm-header"><strong>🤖 FIN 助教</strong><div style="display:flex;gap:4px;"><button class="llm-icon-btn" data-action="settings" title="重設 key">⚙️</button><button class="llm-icon-btn" data-action="clear" title="清空對話">🗑</button><button class="llm-close" data-action="close" title="關閉">✕</button></div></div>
+    p.innerHTML = `<div class="llm-header"><strong style="display:flex;align-items:center;gap:7px;"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="var(--accent)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4.8"/><circle cx="9" cy="13" r="1.1" fill="var(--accent)" stroke="none"/><circle cx="15" cy="13" r="1.1" fill="var(--accent)" stroke="none"/><path d="M9.4 16h5.2"/></svg>FIN 助教</strong><div style="display:flex;gap:4px;"><button class="llm-icon-btn" data-action="settings" title="重設 key" aria-label="重設 key">⚙</button><button class="llm-icon-btn" data-action="clear" title="清空對話" aria-label="清空對話">🗑</button><button class="llm-close" data-action="close" title="關閉" aria-label="關閉">✕</button></div></div>
       <div class="llm-messages" id="llm-messages">${msgsHTML}</div>
       <div class="llm-input-area">
         <div style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--fg-muted);margin-bottom:6px;"><input type="checkbox" id="llm-use-context" checked style="margin:0;"/><label for="llm-use-context" style="cursor:pointer;">帶入當前章節作為 context</label></div>
@@ -4645,7 +4872,7 @@ FIN 是「台股 + 美股財報判讀」單檔 HTML 自學手冊，共 32 章 + 
         const reply = await this.ask(text, useContext);
         fill(reply);
       } catch (e) {
-        fill('❌ ' + e.message + '\n\n常見原因：(1) API key 錯 (2) 超過免費 quota (3) 網路問題');
+        fill('⚠ 發生錯誤：' + e.message + '\n\n常見原因：(1) API key 錯 (2) 超過免費 quota (3) 網路問題');
       } finally {
         this.inFlight = false;
         this.renderPanel();
@@ -4722,18 +4949,61 @@ function setupMobileMenu() {
   sidebar.querySelectorAll('a.nav-item').forEach(a => a.addEventListener('click', () => { if (window.innerWidth <= 900) toggle(false); }));
   window.addEventListener('resize', () => { if (window.innerWidth > 900 && sidebar.classList.contains('open')) toggle(false); });
 }
+/* 標題錨點（新增）：為各章 h2/h3 加上可深連的 #，hover 露出 */
+function setupHeadingAnchors() {
+  const slugCount = Object.create(null);
+  const slug = (txt, chId) => {
+    let base = String(txt).trim().toLowerCase()
+      .replace(/[\s　]+/g, '-')
+      .replace(/[^\w一-鿿-]/g, '')
+      .replace(/-+/g, '-').replace(/^-|-$/g, '') || 'sec';
+    base = (chId || 'sec') + '-' + base;
+    const n = (slugCount[base] = (slugCount[base] || 0) + 1);
+    return n > 1 ? base + '-' + n : base;
+  };
+  document.querySelectorAll('section[data-chapter] h2, section[data-chapter] h3').forEach(h => {
+    if (h.classList.contains('anchorable')) return;
+    const chId = h.closest('section[data-chapter]')?.dataset.chapter || '';
+    if (!h.id) h.id = slug(h.textContent, chId);
+    h.classList.add('anchorable');
+    const a = document.createElement('a');
+    a.className = 'anchor-link';
+    a.href = '#' + h.id;
+    a.setAttribute('aria-label', '連結到此段落：' + h.textContent.trim());
+    a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M15 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>';
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const top = window.scrollY + h.getBoundingClientRect().top - 60;
+      window.scrollTo({ top, behavior: 'smooth' });
+      try { history.replaceState(null, '', '#' + h.id); } catch {}
+    });
+    h.insertBefore(a, h.firstChild);
+  });
+}
+
 function setupGlossarySearch() {
   const input = document.getElementById('glossary-search'); if (!input) return;
   const tables = document.querySelectorAll('section[data-chapter="glossary"] table');
+  const empty = document.getElementById('gloss-empty');
+  const emptyQ = empty ? empty.querySelector('.q') : null;
   input.addEventListener('input', () => {
-    const q = input.value.trim().toLowerCase();
+    const raw = input.value.trim();
+    const q = raw.toLowerCase();
+    let anyOverall = false;
     tables.forEach(table => {
       let any = false;
       table.querySelectorAll('tbody tr').forEach(row => { const m = q === '' || row.textContent.toLowerCase().includes(q); row.style.display = m ? '' : 'none'; if (m) any = true; });
       const prev = table.previousElementSibling;
       if (prev && prev.tagName === 'H2') prev.style.display = any ? '' : 'none';
       table.style.display = any ? '' : 'none';
+      if (any) anyOverall = true;
     });
+    // 全部查無命中時顯示空狀態，避免整區一片空白被誤以為壞掉
+    if (empty) {
+      const show = q !== '' && !anyOverall;
+      if (show && emptyQ) emptyQ.textContent = raw;
+      empty.style.display = show ? 'block' : 'none';
+    }
   });
 }
 
@@ -4754,7 +5024,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const restorePct = loadState().lastScrollPct;
   updateProgress(); updateActiveNav();
   setupVisitedObserver(); setupCompletionButtons();
-  setupGlossarySearch(); setupMobileMenu();
+  setupGlossarySearch(); setupMobileMenu(); setupHeadingAnchors();
   applyReviewMarkers();
   LearningPathBuilder.applyPlanHighlight();
   LLMAssistant.initUI();
