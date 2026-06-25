@@ -3295,7 +3295,7 @@ function fmt(n, d = 0) {
 }
 function pctf(n, d = 1) { return (n == null || !isFinite(n)) ? '—' : n.toFixed(d) + '%'; }
 function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
-function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 // 在 0..1 區間把資料點映射到 SVG 座標
 function scaleY(v, min, max, top, bottom) {
   if (max === min) return (top + bottom) / 2;
@@ -3328,7 +3328,12 @@ const LearningPathBuilder = {
   },
   HOURS_PER_CH: 1.2,
   PLAN_KEY: 'fin/learning-plan',
-  ALL_CHS: (() => { const a = []; for (let i = 1; i <= 28; i++) a.push('ch' + i); return a; })(),
+  // 單一真實來源：從 DOM 實際章節推導（排除 intro/cases/glossary/progress），避免新增章節時漏更新
+  get ALL_CHS() {
+    return Array.from(document.querySelectorAll('section[data-chapter]'))
+      .map(s => s.dataset.chapter)
+      .filter(id => /^ch\d+$/.test(id) && !SKIP_CHAPTERS.includes(id));
+  },
 
   loadPlan() { try { return JSON.parse(localStorage.getItem(this.PLAN_KEY) || 'null'); } catch { return null; } },
   savePlan(p) { try { localStorage.setItem(this.PLAN_KEY, JSON.stringify(p)); } catch {} window.CloudSync && CloudSync.scheduleSync(); },
@@ -3594,7 +3599,10 @@ const DuPontDecomposer = {
       </div>
       <div class="callout" style="margin-top:14px;"><div style="font-size:13.5px;">${read}</div></div>`;
     body.querySelectorAll('.ctrl-num').forEach(inp => inp.addEventListener('input', () => {
-      const ns = { ...s }; ns[inp.dataset.k] = parseFloat(inp.value) || 0; this.render(body, ns);
+      const k = inp.dataset.k, caret = inp.selectionStart;
+      const ns = { ...s }; ns[k] = parseFloat(inp.value) || 0; this.render(body, ns);
+      const next = body.querySelector('.ctrl-num[data-k="' + k + '"]');
+      if (next) { next.focus(); try { next.setSelectionRange(caret, caret); } catch {} }
     }));
     body.querySelectorAll('[data-preset]').forEach(b => b.addEventListener('click', () => this.render(body, { ...this.PRESETS[b.dataset.preset] })));
   },
@@ -3641,7 +3649,10 @@ const RatioCalculator = {
       </div>
       <div class="callout" style="margin-top:14px;font-size:13px;"><div>綠＝相對健康、紅＝需留意，門檻只是<strong>通則</strong>；金融、營建、航運等產業要用該產業的標準（見 Part Ⅴ），別硬套。</div></div>`;
     body.querySelectorAll('.ctrl-num').forEach(inp => inp.addEventListener('input', () => {
-      const ns = { ...s }; ns[inp.dataset.k] = parseFloat(inp.value) || 0; this.render(body, ns);
+      const k = inp.dataset.k, caret = inp.selectionStart;
+      const ns = { ...s }; ns[k] = parseFloat(inp.value) || 0; this.render(body, ns);
+      const next = body.querySelector('.ctrl-num[data-k="' + k + '"]');
+      if (next) { next.focus(); try { next.setSelectionRange(caret, caret); } catch {} }
     }));
   },
   hydrate(w) { this.render(w.querySelector('.widget-body'), { ...this.defaults }); }
@@ -3828,7 +3839,10 @@ const DividendSimulator = {
       </div>
       <div class="callout" style="margin-top:14px;font-size:13px;"><div>高殖利率不等於好：若<strong>發放率 > 100%</strong>（配得比賺得多）或靠借錢配息，難長久。存股要看的是<strong>股利的穩定性與成長</strong>＋有沒有自由現金流撐著，不是單看當年殖利率。</div></div>`;
     body.querySelectorAll('.ctrl-num').forEach(inp => inp.addEventListener('input', () => {
-      const ns = { ...s }; ns[inp.dataset.k] = parseFloat(inp.value) || 0; this.render(body, ns);
+      const k = inp.dataset.k, caret = inp.selectionStart;
+      const ns = { ...s }; ns[k] = parseFloat(inp.value) || 0; this.render(body, ns);
+      const next = body.querySelector('.ctrl-num[data-k="' + k + '"]');
+      if (next) { next.focus(); try { next.setSelectionRange(caret, caret); } catch {} }
     }));
   },
   hydrate(w) { this.render(w.querySelector('.widget-body'), { ...this.defaults }); }
@@ -4103,9 +4117,11 @@ const CompanyCompare = {
       <div class="callout" style="margin-top:12px;font-size:13px;"><div>綠＝該指標較佳的一方（負債比、PE 是越低越好）。<strong>比率要同產業比才公平</strong>：高毛利型本來週轉低、薄利型本來毛利低，各有各的賺錢方式。</div></div>`;
     body.querySelectorAll('.ctrl-num').forEach(inp => inp.addEventListener('input', () => {
       const ns = { A: { ...s.A }, B: { ...s.B } };
-      const co = inp.dataset.co, k = inp.dataset.k;
+      const co = inp.dataset.co, k = inp.dataset.k, caret = inp.selectionStart;
       ns[co][k] = k === 'name' ? inp.value : (parseFloat(inp.value) || 0);
       this.render(body, ns);
+      const next = body.querySelector('.ctrl-num[data-co="' + co + '"][data-k="' + k + '"]');
+      if (next) { next.focus(); try { next.setSelectionRange(caret, caret); } catch {} }
     }));
   },
   hydrate(w) { this.render(w.querySelector('.widget-body'), { A: { ...this.defaults.A }, B: { ...this.defaults.B } }); }
@@ -4481,6 +4497,8 @@ const LLMAssistant = {
   HISTORY_STORE: 'fin/chat-history',
   MODEL: 'gemini-2.5-flash',
   MAX_HISTORY: 30,
+  PLACEHOLDER: '⏳ 思考中...',
+  inFlight: false,
   loadKey() { return localStorage.getItem(this.KEY_STORE) || ''; },
   saveKey(k) { try { localStorage.setItem(this.KEY_STORE, k); } catch {} },
   loadHistory() { try { return JSON.parse(localStorage.getItem(this.HISTORY_STORE) || '[]'); } catch { return []; } },
@@ -4524,7 +4542,8 @@ FIN 是「台股 + 美股財報判讀」單檔 HTML 自學手冊，共 32 章 + 
   async ask(userMessage, useContext) {
     const key = this.loadKey();
     if (!key) throw new Error('未設定 API key');
-    const all = this.loadHistory(), real = all.slice(0, -2);
+    // 排除最後一組剛 push 的 user + 佔位（思考中），且額外過濾掉任何佔位訊息，避免「⏳ 思考中...」被當歷史 turn 送進 Gemini
+    const all = this.loadHistory(), real = all.slice(0, -2).filter(h => h.content !== this.PLACEHOLDER);
     const messages = real.map(h => ({ role: h.role === 'assistant' ? 'model' : 'user', parts: [{ text: h.content }] }));
     messages.push({ role: 'user', parts: [{ text: useContext ? userMessage + this.getCurrentChapterContext() : userMessage }] });
     const body = { contents: messages, systemInstruction: { parts: [{ text: this.systemPrompt() }] }, generationConfig: { temperature: 0.7, maxOutputTokens: 1500 } };
@@ -4588,21 +4607,37 @@ FIN 是「台股 + 美股財報判讀」單檔 HTML 自學手冊，共 32 章 + 
     p.querySelector('[data-action="settings"]').addEventListener('click', () => { if (confirm('重新設定 API key？（不會清掉對話）')) { this.saveKey(''); this.renderPanel(); } });
     p.querySelector('[data-action="clear"]').addEventListener('click', () => { if (confirm('清空所有對話？')) { this.saveHistory([]); this.renderPanel(); } });
     const input = p.querySelector('#llm-input');
+    const sendBtn = p.querySelector('#llm-send');
+    if (this.inFlight) { input.disabled = true; sendBtn.disabled = true; }
     const handleSend = async () => {
+      if (this.inFlight) return;               // in-flight 鎖：等待回覆時不接受第二則
       const text = input.value.trim(); if (!text) return;
       const useContext = p.querySelector('#llm-use-context').checked; input.value = '';
+      const placeholderId = Date.now();        // 穩定 id：回填時依此 id 找對應那筆，避免並發覆寫到別則
       const h = this.loadHistory();
-      h.push({ role: 'user', content: text, ts: Date.now() });
-      h.push({ role: 'assistant', content: '⏳ 思考中...', ts: Date.now() });
-      this.saveHistory(h); this.renderPanel();
+      h.push({ role: 'user', content: text, ts: placeholderId });
+      h.push({ role: 'assistant', content: this.PLACEHOLDER, ts: placeholderId });
+      this.saveHistory(h);
+      this.inFlight = true;
+      this.renderPanel();
+      const fill = content => {
+        const h2 = this.loadHistory();
+        const idx = h2.findIndex(m => m.role === 'assistant' && m.ts === placeholderId && m.content === this.PLACEHOLDER);
+        const target = idx >= 0 ? idx : h2.length - 1;
+        h2[target] = { role: 'assistant', content, ts: placeholderId };
+        this.saveHistory(h2);
+      };
       try {
         const reply = await this.ask(text, useContext);
-        const h2 = this.loadHistory(); h2[h2.length - 1] = { role: 'assistant', content: reply, ts: Date.now() }; this.saveHistory(h2); this.renderPanel();
+        fill(reply);
       } catch (e) {
-        const h2 = this.loadHistory(); h2[h2.length - 1] = { role: 'assistant', content: '❌ ' + e.message + '\n\n常見原因：(1) API key 錯 (2) 超過免費 quota (3) 網路問題', ts: Date.now() }; this.saveHistory(h2); this.renderPanel();
+        fill('❌ ' + e.message + '\n\n常見原因：(1) API key 錯 (2) 超過免費 quota (3) 網路問題');
+      } finally {
+        this.inFlight = false;
+        this.renderPanel();
       }
     };
-    p.querySelector('#llm-send').addEventListener('click', handleSend);
+    sendBtn.addEventListener('click', handleSend);
     input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } });
     setTimeout(() => input.focus(), 50);
   },
@@ -4701,6 +4736,8 @@ document.getElementById('reset-btn').addEventListener('click', () => {
 
 window.addEventListener('DOMContentLoaded', () => {
   hydrateAll();
+  // 先讀取先前儲存的閱讀百分比，再呼叫 updateProgress()（在 scrollY=0 時會把 lastScrollPct 覆寫成 0），否則還原永遠失效
+  const restorePct = loadState().lastScrollPct;
   updateProgress(); updateActiveNav();
   setupVisitedObserver(); setupCompletionButtons();
   setupGlossarySearch(); setupMobileMenu();
@@ -4708,9 +4745,8 @@ window.addEventListener('DOMContentLoaded', () => {
   LearningPathBuilder.applyPlanHighlight();
   LLMAssistant.initUI();
   setupShortcuts();
-  const s = loadState();
-  if (s.lastScrollPct && s.lastScrollPct > 5) {
-    setTimeout(() => { const sh = document.documentElement.scrollHeight - window.innerHeight; window.scrollTo({ top: (s.lastScrollPct / 100) * sh, behavior: 'auto' }); }, 100);
+  if (restorePct && restorePct > 5) {
+    setTimeout(() => { const sh = document.documentElement.scrollHeight - window.innerHeight; window.scrollTo({ top: (restorePct / 100) * sh, behavior: 'auto' }); }, 100);
   }
 });
 </script>
