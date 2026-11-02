@@ -121,7 +121,7 @@ describe('ch29 實戰演練：宏曜電子（示意）三年財報表', () => {
     assert.equal(Number(m[1]), Math.floor(Math.min(...p['ROE'])));
     assert.equal(Number(m[2]), Math.floor(Math.max(...p['ROE'])));
   });
-  test.todo('第 3 步判讀：引用的應收／存貨區間與營收成長是同一期間，且確實低於營收成長', () => {
+  test('第 3 步判讀：引用的應收／存貨區間與營收成長是同一期間，且確實低於營收成長', () => {
     const m = /營收成長 (\d+)%、但應收（(\d+)→(\d+)）與存貨（(\d+)→(\d+)）增幅低於營收增幅/.exec(ch29);
     assert.ok(m, '找不到判讀句');
     const [, g, ar0, ar1, inv0, inv1] = m.map(Number);
