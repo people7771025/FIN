@@ -147,7 +147,7 @@ describe('ch30 估值落地：DCF 敏感度文字', () => {
     assert.ok(m);
     assert.equal(Number(m[1]), Math.round((tv(0.09, g) / tv(r, g) - 1) * 100));
   });
-  test.todo('「永續成長率 3%→4%，TV 大漲約 N%」的 N 等於重算四捨五入（分子 FCF₆ 也會變大）', () => {
+  test('「永續成長率 3%→4%，TV 大漲約 N%」的 N 等於重算四捨五入（分子 FCF₆ 也會變大）', () => {
     const m = /永續成長率從 3% 改成 4%[^<]*?TV [^<]*?約 (\d+)%/.exec(ch30);
     assert.ok(m);
     assert.equal(Number(m[1]), Math.round((tv(r, 0.04) / tv(r, g) - 1) * 100));
