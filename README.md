@@ -29,6 +29,8 @@
 
 ## 內容範圍
 
+> v2 版（由淺入深重排）側欄為 **6 個 Part、36 章**：ch1–ch32 ＋ 擴充章 fin-x1～fin-x3 ＋ 個股實戰案例庫，章號維持原編號，每段附練習並自動穿插間隔複習。以下依主題列出內容涵蓋範圍（Ⅰ～Ⅷ 為主題分組，不是側欄的 Part 編號）。
+
 - **Part Ⅰ 財報基礎**：三大報表（損益表 / 資產負債表 / 現金流量表）+ 三表串聯；台股 MOPS、美股 SEC EDGAR 從哪抓
 - **Part Ⅱ 關鍵財務比率**：獲利能力 / 成長性 / 安全性 / 經營效率 / 評價（P/E·P/B·PEG·殖利率）
 - **Part Ⅲ 看「變化」的訊號** ⭐：趨勢判讀、毛利率與成本變化、存貨/應收暴增警訊、現金流 vs 淨利（盈餘品質）、一次性 vs 經常性、財報地雷
@@ -51,7 +53,8 @@
 - **RedFlagScanner** — 財報地雷訊號 checklist
 - **CompanyCompare** — 兩家公司比一比
 - **看財報工作底稿（Worksheet）** — 六步體檢可填、可標紅旗、自動存、即時自我檢核、可匯出文字
-- **Quiz + 錯題重練** — 答錯題自動收入進度頁，答對或標為已掌握後移出
+- **Quiz + 錯題重練** — 12 組章末測驗；答錯題自動收入進度頁，答對或標為已掌握後移出
+- **段落練習 + 間隔複習（v2）** — 每段內嵌選擇題（219 題），依 Leitner 盒子排程，到期題在讀到後面段落時自動穿插
 - **LLM 助教** — 自帶 Gemini key，會自動帶入當前章節作為 context
 
 ## ⚠️ 重要聲明
@@ -67,6 +70,30 @@
 新增互動：放 `<div class="widget" data-component="...">` 佔位，於檔尾 `hydrateAll()` 註冊。
 
 詳見 `HANDOFF.md`。
+
+## 開發者：自動化檢查
+
+測試只用 Node 內建模組（`node:test`／`node:assert`／`node:vm`／`node:fs`），不需要 `npm install`，也沒有 build step。需要 Node 18 以上（建議 22）：
+
+```bash
+node --test tests/
+```
+
+| 檔案 | 保護的行為 |
+|---|---|
+| `tests/load-script.test.mjs` | 從 `index.html` 抽出主 `<script>`、在 `node:vm` 沙箱載入；所有 script 語法正確；載入不發網路請求 |
+| `tests/ratios.test.mjs` | RatioCalculator 八項比率、杜邦三因子＝ROE、瀑布圖、PE 河流圖、盈餘品質的手算答案與邊界 |
+| `tests/dividend.test.mjs` | DividendSimulator 殖利率、發放率、填息、除息參考價與邊界 |
+| `tests/format-chart.test.mjs` | `fmt`／`pctf`／`scaleY`／`linePath`／`svgChart` 的格式與 SVG 輸出 |
+| `tests/content.test.mjs` | 錨點、Quiz 資料、標籤閉合、章數／元件數宣稱、外部請求白名單 |
+| `tests/navigation.test.mjs` | 點 `#chN` 章節連結會捲到對應章節 |
+| `tests/examples.test.mjs` | 各章財報範例的算式與表格重算 |
+| `tests/storage-llm.test.mjs` | 錯題重練資料格式與 localStorage key 名稱；LLM 助教請求組裝與錯誤處理（`fetch` 為假物件，使用假 key） |
+| `tests/v2.test.mjs` | `v2.js` 段落練習與間隔複習 |
+
+- `tests/helpers/load-script.mjs`：沙箱載入工具。內含最小 DOM／localStorage 假物件；`fetch` 一律 stub，呼叫就丟錯。
+- `tests/AUDIT-2026-11.md`：2026-11 全站財報範例重算稽核報告。
+- 標為 `todo` 的測試是已知、尚未修正的疑似問題。執行結果會列出來，但不會讓整體失敗。
 
 ## License
 

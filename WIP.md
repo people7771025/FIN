@@ -1,11 +1,11 @@
 # WIP — FIN 台股美股財報自學系統
 
-最後更新：2026-06-09（台北時間）/ Codex
+最後更新：2026-11-02（台北時間）/ Claude（新增自動化測試與範例稽核）
 
 ## 現在狀態
 
 - **v1.2 學習閉環補強完成**。單檔 `index.html`，線上仍為 <https://people7771025.github.io/FIN/>（push 後 Pages 自動部署）。
-- 內容：intro + **32 章（ch1–32）** + 案例庫 + 名詞表 + 學習進度，分 **8 個 Part**（章節對照見 HANDOFF §2）。
+- 內容：intro + **32 章（ch1–32）＋ 3 個擴充章（fin-x1～x3）** + 案例庫 + 名詞表 + 學習進度。v2 由淺入深重排後，側欄為 **6 個 Part、36 章**（順序見 `index.html` 的 `window.V2.order`；HANDOFF §2 是重排前的主題分組）。
 - **2026-06-05 新增 ch32「當紅主流產業速查」**（版面排在 Part Ⅴ 產業末、ch25 之後）：依現今主流產業擴大教學——地緣政治線（軍工）、AI 算力供應鏈、光通訊/CPO/矽光子、循環與零組件（封測等）、能源轉型與防禦型；industry 選擇器預設顯示熱門產業。已過完整驗證（瀏覽器實跑、0 console error、quiz JSON 合法）。
 - 互動元件 **11 種** + Quiz（12 組）+ 學習路徑：dupont / ratio / waterfall / trend / pebands / dividend / quality / redflag / industry / compare / **worksheet（六步工作底稿，可填可存、即時自我檢核、可匯出）**。
 - 本輪補強：
@@ -17,6 +17,7 @@
   - 新增 worksheet 工作底稿元件。
   - **11 處財務正確性補正**（SBC 對 CFO、P/B<1 語境、利息保障、FCF/股息、ROIC、杜邦口徑、PEG 代入、申報期限、商譽準則、銀行 ECL、ch5 折舊）。詳見 HANDOFF §7。
 - 驗證：`node` 解析 12 組 quiz JSON OK；抽出 `<script>` 後 `new Function()` JS parser OK；功能存在性檢查 OK。瀏覽器 localhost 實跑因本環境 Browser enterprise policy 擋 `127.0.0.1`，未做互動實跑。
+- **2026-11 自動化測試**：新增 `tests/`（Node 內建 `node:test`，無依賴），執行 `node --test tests/`；說明見 README「開發者：自動化檢查」。全站範例重算報告見 `tests/AUDIT-2026-11.md`。
 
 ## 下一步（未做，皆非必要）
 

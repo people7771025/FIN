@@ -8,7 +8,9 @@
 - 主題：**財報判讀**——三大報表 → 關鍵比率 → 看「變化」的訊號 → 台股/美股差異 → 產業差異 → 個股案例 → 決策框架。
 - 引擎（CSS 設計系統 + 進度/書籤/完成/複習/LLM 助教/PWA/快速鍵/雲端同步）整套沿用姊妹專案 `$HOME/Dev/OPT`，只換主題文字與互動元件。OPT 是修改基底與唯一參考實作。
 
-## 2. 章節編號方案（sidebar 導覽順序）
+## 2. 章節編號方案（主題分組；原 sidebar 順序）
+
+> 2026 v2 重排後，sidebar 改為由淺入深的 **6 個 Part、36 章**（含擴充章 fin-x1～x3 與案例庫），實際順序以 `index.html` 的 `window.V2.order` 為準；下表保留原主題分組與元件對照。
 
 | id | Part | 標題 | 互動元件 |
 |---|---|---|---|
@@ -118,6 +120,12 @@ Quiz 用資料驅動：
 
 驗證：`node` 解析 12 組 quiz JSON OK；抽出 `<script>` 後 `new Function()` JS parser OK；功能存在性檢查 OK。瀏覽器 localhost 實跑因本環境 Browser enterprise policy 擋 `127.0.0.1`，未做互動實跑。
 
-## 9. 待辦 / 下一步
+## 9. 自動化測試（2026-11）
+
+- `node --test tests/`（只用 Node 內建模組，無 package.json、無依賴）。各檔保護範圍見 README「開發者：自動化檢查」。
+- 測試以 `node:vm` 沙箱載入 `index.html` 主 script，`fetch` 一律 stub；不讀取真實 key，也不發網路請求。
+- `test.todo` 列的是已知、尚未處理的疑似問題；全站範例重算報告在 `tests/AUDIT-2026-11.md`。
+
+## 10. 待辦 / 下一步
 
 見 `WIP.md`。

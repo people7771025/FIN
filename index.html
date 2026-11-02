@@ -2839,7 +2839,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <p>注意上面 1,681 億裡，有 1,243 億（約 74%）來自「永續價值」這個最遠、最不確定的部分。DCF 看似精密，其實對假設極度敏感：</p>
 <ul>
 <li>折現率從 10% 改成 9%，永續價值的分母從 0.07 變 0.06，TV 暴增約 17%。</li>
-<li>永續成長率從 3% 改成 4%，分母同樣從 0.07 變 0.06，TV 一樣大漲約 17%。</li>
+<li>永續成長率從 3% 改成 4%，分母同樣從 0.07 變 0.06，加上分子的第 6 年 FCF 也跟著變大，TV 大漲約 18%。</li>
 </ul>
 <p>所以 DCF 的正確用法不是「算出一個神準的數字」，而是<strong>跑幾組假設、看出一個合理價區間</strong>，並理解你的價值大多押在「很久以後」這件事上。對假設稍動就大變的標的，更要留厚一點的安全邊際。</p>
 </div>
@@ -3337,7 +3337,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <li>2025：<code>33.5 ÷ 28.0 ≈ 1.20</code></li>
 <li>FCF：9 → 11 → 18 億，<strong>三年都是正的且擴大</strong>（反推 capex 約 11 → 12.5 → 15.5 億，隨擴張而增，合理）。</li>
 </ul>
-<p><strong>判讀：</strong>CFO/淨利連續三年大於 1，代表帳上的「稅後淨利」確實有對應的現金流進來，不是靠應收帳款或存貨膨脹堆出來的紙上獲利。再對照第 2 步：營收成長 20%、但應收（30→40）與存貨（28→36）增幅低於營收增幅，<strong>沒有「貨越賣越多、錢越收越慢」</strong>的惡化。FCF 為正且擴大，代表它賺的錢扣掉維持與擴張的資本支出後還有餘裕——這也是後面能配得出現金股利的底氣。</p>
+<p><strong>判讀：</strong>CFO/淨利連續三年大於 1，代表帳上的「稅後淨利」確實有對應的現金流進來，不是靠應收帳款或存貨膨脹堆出來的紙上獲利。再對照第 2 步：營收成長 20%、但應收（35→40）與存貨（33→36）增幅低於營收增幅，<strong>沒有「貨越賣越多、錢越收越慢」</strong>的惡化。FCF 為正且擴大，代表它賺的錢扣掉維持與擴張的資本支出後還有餘裕——這也是後面能配得出現金股利的底氣。</p>
 <div class="callout success"><div class="callout-title">第 3 步：過關</div><p>盈餘含金量高（CFO/淨利＞1）、FCF 正且擴大，獲利是「真錢」。</p></div>
 
 
@@ -3376,7 +3376,7 @@ svg.chart text.label-marker { font-size: 10px; font-family: var(--font-mono); fi
 <tbody>
 <tr><td>ROE</td><td>18.0%</td><td>16.0%</td><td>19.0%</td></tr>
 <tr><td>淨利率</td><td>11.1%</td><td>12.5%</td><td>7.0%</td></tr>
-<tr><td>總資產周轉率</td><td>0.95</td><td>0.80</td><td>1.10</td></tr>
+<tr><td>總資產周轉率</td><td>0.95</td><td>0.88</td><td>1.10</td></tr>
 <tr><td>權益乘數</td><td>1.71</td><td>1.45</td><td>2.50</td></tr>
 <tr><td>負債比</td><td>41.5%</td><td>31%</td><td>60%</td></tr>
 </tbody>
@@ -5152,6 +5152,8 @@ function getCurrentChapterIndex() {
   return idx;
 }
 function gotoChapter(id) { const el = document.querySelector(`section[data-chapter="${id}"]`); if (el) window.scrollTo({ top: window.scrollY + el.getBoundingClientRect().top - 50, behavior: 'smooth' }); }
+// 章節 section 沒有 id，原生錨點 #chN 不會跳：攔截站內章節連結改用 gotoChapter 捲動
+document.addEventListener('click', e => { const a = !e.metaKey && !e.ctrlKey && !e.shiftKey && e.target.closest && e.target.closest('a[href^="#"]'), id = a && a.getAttribute('href').slice(1); if (!id || document.getElementById(id) || !document.querySelector(`section[data-chapter="${id}"]`)) return; e.preventDefault(); gotoChapter(id); try { history.replaceState(null, '', '#' + id); } catch {} });
 function showShortcutsPanel() {
   const old = document.getElementById('shortcuts-panel'); if (old) { old.remove(); return; }
   const panel = document.createElement('div'); panel.id = 'shortcuts-panel';
