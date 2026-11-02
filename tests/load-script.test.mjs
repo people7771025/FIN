@@ -70,3 +70,16 @@ test('createBody 假元素：輸入事件會觸發重新渲染', () => {
   assert.equal(readStats(body.innerHTML)['毛利率'], '22.5%');
   assert.equal(body.querySelector('.ctrl-num[data-k="rev"]').value, '2000');
 });
+
+test('extractDeclaration 可正確抽出含正規式、樣板字面值的大型宣告，且每段都能獨立通過語法檢查', () => {
+  const src = extractMainScript();
+  const names = ['fmt', 'pctf', 'clamp', 'esc', 'scaleY', 'svgChart', 'linePath', 'chapterLabel', 'hydrateAll',
+    'LearningPathBuilder', 'QuizReview', 'Quiz', 'DuPontDecomposer', 'RatioCalculator', 'MarginWaterfall', 'TrendVisualizer',
+    'PEBands', 'DividendSimulator', 'EarningsQuality', 'RedFlagScanner', 'IndustryMetricPicker', 'CompanyCompare', 'WorksheetTool', 'LLMAssistant'];
+  for (const n of names) {
+    const code = extractDeclaration(src, n);
+    assert.doesNotThrow(() => new vm.Script(code), n);
+  }
+  // esc 內含 /'/g 正規式：不得被誤當成字串開頭
+  assert.match(extractDeclaration(src, 'esc'), /&#39;'\); \}$/);
+});

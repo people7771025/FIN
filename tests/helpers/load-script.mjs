@@ -63,18 +63,34 @@ export function extractDeclaration(src, name) {
 
 function matchBrace(src, open) {
   let depth = 0;
-  const stack = []; // 樣板字面值內 ${ } 的深度追蹤
   for (let i = open; i < src.length; i++) {
     const c = src[i];
     if (c === '"' || c === "'") { i = skipString(src, i, c); continue; }
     if (c === '`') { i = skipTemplate(src, i); continue; }
     if (c === '/' && src[i + 1] === '/') { i = src.indexOf('\n', i); if (i < 0) break; continue; }
     if (c === '/' && src[i + 1] === '*') { i = src.indexOf('*/', i) + 1; continue; }
+    if (c === '/' && isRegexStart(src, i)) { i = skipRegex(src, i); continue; }
     if (c === '{') depth++;
     else if (c === '}') { depth--; if (depth === 0) return i; }
   }
-  void stack;
   throw new Error('括號不配對');
+}
+// 判斷 / 是否為正規表示式字面值的開頭：前一個非空白字元是運算子或開括號
+function isRegexStart(src, i) {
+  let j = i - 1;
+  while (j >= 0 && /\s/.test(src[j])) j--;
+  return j < 0 || /[(,=:[!&|?{};+\-*%<>~^]/.test(src[j]);
+}
+function skipRegex(src, i) {
+  let inClass = false;
+  for (i++; i < src.length; i++) {
+    if (src[i] === '\\') { i++; continue; }
+    if (src[i] === '[') inClass = true;
+    else if (src[i] === ']') inClass = false;
+    else if (src[i] === '/' && !inClass) return i;
+    else if (src[i] === '\n') return i; // 保險：正規式不跨行
+  }
+  return i;
 }
 function skipString(src, i, q) {
   for (i++; i < src.length; i++) {
