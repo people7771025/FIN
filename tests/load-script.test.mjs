@@ -21,7 +21,7 @@ test('主 script 可在 vm 沙箱載入，頂層初始化不丟例外、不寫 c
   assert.equal(app.fetchCalls.length, 0);
 });
 
-test('載入時只註冊 DOMContentLoaded 與 scroll 事件，觸發 DOMContentLoaded 後 hydrate 不丟例外', () => {
+test('載入時在 window 只註冊 DOMContentLoaded 與 scroll 事件，觸發 DOMContentLoaded 後 hydrate 不丟例外', () => {
   const app = loadApp();
   assert.equal(app.listeners.DOMContentLoaded?.length, 1);
   assert.equal(app.listeners.scroll?.length, 1);

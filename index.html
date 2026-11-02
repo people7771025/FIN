@@ -5152,6 +5152,8 @@ function getCurrentChapterIndex() {
   return idx;
 }
 function gotoChapter(id) { const el = document.querySelector(`section[data-chapter="${id}"]`); if (el) window.scrollTo({ top: window.scrollY + el.getBoundingClientRect().top - 50, behavior: 'smooth' }); }
+// 章節 section 沒有 id，原生錨點 #chN 不會跳：攔截站內章節連結改用 gotoChapter 捲動
+document.addEventListener('click', e => { const a = !e.metaKey && !e.ctrlKey && !e.shiftKey && e.target.closest && e.target.closest('a[href^="#"]'), id = a && a.getAttribute('href').slice(1); if (!id || document.getElementById(id) || !document.querySelector(`section[data-chapter="${id}"]`)) return; e.preventDefault(); gotoChapter(id); try { history.replaceState(null, '', '#' + id); } catch {} });
 function showShortcutsPanel() {
   const old = document.getElementById('shortcuts-panel'); if (old) { old.remove(); return; }
   const panel = document.createElement('div'); panel.id = 'shortcuts-panel';
