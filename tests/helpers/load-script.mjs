@@ -227,7 +227,7 @@ const EXPORT_NAMES = [
 ];
 
 /**
- * 在 vm 沙箱中載入主 script，回傳 { api, ctx, localStorage, fetchCalls, consoleErrors, listeners }。
+ * 在 vm 沙箱中載入主 script，回傳 { api, ctx, localStorage, fetchCalls, consoleErrors, listeners, docListeners, scrollCalls }。
  * api 內含 EXPORT_NAMES 中的頂層宣告。
  */
 export function loadApp({ storage = {} } = {}) {
@@ -236,6 +236,8 @@ export function loadApp({ storage = {} } = {}) {
   const fetchCalls = [];
   const consoleErrors = [];
   const listeners = {};
+  const docListeners = {};
+  const scrollCalls = [];
   const doc = {
     documentElement: { dataset: {}, scrollHeight: 0, clientHeight: 0 },
     body: universalStub(),
@@ -243,12 +245,12 @@ export function loadApp({ storage = {} } = {}) {
     querySelector: () => null,
     querySelectorAll: () => [],
     createElement: () => universalStub(),
-    addEventListener() {}
+    addEventListener(t, f) { (docListeners[t] ||= []).push(f); }
   };
   const win = {
     addEventListener(t, f) { (listeners[t] ||= []).push(f); },
     matchMedia: () => ({ matches: false, addEventListener() {} }),
-    scrollY: 0, innerHeight: 800, scrollTo() {}
+    scrollY: 0, innerHeight: 800, scrollTo(o) { scrollCalls.push(o); }
   };
   const sandbox = {
     window: win,
@@ -268,7 +270,7 @@ export function loadApp({ storage = {} } = {}) {
   const ctx = vm.createContext(sandbox);
   const tail = `\n;globalThis.__api = { ${EXPORT_NAMES.join(', ')} };`;
   vm.runInContext(code + tail, ctx, { filename: 'index.html#main-script' });
-  return { api: ctx.__api, ctx, localStorage, fetchCalls, consoleErrors, listeners };
+  return { api: ctx.__api, ctx, localStorage, fetchCalls, consoleErrors, listeners, docListeners, scrollCalls };
 }
 
 /* ------------------------------------------------------------------
