@@ -7,7 +7,9 @@
 // ⑥ 沒有外部資源請求；唯一的網路呼叫是使用者自備 key 的 Gemini API（白名單）
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readIndex, extractScripts, extractMainScript } from './helpers/load-script.mjs';
+import fs from 'node:fs';
+import path from 'node:path';
+import { ROOT, readIndex, extractScripts, extractMainScript } from './helpers/load-script.mjs';
 
 const html = readIndex();
 const scripts = extractScripts(html);
@@ -275,6 +277,31 @@ describe('⑤ 數量宣稱一致', () => {
   test.todo('疑似瑕疵：頂欄完成計數靜態寫「/ 36」，但 JS 以可追蹤章節（排除案例庫）計為 35，載入後數字會跳動', () => {
     const trackable = sections.filter(s => !['intro', 'cases', 'glossary', 'progress'].includes(s)).length;
     assert.match(staticHtml, new RegExp(`<span class="count">0</span> / ${trackable}<`));
+  });
+});
+
+describe('⑤-2 README 宣稱與頁面一致', () => {
+  const readme = fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8');
+  test('README「6 個 Part、36 章」與頁面一致', () => {
+    const m = /(\d+) 個 Part、(\d+) 章/.exec(readme);
+    assert.ok(m, 'README 應寫明 Part 數與章數');
+    assert.equal(Number(m[1]), new Set([...staticHtml.matchAll(/nav-group-title">Part (\d+)/g)].map(x => x[1])).size);
+    assert.equal(Number(m[2]), V2.order.length);
+  });
+  test('README 段落練習題數、章末測驗組數與頁面一致', () => {
+    assert.equal(Number(/段落練習[^\n]*?（(\d+) 題）/.exec(readme)[1]), Object.keys(V2.q).length);
+    assert.equal(Number(/(\d+) 組章末測驗/.exec(readme)[1]), (html.match(/data-component="quiz"/g) || []).length);
+  });
+  test('README 互動元件清單涵蓋每一種 data-component（以元件英文名對照）', () => {
+    const names = { dupont: 'DuPontDecomposer', ratio: 'RatioCalculator', waterfall: 'MarginWaterfall', trend: 'TrendVisualizer', quality: 'EarningsQuality', pebands: 'PEBands', dividend: 'DividendSimulator', industry: 'IndustryMetricPicker', redflag: 'RedFlagScanner', compare: 'CompanyCompare', worksheet: 'Worksheet' };
+    const kinds = new Set([...staticHtml.matchAll(/data-component="([a-z]+)"/g)].map(m => m[1]));
+    kinds.delete('path'); kinds.delete('quiz');
+    for (const k of kinds) assert.ok(names[k] && readme.includes(names[k]), `README 未列出元件 ${k}`);
+  });
+  test('README 列出的每個測試檔都存在，且 tests/ 的每個測試檔都列在 README', () => {
+    const listed = [...readme.matchAll(/`tests\/([\w-]+\.test\.mjs)`/g)].map(m => m[1]).sort();
+    const actual = fs.readdirSync(path.join(ROOT, 'tests')).filter(f => f.endsWith('.test.mjs')).sort();
+    assert.deepEqual(listed, actual);
   });
 });
 
