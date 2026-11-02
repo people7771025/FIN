@@ -168,6 +168,21 @@ describe('RatioCalculator：除以零、缺欄位、極端值', () => {
     assert.equal(s['淨利率'], '20.0%');
     assert.equal(RatioCalculator.defaults.rev, 1000, 'defaults 物件不得被改寫');
   });
+  test('物件缺少欄位（undefined）：對應比率顯示「—」，不顯示 NaN', () => {
+    const body = createBody();
+    RatioCalculator.render(body, { rev: 1000 });
+    const st = readStats(body.innerHTML);
+    assert.equal(st['毛利率'], '—');
+    assert.equal(st['ROE'], '0.0%'); // equity 缺 → 分母為 falsy → 以 0 代替
+    for (const v of Object.values(st)) assert.doesNotMatch(v, /NaN|undefined/);
+    // 記錄現行行為：輸入框會顯示 value="undefined"（UI 一律從完整 defaults 出發，使用者無法觸發）
+    assert.match(body.innerHTML, /data-k="gross" type="number" step="10" value="undefined"/);
+  });
+  test('總負債大於總資產（資不抵債）：負債比 > 100% 並標紅', () => {
+    const { stats, cls } = ratio({ assets: 500, debt: 600 });
+    assert.equal(stats['負債比'], '120.0%');
+    assert.equal(cls['負債比'], 'neg');
+  });
   test('欄位為 null：以 0 處理，不丟例外', () => {
     const { stats, body } = ratio({ gross: null, ni: null });
     assert.equal(stats['毛利率'], '0.0%');
@@ -195,10 +210,9 @@ describe('四捨五入口徑（toFixed：以二進位值為準，非「銀行家
   test('ROE 0.05% 這種極小值顯示 0.1%（0.05*100/100 浮點略大於 0.05）——記錄現行口徑', () => {
     assert.equal(ratio({ ni: 0.5, equity: 1000 }).stats['ROE'], '0.1%');
   });
-  test('顯示值與註解公式一致：毛利率 = 毛利 ÷ 營收（不是 (營收-成本)/成本）', () => {
-    // 若有人誤改成除以成本，450/(1000-450) = 81.8%
-    assert.notEqual(ratio().stats['毛利率'], '81.8%');
-    assert.match(ratio().body.innerHTML, /定價力 \/ 成本/);
+  test('每個比率的提示文字（hint）與頁面上的公式說明對應', () => {
+    const html = ratio().body.innerHTML;
+    for (const hint of ['定價力 / 成本', '本業效率', '最後落袋', '幫股東賺錢', '用資產賺錢', '財務槓桿', '短期償債', '扣存貨後']) assert.ok(html.includes(hint), hint);
   });
 });
 

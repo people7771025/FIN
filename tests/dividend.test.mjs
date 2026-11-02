@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import { loadApp, createBody, readStats, readStatClasses, pct, rng } from './helpers/load-script.mjs';
 
 const { api } = loadApp();
-const { DividendSimulator, fmt } = api;
+const { DividendSimulator } = api;
 
 function sim(over = {}) {
   const body = createBody();
@@ -172,7 +172,7 @@ describe('除息日前後價格關係', () => {
     const r = sim({ price: 80, dps: 3.2 });
     assert.equal(r.ex, '76.8');
     assert.equal(r.fill, '4.2%');
-    assert.equal(fmt(76.8 * (1 + 3.2 / 76.8), 1), '80.0');
+    assert.equal((76.8 + 3.2).toFixed(1), '80.0', '除息價 + 股利 = 除息前收盤');
   });
   test('提示文字說明公式口徑（股利 ÷ 股價、股利 ÷ EPS、股價 − 股利）', () => {
     const html = sim().body.innerHTML;

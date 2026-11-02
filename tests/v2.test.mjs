@@ -104,6 +104,15 @@ describe('localStorage key 與載入容錯', () => {
     const r = run({ V2, slots: [{ chapter: 'ch1', qids: 'x1' }], storage: { 'fin/v2-srs': '{壞掉' } });
     assert.match(r.stats.innerHTML, /已做 <b>0<\/b>\/1 題/);
   });
+  test('單筆紀錄欄位損毀（due 為字串、缺欄位）時不丟例外，且不會被當成到期題', () => {
+    const now = Date.UTC(2026, 10, 2);
+    const V2b = { subj: 'fin', mode: 'public', q: bank([['a', 'ch1'], ['b', 'ch1'], ['x', 'ch2']]) };
+    const storage = { 'fin/v2-srs': JSON.stringify({ a: { box: 1, n: 1, c: 0, due: 'abc' }, b: {} }) };
+    let r;
+    assert.doesNotThrow(() => { r = run({ V2: V2b, now, storage, slots: [{ chapter: 'ch1', qids: 'a,b' }, { chapter: 'ch2', qids: 'x' }] }); });
+    assert.deepEqual(r.slotEls[1].children[0].querySelectorAll('.v2-q').map(q => q.dataset.id), ['x']);
+    assert.doesNotMatch(r.stats.innerHTML, /NaN/);
+  });
   test('儲存值為 JSON null 時也視為空紀錄', () => {
     const r = run({ V2, slots: [{ chapter: 'ch1', qids: 'x1' }], storage: { 'fin/v2-srs': 'null' } });
     assert.match(r.stats.innerHTML, /已做 <b>0<\/b>/);
