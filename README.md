@@ -88,6 +88,7 @@ node --test tests/
 | `tests/content.test.mjs` | 錨點、Quiz 資料、標籤閉合、章數／元件數宣稱、外部請求白名單 |
 | `tests/navigation.test.mjs` | 點 `#chN` 章節連結會捲到對應章節 |
 | `tests/examples.test.mjs` | 各章財報範例的算式與表格重算 |
+| `tests/storage-llm.test.mjs` | 錯題重練資料格式與 localStorage key 名稱；LLM 助教請求組裝與錯誤處理（`fetch` 為假物件，使用假 key） |
 | `tests/v2.test.mjs` | `v2.js` 段落練習與間隔複習 |
 
 - `tests/helpers/load-script.mjs`：沙箱載入工具。內含最小 DOM／localStorage 假物件；`fetch` 一律 stub，呼叫就丟錯。
