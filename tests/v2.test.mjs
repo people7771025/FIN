@@ -78,11 +78,6 @@ function run({ V2, slots = [], storage = {}, now = Date.UTC(2026, 10, 2, 4, 0, 0
   return { slotEls, stats, body, localStorage, clock, bookmarkClicks: () => bookmarkClicks };
 }
 
-// 疑似 bug：v2.js 把每段「自己的題目」也加進 used，而 dueReviews 會排除 used，
-// 於是前面段落的題目永遠不會被穿插複習（Chromium 實測：6 題到期、側欄寫「待複習 6 題」，全頁 0 張複習卡）。
-// 以下 5 個測試描述預期行為，修正前標為 todo。
-const reviewTest = test.todo;
-
 const Q = (id, chapter, extra = {}) => ({ id, chapter, question: `假題 ${id}？`, options: { A: '甲', B: '乙', C: '丙', D: '丁' }, answer: 'B', explanation: `解析 ${id}`, ...extra });
 const bank = ids => Object.fromEntries(ids.map(([id, ch]) => [id, Q(id, ch)]));
 const opts = card => card.querySelectorAll('.v2-opt');
@@ -204,7 +199,7 @@ describe('題卡組成與到期複習', () => {
     const r = run({ V2, slots: [{ chapter: 'ch1', qids: '' }, { chapter: 'ch1', qids: 'a' }] });
     assert.equal(r.slotEls[0].children.length, 0);
   });
-  reviewTest('只穿插「前面段落」且已到期的題目；未到期、未作答、後面段落的題目都不出現', () => {
+  test('只穿插「前面段落」且已到期的題目；未到期、未作答、後面段落的題目都不出現', () => {
     const now = Date.UTC(2026, 10, 2);
     const V2 = { subj: 'fin', mode: 'public', q: bank([['p1', 'ch1'], ['p2', 'ch1'], ['p3', 'ch1'], ['c1', 'ch2'], ['later', 'ch3']]) };
     const storage = { 'fin/v2-srs': JSON.stringify({
@@ -218,7 +213,7 @@ describe('題卡組成與到期複習', () => {
     assert.match(r.slotEls[1].children[0]._html, /1 題本段 · 1 題複習/);
     assert.match(r.slotEls[1].children[0].querySelectorAll('.v2-q')[1]._html, /<span class="v2-rv">複習<\/span>/);
   });
-  reviewTest('複習排序：box 小的優先，同 box 依到期時間早者優先；數量上限 = min(2, ceil(本段題數/2))', () => {
+  test('複習排序：box 小的優先，同 box 依到期時間早者優先；數量上限 = min(2, ceil(本段題數/2))', () => {
     const now = Date.UTC(2026, 10, 2);
     const V2 = { subj: 'fin', mode: 'public', q: bank([['r1', 'ch1'], ['r2', 'ch1'], ['r3', 'ch1'], ['n1', 'ch2'], ['n2', 'ch2'], ['n3', 'ch2']]) };
     const storage = { 'fin/v2-srs': JSON.stringify({
@@ -230,7 +225,7 @@ describe('題卡組成與到期複習', () => {
     const ids = r.slotEls[1].children[0].querySelectorAll('.v2-q').map(q => q.dataset.id);
     assert.deepEqual(ids, ['n1', 'n2', 'n3', 'r3', 'r2']);
   });
-  reviewTest('章末沒有自己題目時，最多穿插 3 題複習並標「章末複習」', () => {
+  test('章末沒有自己題目時，最多穿插 3 題複習並標「章末複習」', () => {
     const now = Date.UTC(2026, 10, 2);
     const V2 = { subj: 'fin', mode: 'public', q: bank([['a', 'ch1'], ['b', 'ch1'], ['c', 'ch1'], ['d', 'ch1']]) };
     const old = Object.fromEntries(['a', 'b', 'c', 'd'].map((k, i) => [k, { box: 1, n: 1, c: 0, due: now - 10 + i }]));
@@ -239,14 +234,14 @@ describe('題卡組成與到期複習', () => {
     assert.match(card._html, /章末複習/);
     assert.deepEqual(card.querySelectorAll('.v2-q').map(q => q.dataset.id), ['a', 'b', 'c']);
   });
-  reviewTest('同一題在同一次載入中不會被重複穿插到兩個段落', () => {
+  test('同一題在同一次載入中不會被重複穿插到兩個段落', () => {
     const now = Date.UTC(2026, 10, 2);
     const V2 = { subj: 'fin', mode: 'public', q: bank([['a', 'ch1'], ['x', 'ch2'], ['y', 'ch3']]) };
     const r = run({ V2, now, storage: { 'fin/v2-srs': JSON.stringify({ a: { box: 1, n: 1, c: 0, due: 0 } }) }, slots: [{ chapter: 'ch1', qids: 'a' }, { chapter: 'ch2', qids: 'x' }, { chapter: 'ch3', qids: 'y' }] });
     const reviews = r.slotEls.flatMap(s => s.children[0]?.querySelectorAll('.v2-q').filter(q => /v2-rv/.test(q._html)).map(q => q.dataset.id) || []);
     assert.deepEqual(reviews, ['a'], '到期題只在後面第一個有空位的段落穿插一次');
   });
-  reviewTest('到期判斷是「due ≤ 現在」：剛好到期算到期', () => {
+  test('到期判斷是「due ≤ 現在」：剛好到期算到期', () => {
     const now = Date.UTC(2026, 10, 2);
     const V2 = { subj: 'fin', mode: 'public', q: bank([['a', 'ch1'], ['x', 'ch2']]) };
     const r = run({ V2, now, storage: { 'fin/v2-srs': JSON.stringify({ a: { box: 1, n: 1, c: 0, due: now } }) }, slots: [{ chapter: 'ch1', qids: 'a' }, { chapter: 'ch2', qids: 'x' }] });

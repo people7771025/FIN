@@ -42,7 +42,6 @@
   const used=new Set();
   slots.forEach((el,i)=>{
     const own=(el.dataset.qids||'').split(',').filter(Boolean).filter(id=>V.q[id]);
-    own.forEach(id=>used.add(id));
     const isEnd=lastOfChapter[el.dataset.chapter]===i;
     const nrev= own.length? Math.min(2,Math.ceil(own.length/2)) : (isEnd?3:0);
     const rev=nrev?dueReviews(i,used,nrev):[]; rev.forEach(id=>used.add(id));
