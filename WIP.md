@@ -1,8 +1,11 @@
 # WIP — FIN 台股美股財報自學系統
 
-最後更新：2026-06-09（台北時間）/ Codex
+最後更新：2026-11-03（台北時間）/ Claude
 
 ## 現在狀態
+
+- **2026-11-03 文件整理**（使用者原話：「請整理此 repo 的 README 與開發文件，並開 PR」）：README 改寫為 learn-v2 現況（離線需 `index.html`＋`v2.css`＋`v2.js`、擴充章 fin-x1～x3、每段練習與間隔複習），新增 `docs/development.md`（加章節／元件／練習題、驗證指令、發布）。只改文件，未動內容與程式。
+- **2026-10-26 learn-v2 已合併（PR #1）**：章節由淺入深重排（順序見檔尾 `window.V2.order`）、新增 fin-x1～x3、每段內嵌練習＋Leitner 間隔複習（`v2.js`／`v2.css`，練習紀錄 `fin/v2-srs`）。以下 v1.x 紀錄保留作背景。
 
 - **v1.2 學習閉環補強完成**。單檔 `index.html`，線上仍為 <https://people7771025.github.io/FIN/>（push 後 Pages 自動部署）。
 - 內容：intro + **32 章（ch1–32）** + 案例庫 + 名詞表 + 學習進度，分 **8 個 Part**（章節對照見 HANDOFF §2）。
