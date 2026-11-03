@@ -66,6 +66,15 @@
 新增章節：複製 `<section data-chapter="...">` 模板。
 新增互動：放 `<div class="widget" data-component="...">` 佔位，於檔尾 `hydrateAll()` 註冊。
 
+### 單元測試
+
+`tests/` 用 Node 內建 test runner（Node 22+，零相依）測 `index.html` 主程式裡的純函式（格式化、SVG 座標、學習計畫、比較指標、工作底稿檢核等）。
+測試會把主 `<script>` 放進 `node:vm` 沙盒執行並取出函式，不需要改 `index.html`。
+
+```bash
+node --test tests/*.test.mjs
+```
+
 詳見 `HANDOFF.md`。
 
 ## License
